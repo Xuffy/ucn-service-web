@@ -104,7 +104,7 @@ export default {
     POST_REWORK_HANDLE: ['/qc/rework/handle', 'USUPPLY_URL', 'USUPPLY_URL'],
     get_qcDetail:['/qc/getById','BASE_BUY','UPURCHASE_URL'],
     get_qcProductInfo:['/qc/detail/page','BASE_BUY','UPURCHASE_URL'],
-
+    get_buyerWarehouseOverview:['/warehouse/overview/page','BASE_BUY','UPURCHASE_URL'],
 
 
     /**
