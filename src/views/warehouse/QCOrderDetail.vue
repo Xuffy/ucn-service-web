@@ -1,5 +1,5 @@
 <template>
-    <div class="qc-detail">
+    <div class="qc-detail" v-loading="loadingData">
         <div class="title">
             <span>{{$i.warehouse.qcOrderDetail}}</span>
         </div>
@@ -10,7 +10,7 @@
             <el-form label-width="190px">
                 <el-row class="speZone">
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item label="QC Order No">
+                        <el-form-item :label="$i.warehouse.qcOrderNo">
                             <el-input
                                     v-model="qcDetail.qcOrderNo"
                                     :disabled="true">
@@ -18,7 +18,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item label="QC Type">
+                        <el-form-item :label="$i.warehouse.qcTypeDictCode">
                             <el-input
                                     v-model="qcDetail.qcTypeDictCode"
                                     :disabled="true">
@@ -26,7 +26,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="QC Date">
+                        <el-form-item prop="11" :label="$i.warehouse.qcDate">
                             <el-input
                                     v-model="qcDetail.qcDate"
                                     :disabled="true">
@@ -34,7 +34,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Factory address">
+                        <el-form-item prop="11" :label="$i.warehouse.factoryAddress">
                             <el-input
                                     v-model="qcDetail.factoryAddress"
                                     :disabled="true">
@@ -42,7 +42,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Factory Contact Phone">
+                        <el-form-item prop="11" :label="$i.warehouse.factoryContactPhone">
                             <el-input
                                     v-model="qcDetail.factoryContactPhone"
                                     :disabled="true">
@@ -50,7 +50,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="QC status">
+                        <el-form-item prop="11" :label="$i.warehouse.qcStatusDictCode">
                             <el-input
                                     v-model="qcDetail.qcStatusDictCode"
                                     :disabled="true">
@@ -58,7 +58,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="QC Method">
+                        <el-form-item prop="11" :label="$i.warehouse.qcMethodDictCode">
                             <el-input
                                     v-model="qcDetail.qcMethodDictCode"
                                     :disabled="true">
@@ -66,7 +66,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Surveyor">
+                        <el-form-item prop="11" :label="$i.warehouse.surveyor">
                             <el-input
                                     v-model="qcDetail.surveyor"
                                     :disabled="true">
@@ -74,7 +74,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Service Fee">
+                        <el-form-item prop="11" :label="$i.warehouse.serviceFee">
                             <el-input
                                     v-model="qcDetail.serviceFee"
                                     :disabled="true">
@@ -82,7 +82,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Service providers">
+                        <el-form-item prop="11" :label="$i.warehouse.serviceName">
                             <el-input
                                     v-model="qcDetail.serviceName"
                                     :disabled="true">
@@ -90,7 +90,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Exchange Currency">
+                        <el-form-item prop="11" :label="$i.warehouse.exchangeCurrencyDictCode">
                             <el-input
                                     v-model="qcDetail.exchangeCurrencyDictCode"
                                     :disabled="true">
@@ -98,7 +98,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" label="Time Zone">
+                        <el-form-item prop="11" :label="$i.warehouse.timeZone">
                             <el-input
                                     v-model="qcDetail.timeZone"
                                     :disabled="true">
@@ -106,7 +106,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-form-item prop="11" label="Remark">
+                        <el-form-item prop="11" :label="$i.warehouse.remark">
                             <el-input
                                     v-model="qcDetail.remark"
                                     :disabled="true">
@@ -114,7 +114,7 @@
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-form-item prop="11" label="Attachment">
+                        <el-form-item prop="11" :label="$i.warehouse.attachment">
                             <el-input
                                     v-model="qcDetail.attachment"
                                     :disabled="true">
@@ -128,7 +128,7 @@
             {{$i.warehouse.payment}}
         </div>
         <div class="payment-table">
-            <el-button class="payment-btn" type="primary">{{$i.warehouse.add}}</el-button>
+            <el-button class="payment-btn" type="primary">{{$i.warehouse.pressMoney}}</el-button>
             <el-table
                     :data="tableData"
                     border
@@ -186,16 +186,7 @@
                 </el-table-column>
             </el-table>
         </div>
-        <div class="second-title">
-            {{$i.warehouse.productInfo}}
-        </div>
         <div class="product-info">
-            <div class="btn-group">
-                <el-button>{{$i.warehouse.confirmSKU}}</el-button>
-                <el-button>{{$i.warehouse.restartQc}}</el-button>
-                <el-button>{{$i.warehouse.rework}}</el-button>
-                <el-button>{{$i.warehouse.return}}</el-button>
-            </div>
             <v-table
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
@@ -203,8 +194,18 @@
                     @action="btnClick"
                     @change-checked="changeChecked"
                     :totalRow="true"
-            />
+            >
+                <template slot="header">
+                    <div class="second-title">
+                        {{$i.warehouse.productInfo}}
+                    </div>
+                </template>
+            </v-table>
+        </div>
 
+        <div class="footBtn">
+            <el-button @click="edit" type="primary">{{$i.warehouse.edit}}</el-button>
+            <el-button @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
     </div>
 </template>
@@ -220,6 +221,7 @@
         data(){
             return{
                 qcDetail:{},
+                loadingData:false,
                 /**
                  * paymentTable data
                  * */
@@ -254,16 +256,19 @@
         },
         methods:{
             getQcOrderDetail(){
+                this.loadingData=true;
                 this.$ajax.get(`${this.$apis.get_qcDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
+                        this.loadingData=false;
                     }).catch(err=>{
-
-                });
+                        this.loadingData=false;
+                    }
+                );
             },
             getProductInfo(){
                 this.loadingProductInfoTable=true;
-                this.$ajax.post(this.$apis.get_qcProductInfo,this.productInfoConfig).then(res=>{
+                this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas);
                     this.loadingProductInfoTable=false;
                 }).catch(err=>{
@@ -280,6 +285,19 @@
             },
             changeChecked(e){
                 this.selectList=e;
+            },
+
+            edit(){
+                this.$router.push({
+                    path:'/warehouse/editQc',
+                    query:{
+                        id:this.$route.query.id
+                    }
+                });
+            },
+
+            cancel(){
+                window.close();
             },
         },
         created(){
@@ -303,5 +321,20 @@
     }
     .payment-btn{
         margin: 5px 0 10px 0;
+    }
+    .product-info{
+        margin-top: 10px;
+    }
+
+    .footBtn{
+        border-top: 1px solid #e0e0e0;
+        height: 40px;
+        line-height: 40px;
+        background-color: #ffffff;
+        position: sticky;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        z-index:1000;
     }
 </style>

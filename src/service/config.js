@@ -35,6 +35,7 @@ export default {
       BASE_BJ_p: 'http://dev.upurchase-facade.ucnholding.com:18300',
       BASE_BUY: '//192.168.51.248:11001',
       BASE_SELL: '//192.168.51.248:11002',
+      BASE_SERVICE:'//192.168.51.248:11003',
       BASE_WAREHOUSE: '//192.168.51.248:12005',
 
       // 开发服务器 248
