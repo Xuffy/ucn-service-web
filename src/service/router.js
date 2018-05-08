@@ -253,7 +253,7 @@ export const routerMap = [
             log: true,
             name: 'Compare Detail'
           },
-          component: () => import ('../views/supplier/Compare/Compare.vue')
+          component: () => import ('../views/supplier/compare/compare.vue')
         },
         {
           path: 'compare',
@@ -264,7 +264,7 @@ export const routerMap = [
             log: true,
             name: 'Compare Overview'
           },
-          component: () => import ('../views/supplier/Compare/Overview.vue')
+          component: () => import ('../views/supplier/compare/overview.vue')
         }
       ]
     },
