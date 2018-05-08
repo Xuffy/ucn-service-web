@@ -115,7 +115,7 @@ export default {
     get_serviceQcOrderProduct:['/qc/detail/page','BASE_SERVICE','USERVICE_URL'],
     get_serviceQcSurveyor:['/user/list','UUSER_URL','UUSER_URL'],
     save_serviceQcOrder:['/qc/result/save','BASE_SERVICE','USERVICE_URL'],
-    get_serviceQcDetail:['/qc/detail/getById','BASE_SERVICE','USERVICE_URL'],
+    get_serviceQcDetail:['/qc/getById','BASE_SERVICE','USERVICE_URL'],
 
 
     /**
