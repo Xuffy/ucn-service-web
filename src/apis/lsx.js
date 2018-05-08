@@ -106,6 +106,7 @@ export default {
     get_qcProductInfo:['/qc/detail/page','BASE_BUY','UPURCHASE_URL'],
 
 
+
     /**
      * service warehouse
      * */

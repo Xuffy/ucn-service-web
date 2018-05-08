@@ -400,7 +400,6 @@
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = res.datas;
-                    console.log(this.productInfoData,'???')
                     this.loadingProductInfoTable=false;
                 }).catch(err=>{
                     this.loadingProductInfoTable=false;
@@ -448,7 +447,7 @@
                         outerCartonLength: v.outerCartonHeight,
                         outerCartonNetWeight: v.outerCartonNetWeight,
                         outerCartonWidth: v.outerCartonWidth,
-                        qcOrderDetailId: v.qcOrderId,   //?????
+                        qcOrderDetailId: v.id,   //?????
                         qcPic: v.qcPic,
                         qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
                         remark: v.remark,
