@@ -93,8 +93,6 @@
                     this.loadingTable=false;
                 });
             },
-
-
             searchInbound(e){
                 if(!e.keyType){
                     return this.$message({
@@ -136,9 +134,6 @@
                 }).catch(err=>{
 
                 });
-                // this.$ajax.get(this.$apis.get_allUnit).then(res=>{
-                //     console.log(res)
-                // });
             },
         },
         created(){
