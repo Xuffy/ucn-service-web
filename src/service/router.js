@@ -270,57 +270,6 @@ export const routerMap = [
       ]
     },
     {
-      path: '/order',
-      component: Layout,
-      redirect: '/order/overview',
-      meta: {name: 'Order'},
-      noDropdown: true,
-      children: [
-        {
-          path: 'overview',
-          name: 'order',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Overview'
-          },
-          component: () => import('../views/order/overView.vue')
-        },
-       {
-          path: 'detail',
-          name: 'orderDetail',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Detail'
-          },
-          component: () => import('../views/order/poDetail/index.vue')
-        }, {
-          path: 'draftOverview',
-          name: 'orderDraft',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Draft Overview'
-          },
-          component: () => import('../views/order/draftOverview.vue')
-        }, {
-          path: 'recycleBin',
-          name: 'orderRecycleBin',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'recycleBin Overview'
-          },
-          component: () => import('../views/order/recycleBin.vue')
-        }
-      ]
-    },
-    {
       path: '/logistic',
       name: 'logistic',
       meta: {name: 'Logistic'},
