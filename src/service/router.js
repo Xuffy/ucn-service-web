@@ -253,7 +253,7 @@ export const routerMap = [
             log: true,
             name: 'Compare Detail'
           },
-          component: () => import ('../views/supplier/Compare/Compare.vue')
+          component: () => import ('../views/supplier/compare/compare.vue')
         },
         {
           path: 'compare',
@@ -264,7 +264,7 @@ export const routerMap = [
             log: true,
             name: 'Compare Overview'
           },
-          component: () => import ('../views/supplier/Compare/Overview.vue')
+          component: () => import ('../views/supplier/compare/overview.vue')
         }
       ]
     },
@@ -417,62 +417,6 @@ export const routerMap = [
           },
           component: () => import('../views/order/recycleBin.vue')
         }
-      ]
-    },
-    {
-      path: '/warehouse',
-      component: Layout,
-      redirect: '/warehouse/overview',
-      name:'Warehouse',
-      meta: {
-        name: 'Warehouse'
-      },
-      noDropdown: false,
-      children: [
-        {
-          path: 'overview',
-          name: 'Warehouse Overview',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Warehouse Overview'
-          },
-          component: () => import('../views/warehouse/warehouseOverview.vue'),
-        },
-        {
-          path: 'qcOverview',
-          name: 'warehouseQc',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Qc Overview'
-          },
-          component: () => import('../views/warehouse/qcOverview.vue'),
-        },
-        {
-          path: 'qcDetail',
-          name: 'warehouseQcOrderDetail',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'QcOrder Detail'
-          },
-          component: () => import('../views/warehouse/qcDetail.vue'),
-        },
-        {
-          path: 'createQc',
-          name: 'warehouseCreateQcOrder',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Create QcOrder'
-          },
-          component: () => import('../views/warehouse/createQc.vue'),
-        },
       ]
     },
     {
@@ -742,119 +686,51 @@ export const routerMap = [
       ]
     },
     {
-      path: '/sellerWarehouse',
+      path: '/warehouse',
       component: Layout,
-      redirect: '/sellerWarehouse/overview',
-      name: 'SellerWarehouse',
+      redirect: '/warehouse/overview',
+      name: 'warehouse',
       meta: {
-        name: 'SellerWarehouse'
+        name: '仓库'
       },
       noDropdown: false,
       children: [
         {
           path: 'overview',
-          name: 'Warehouse Overview',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Warehouse Overview'
-          },
-          component: () => import('../views/sellerWarehouse/warehouseOverview.vue'),
-        },
-        {
-          path: 'inbound',
-          name: 'Inbound Overview',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Inbound Overview'
-          },
-          component: () => import('../views/sellerWarehouse/inbound/inboundOverview.vue'),
-        },
-        {
-          path: 'createInbound',
-          name: 'create Inbound',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'create Inbound'
-          },
-          component: () => import('../views/sellerWarehouse/inbound/createInbound'),
-        },
-        {
-          path: 'inboundDetail',
-          name: 'inbound Detail',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'inbound Detail',
-          },
-          component: () => import('../views/sellerWarehouse/inbound/inboundDetail'),
-        },
-        {
-          path: 'outbound',
-          name: 'Outbound Overview',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Outbound Overview'
-          },
-          component: () => import('../views/sellerWarehouse/outbound/outboundOverview'),
-        },
-        {
-          path: 'createOutbound',
-          name: 'create Outbound',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'create Outbound'
-          },
-          component: () => import('../views/sellerWarehouse/outbound/createOutbound'),
-        },
-        {
-          path: 'outboundDetail',
-          name: 'outbound Detail',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'outbound Detail',
-          },
-          component: () => import('../views/sellerWarehouse/outbound/outboundDetail'),
-        },
-        {
-          path: 'qcOverview',
           name: 'qc Overview',
           meta: {
             draft: true,
             recycleBin: true,
             log: true,
-            name: 'qc Overview',
+            name: '货单预览'
           },
-          component: () => import('../views/sellerWarehouse/qc/qcOverview'),
+          component: () => import('../views/warehouse/qcOverview'),
         },
         {
-          path: 'sellerQCOrderDetail',
-          name: 'sellerQCOrderDetail',
+          path: 'editQc',
+          name: 'edit qc',
+          hidden:true,
           meta: {
-            name: 'sellerQCOrderDetail'
+            draft: true,
+            recycleBin: true,
+            log: true,
+            name: '编辑'
           },
-          component: () => import('../views/sellerWarehouse/qc/QCOrderDetail')
+          component: () => import('../views/warehouse/editQcOrder'),
         },
         {
-          path: 'sellerEditOrderOverview',
-          name: 'sellerEditOrderOverview',
+          path: 'qcDetail',
+          name: 'qc detail',
+          hidden:true,
           meta: {
-            name: 'sellerEditOrderOverview'
+            draft: true,
+            recycleBin: true,
+            log: true,
+            name: '详情'
           },
-          component: () => import('../views/sellerWarehouse/qc/editQcOrderOverview')
-        }
+          component: () => import('../views/warehouse/QCOrderDetail'),
+        },
+
       ]
     },
     {
