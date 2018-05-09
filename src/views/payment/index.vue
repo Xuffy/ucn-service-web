@@ -14,15 +14,15 @@
                     </el-radio-group>
                 </div>
                 <div class="spe-div">
-                    <div class="View">
-                        <span class="text">View : </span>
-                        <el-radio-group size="mini"  v-model="params.conditions.orderType"  @change="getList">
-                            <el-radio-button label="" border>{{$i.common.all}}</el-radio-button>
-                            <el-radio-button label="30">{{$i.common.logisticOrder}}</el-radio-button>
-                            <el-radio-button label="10">{{$i.common.purchaseOrder}}</el-radio-button>
-                            <el-radio-button label="20">{{$i.common.qcOrder}}</el-radio-button>
-                        </el-radio-group>
-                    </div>
+                    <!--<div class="View">-->
+                        <!--<span class="text">View : </span>-->
+                        <!--<el-radio-group size="mini"  v-model="params.conditions.orderType"  @change="getList">-->
+                            <!--<el-radio-button label="" border>{{$i.common.all}}</el-radio-button>-->
+                            <!--<el-radio-button label="30">{{$i.common.logisticOrder}}</el-radio-button>-->
+                            <!--<el-radio-button label="10">{{$i.common.purchaseOrder}}</el-radio-button>-->
+                            <!--<el-radio-button label="20">{{$i.common.qcOrder}}</el-radio-button>-->
+                        <!--</el-radio-group>-->
+                    <!--</div>-->
                     <div class="search">
                         <select-search
                           class="search"
@@ -145,7 +145,6 @@
         },
         watch: {
             date(){
-                console.log(this.date)
               this.params.conditions.orderEntryStartDt = this.date[0]
               this.params.conditions.orderEntryEndDt = this.date[1]
               this.getList()
@@ -256,16 +255,15 @@
                 }
             },
             urgingPayment(item) {
-                console.log(item)
-                const count = 0
-                // ① 催款，此操作会给对应付款人发一条提示付款的信息，在对方的workbench显示；
-                // ② 当待付款金额不为0时，催款按钮可操作；
-                // ③ 当待付金额为0时，催款按钮为禁用，不可操作；
-                // ④ 催款限制：每天能点三次，超过次数后禁用；每次点击间隔一分钟才能再次点击，其间按钮为禁用
-                // if(item.waitPayment.value != 0){
-                //
-                //
-                // }
+              // ① 催款，此操作会给对应付款人发一条提示付款的信息，在对方的workbench显示；
+              // ④ 催款限制：每天能点三次，超过次数后禁用；每次点击间隔一分钟才能再次点击，其间按钮为禁用
+              this.$ajax.post(this.$apis.post_payment_dunning, {
+                orderNo:item.orderNo,
+                orderType:item.orderType
+              })
+                .then(res => {
+                  this.$message('已催促采购商对应的付款人付款');
+                })
             },
             setButtons(item){
                 if(_.findWhere(item, {'key': 'waitPayment'}).value + '' === '0') return [{label: 'urging payment', type: '1',disabled:true},{label: 'detail', type: '2'}]
