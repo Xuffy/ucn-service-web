@@ -8,8 +8,8 @@ export default {
     post_addCustomerListRemark: ['/servicer/customer/remark', 'BASE_CS', 'USERVICE_URL'],
     post_delete_CustomerRemark: ['/servicer/customer/deleteRemark/{id}', 'BASE_CS', 'USERVICE_URL'],
     post_customerUpdataRmark: ['/servicer/customer/remark/{id}', 'BASE_CS', 'USERVICE_URL'],
-
-
+    post_deleteCustomer:['/servicer/customer/batchDelete','BASE_CS', 'USERVICE_URL'],
+     post_batchRecover:['/servicer/customer/batchRecover','BASE_CS', 'USERVICE_URL'],
     
     //字典表数据
     post_codePart:['/code/part','BASE_CODE','USERVICE_URL'],
