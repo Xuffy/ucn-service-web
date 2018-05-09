@@ -21,8 +21,9 @@
 
                 </el-row>
                   </el-form>
-                <div class="btns" v-if="noEdit">
-<!--                   <el-button @click='deleted' type='danger'>{{$i.common.delete}}</el-button>-->
+                <div class="btns">
+                   <el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>
+
 <!--
                     <el-button @click='createInquiry'>{{$i.common.createInquiry}}</el-button>
                     <el-button @click='createOrder'>{{$i.common.createOrder}}</el-button>
@@ -30,6 +31,7 @@
                     <el-button @click='supplierProducts'>{{$i.common.supplierProducts}}</el-button>
                     <el-button @click='addToBookmark'>{{$i.common.addToBookmark}}</el-button>
 -->
+
                 </div>
 <!--
                 <div class="btns" v-else>
@@ -41,31 +43,39 @@
         </div>
         <div class="body">
             <el-tabs v-model="tabName" type="card" >          
-                <el-tab-pane :label="$i.address" name="address">
+                <el-tab-pane :label="$i.supplier.address" name="address">
                     <v-table  :data="address"  style='marginTop:10px'/>
                 </el-tab-pane>
-                <el-tab-pane :label="$i.accountInfo"  name="accountInfo">
-                    <v-table  :data="accounts"  style='marginTop:10px'/>
+                
+                <el-tab-pane :label="$i.supplier.concats"  name="concats">
+                    <v-table  :data="concats"  style='marginTop:10px'/>
                 </el-tab-pane>
-                <el-tab-pane :label="$i.contactInfo" name="contactInfo">
-                    <v-table  :data="concats"   style='marginTop:10px'/>
+                
+                <el-tab-pane :label="$i.supplier.document" name="document">
+                    <v-table  :data="document"   style='marginTop:10px'/>
                 </el-tab-pane>
-                <el-tab-pane :label="$i.tradeHistory"  name="tradeHistory">
-<!--                  <v-table  :data="tabData"   style='marginTop:10px'/>-->
+                
+<!--
+                <el-tab-pane :label="$i.supplier.inquiry"  name="inquiry">
+                  <v-table  :data="tabData"   style='marginTop:10px'/>
                 </el-tab-pane>
-                <el-tab-pane :label="$i.inquireHistory"  name="inquireHistory">
-<!--                  <v-table  :data="tabData"   style='marginTop:10px'/> -->
+-->
+                
+<!--
+                <el-tab-pane :label="$i.supplier.tradeHistory"  name="tradeHistory">
+                  <v-table  :data="tabData"   style='marginTop:10px'/> 
                 </el-tab-pane>
-                <el-tab-pane :label="$i.remark" name="remark">
+-->
+                
+                <el-tab-pane :label="$i.supplier.remark" name="remark">
                     <v-remark  
                      style='marginTop:10px'
                      :id=id              
                      />
                 </el-tab-pane>
-                <el-tab-pane :label="$i.attchment" name="attchment">
-
-
-                   <v-attachment></v-attachment>
+                
+                <el-tab-pane label="attachment" name="attchment">
+                     <v-attachment></v-attachment>
                 </el-tab-pane>
 
             </el-tabs>
@@ -74,6 +84,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import VCompareList from '../product/compareList'
     import VRemark from './remark'
     import VAttachment from './attachment'
@@ -98,6 +109,9 @@
                 accounts: [],
                 concats: [],
                 address: [],
+                document:[],
+                inquiry:[],
+                tradeHistory:[],
                 remarkData: [],
                 compareConfig: {
                     showCompareList: false, //是否显示比较列表
@@ -107,9 +121,17 @@
             }
         },
         methods: {
-           
-            deleted(){
-                
+              ...mapActions([
+                'setRecycleBin','setDraft'
+            ]),
+             deleteCustomer(){             
+                 this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
+                    .then(res => {
+                       this.$router.push('/customer/recycle')
+                    })
+                    .catch((res) => {
+                        console.slog(res)
+                    });
             },
             addToBookmark() {
                 this.$ajax.post(this.$apis.post_supplier_addbookmark, [this.id])
@@ -138,13 +160,18 @@
                         id: this.id
                     })
                     .then(res => {
-                    console.log(res)
-//                        this.code = res.code
-//                        this.basicDate = res;
-//                        this.accounts = this.$getDB(this.$db.supplier.detailTable, res.accounts);
-//                        this.address = this.$getDB(this.$db.supplier.detailTable, res.address);
-//                        this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
-//                        this.loading = false
+                this.code = res.code
+                this.basicDate = res;
+                    
+                this.accounts = this.$getDB(this.$db.supplier.detailTable, res.accounts);
+                    
+                this.address = this.$getDB(this.$db.supplier.detailTable, res.address);
+                    
+                this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
+                    
+                this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);  
+                    
+                this.loading = false
                     })
                     .catch((res) => {
                         this.loading = false
@@ -153,6 +180,10 @@
         },
         created() {
             this.get_data()
+            this.setRecycleBin({
+                name: 'customerRecycleBinDetail',
+                show: true
+            });
         },
     }
 
