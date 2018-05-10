@@ -5,11 +5,17 @@ export default {
     content: {
       key: 'content'
     },
-  sendTime: {
+   sendTime: {
       key: 'sendTime'
     },
-  subscribeId: {
-    key: 'subscribeId',
-    _hide:true,
-  }
+    read: {
+      key: 'isRead'
+    },
+    sender: {
+      key: 'senderName'
+    },
+    subscribeId: {
+      key: 'subscribeId',
+      _hide:true,
+    }
 }

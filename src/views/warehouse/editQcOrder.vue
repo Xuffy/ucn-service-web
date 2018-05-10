@@ -387,7 +387,7 @@
         methods:{
             getQcOrderDetail(){
                 this.loadingData=true;
-                this.$ajax.get(`${this.$apis.get_qcDetail}?id=${this.$route.query.id}`)
+                this.$ajax.get(`${this.$apis.get_serviceQcDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
                         this.loadingData=false;

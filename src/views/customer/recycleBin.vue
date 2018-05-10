@@ -56,8 +56,8 @@
                   <el-button  @click='compare' :disabled='!(selectedData.length>1)'>{{$i.common.compare}}({{selectNumber.length}})</el-button>
                   <el-button  @click='addToBookmark' :disabled='!(selectedData.length)>0'>{{$i.common.addToBookmark}}({{selectNumber.length}})</el-button>
 -->
-<!--                  <el-button :disabled='!selectedData.length>0'>{{$i.common.downloadSelected}}({{selectNumber.length}})</el-button>-->
-<!--                  <el-button :disabled='!selectedData.length>0' @click='deleteCustomer'>{{$i.common.delete}}({{selectNumber.length}})</el-button>-->
+                  <el-button :disabled='!selectedData.length>0'>{{$i.common.downloadSelected}}({{selectNumber.length}})</el-button>
+                  <el-button :disabled='!selectedData.length>0' @click='recoverCustomer'>{{$i.common.recover}}({{selectNumber.length}})</el-button>
               </div>  
               <div>
                  
@@ -87,8 +87,6 @@
 </template>
 
 <script>
-    
-import { mapActions } from 'vuex'
     import {
         dropDownSingle,
         VPagination
@@ -132,8 +130,8 @@ import { mapActions } from 'vuex'
                     "payment": '',
                     "pn": 1,
                     "ps": 50,
-                     tc: 0,
-                     "recycle": false,
+                     "tc": 0,
+                     "recycle": true,
                     //                    "sorts": [{
                     //                        "nativeSql": true,
                     //                        "orderBy": "string",
@@ -153,9 +151,6 @@ import { mapActions } from 'vuex'
             }
         },
         methods: {
-               ...mapActions([
-                'setRecycleBin','setDraft'
-            ]),
             //切换body的收缩展开状态
             switchDisplay() {
                 this.hideBody = !this.hideBody;
@@ -186,9 +181,9 @@ import { mapActions } from 'vuex'
 
                 });
             },
-            deleteCustomer(){
+            recoverCustomer(){
                  
-                 this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber)
+                 this.$ajax.post(this.$apis.post_batchRecover, this.selectNumber)
                     .then(res => {
                         this.get_data()
                     })
@@ -252,11 +247,6 @@ import { mapActions } from 'vuex'
         created() {
             this.get_data()
             this.getCategoryId()
-            this.setRecycleBin({
-                name: 'customerRecycleBinDetail',
-                show: true
-            });
-           
         },
         watch: {}
     }
