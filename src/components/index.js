@@ -27,9 +27,7 @@ import containerInfo from '@/views/logistic/children/containerInfo';
 import dropDownSingle from './common/fnCompon/dropDownSingle';
 import VAddQuickLink from './common/addQuickLink/index';
 import paymentTable from '@/views/warehouse/paymentTable';
-import VHistory from '@/views/negotiation/children/history';
 // import timeSelection from './common/fnCompon/timeSelection';
-import addNewInqury from '@/views/negotiation/children/addNewInqury';
 
 export {
   VTimeZone,
@@ -57,8 +55,6 @@ export {
   compareList,
   containerInfo,
   dropDownSingle,
-  paymentTable,
-  VHistory,
-  addNewInqury
+  paymentTable
 //timeSelection
 }
