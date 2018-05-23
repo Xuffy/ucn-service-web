@@ -204,7 +204,7 @@
         </div>
 
         <div class="footBtn">
-            <el-button @click="edit" type="primary">{{$i.warehouse.edit}}</el-button>
+            <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
             <el-button @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
     </div>
@@ -257,9 +257,10 @@
         methods:{
             getQcOrderDetail(){
                 this.loadingData=true;
-                this.$ajax.get(`${this.$apis.get_serviceQcDetail}?id=${this.$route.query.id}`)
+                this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
+                        console.log(this.qcDetail)
                         this.loadingData=false;
                     }).catch(err=>{
                         this.loadingData=false;

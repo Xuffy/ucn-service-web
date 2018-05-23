@@ -387,7 +387,7 @@
         methods:{
             getQcOrderDetail(){
                 this.loadingData=true;
-                this.$ajax.get(`${this.$apis.get_serviceQcDetail}?id=${this.$route.query.id}`)
+                this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
                         this.loadingData=false;
@@ -400,6 +400,9 @@
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = res.datas;
+                    this.productInfoData.forEach(v=>{
+                        v.skuQcResultDictCode='';
+                    })
                     this.loadingProductInfoTable=false;
                 }).catch(err=>{
                     this.loadingProductInfoTable=false;
@@ -460,12 +463,13 @@
                     });
                 });
 
+                console.log(this.$copyArr(this.qcOrderConfig))
 
-                this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                    this.$router.push('/warehouse/overview');
-                }).catch(err=>{
-
-                });
+                // this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
+                //     this.$router.push('/warehouse/overview');
+                // }).catch(err=>{
+                //
+                // });
 
             },
 
@@ -485,6 +489,9 @@
                         }else if(v.code==='QC_MD'){
                             this.qcMethodOption=v.codes;
                         }else if(v.code==='SKU_QC_RS'){
+                            v.codes=_.filter(v.codes, e=>{
+                                return e.code!=='WAIT_FOR_QC' && e.code!=='CONFIRMED';
+                            });
                             this.qcResultOption=v.codes;
                         }else if(v.code==='PB_CODE'){
                             this.barCodeResult=v.codes;
