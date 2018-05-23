@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex';
 import Router from 'vue-router'
 import config from 'service/config';
-import Layout from 'components/Layout/index.vue'
+import Layout from 'components/layout/index.vue'
 import {Notification, Message} from 'element-ui';
 import {localStore, sessionStore} from 'service/store';
 
@@ -14,44 +14,6 @@ export const routerMap = [
       component: Layout,
       redirect: '/workbench/index',
       hidden: true, // 在侧边栏中不显示该菜单
-    },
-    {
-      path: '/sellerNegotiation',
-      name: 'sellerNegotiation',
-      noDropdown: true,
-      component: Layout,
-      redirect: '/sellerNegotiation/inquiry',
-      meta: {
-        name: 'sellerNegotiation',
-      },
-      children: [
-        {
-          path: 'inquiry',
-          name: 'sellerInquiry',
-          meta: {
-            name: 'seller Negotiation inquiry',
-          },
-          component: () => import('../views/sellerNegotiation/inquiryOverview')
-        },
-        {
-          path: 'inquiryDetail',
-          name: 'sellerInquiryDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Inquiry Detail',
-            messageBoard: 'code'
-          },
-          component: () => import('../views/sellerNegotiation/inquiryDetail')
-        },
-        {
-          path: 'recycleBin',
-          name: 'sellerRecycleBin',
-          component: () => import('../views/sellerNegotiation/recycleBin')
-        }
-      ]
     },
     {
       path: '/login',
@@ -180,166 +142,6 @@ export const routerMap = [
       ]
     },
     {
-      path: '/supplier',
-      component: Layout,
-      meta: {name: 'Supplier'},
-      redirect: '/supplier/sourcing',
-      children: [
-        {
-          path: 'sourcing',
-          name: 'supplierSourcing',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Sourcing'
-          },
-          component: () => import ('../views/supplier/sourcing/sourcing.vue'),
-        },
-        {
-          path: 'bookmark',
-          name: 'supplierBookmark',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Bookmark'
-          },
-          component: () => import ('../views/supplier/bookmark/bookmark.vue')
-        },
-        {
-          path: 'bookmarkDetail',
-          name: 'supplierBookmarkDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Bookmark Detail'
-          },
-          component: () => import ('../views/supplier/bookmark/bookmarkDetail.vue')
-        },
-           {
-          path: 'recycleBin',
-          name: 'supplierRecycleBin',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Bookmark recycleBin'
-          },
-          component: () => import ('../views/supplier/bookmark/recycleBin.vue')
-        },
-        {
-          path: 'sourcingDetail',
-          name: 'supplierSourcingDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Sourcing Detail'
-          },
-          component: () => import ('../views/supplier/sourcing/sourcingDetail.vue')
-        },
-        {
-          path: 'compareDetail/:type',
-          name: 'supplierCompareDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Compare Detail'
-          },
-          component: () => import ('../views/supplier/compare/compare.vue')
-        },
-        {
-          path: 'compare',
-          name: 'supplierCompare',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Compare Overview'
-          },
-          component: () => import ('../views/supplier/compare/overview.vue')
-        }
-      ]
-    },
-    {
-      path: '/negotiation',
-      component: Layout,
-      redirect: '/negotiation/inquiry',
-      name: 'negotiation',
-      meta: {name: 'Negotiation'},
-      children: [
-        {
-          path: 'inquiry',
-          name: 'negotiationInquiry',
-          meta: {
-            name: 'Inquiry Overview'
-          },
-          component: () => import('../views/negotiation/inquiryOverview')
-        },
-        {
-          path: 'inquiryDetail',
-          name: 'negotiationInquiryDetail',
-          hidden: true,
-          meta: {
-            name: 'Inquiry Detail',
-            messageBoard: 'code'
-          },
-          component: () => import('../views/negotiation/inquiryDetail')
-        },
-        {
-          path: 'createInquiry',
-          name: 'negotiationCreateInquiry',
-          hidden: true,
-          meta: {
-            name: 'Create Inquiry'
-          },
-          component: () => import('../views/negotiation/createInquiry')
-        },
-        {
-          path: 'compare',
-          name: 'negotiationCompare',
-          meta: {
-            name: 'Compare Overview'
-          },
-          component: () => import('../views/negotiation/compareOverview')
-        },
-        {
-          path: 'compareDetail/:type',
-          name: 'negotiationCompareDetail',
-          hidden: true,
-          meta: {
-            name: 'Compare Detail'
-          },
-          component: () => import('../views/negotiation/compare')
-        },
-        {
-          path: 'draft/:type',
-          name: 'negotiationDraft',
-          hidden: true,
-          meta: {
-            name: 'draft'
-          },
-          component: () => import('../views/negotiation/draft')
-        },
-        {
-          path: 'recycleBin/:type',
-          name: 'negotiationRecycleBin',
-          hidden: true,
-          meta: {
-            name: 'recycleBin'
-          },
-          component: () => import('../views/negotiation/recycleBin')
-        }
-      ]
-    },
-    {
       path: '/payment',
       meta: {name: 'Payment'},
       component: Layout,
@@ -355,67 +157,6 @@ export const routerMap = [
             log: true,
           },
           component: () => import('../views/payment/index.vue')
-        }
-      ]
-    },
-    {
-      path: '/order',
-      component: Layout,
-      redirect: '/order/overview',
-      meta: {name: 'Order'},
-      noDropdown: true,
-      children: [
-        {
-          path: 'overview',
-          name: 'order',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Overview'
-          },
-          component: () => import('../views/order/overView.vue')
-        },
-        {
-          path: 'creat',
-          name: 'orderCreat',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Creat'
-          },
-          component: () => import('../views/order/creatOrder/index.vue')
-        }, {
-          path: 'detail',
-          name: 'orderDetail',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Detail'
-          },
-          component: () => import('../views/order/poDetail/index.vue')
-        }, {
-          path: 'draftOverview',
-          name: 'orderDraft',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Draft Overview'
-          },
-          component: () => import('../views/order/draftOverview.vue')
-        }, {
-          path: 'recycleBin',
-          name: 'orderRecycleBin',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'recycleBin Overview'
-          },
-          component: () => import('../views/order/recycleBin.vue')
         }
       ]
     },
@@ -744,43 +485,33 @@ export const routerMap = [
       children: [
         {
           path: 'overview',
-          name: 'customerRecycleBin',
+          name: 'customer',
           meta: {
             draft: false,
-            recycleBin: false,
+            recycleBin: true,
             log: false,
           },
           component: () => import('../views/customer/overview.vue')
         },
         {
           path: 'detail',
-          name: 'customerRecycleBinDetail',
+          name: 'customerDetail',
           meta: {
             draft: false,
-            recycleBin: false,
+            recycleBin: true,
             log: false,
           },
           component: () => import('../views/customer/customerDetail.vue')
-        }
-      ]
-    },
-    {
-      path: '/sellerSettings',
-      name: 'sellerSettings',
-      noDropdown: false,
-      component: Layout,
-      redirect: '/sellerSettings/CategorySetting',
-      meta: {
-        name: 'sellerSettings',
-      },
-      children: [
-        {
-          path: 'sellerCategorySetting',
-          name: 'sellerCategorySetting',
+        },
+          {
+          path: 'recycle',
+          name: 'customerRecycleBinDetail',
           meta: {
-            name: 'Category setting',
+            draft: false,
+            recycleBin: true,
+            log: false,
           },
-          component: () => import('../views/sellerSettings/CategorySetting'),
+          component: () => import('../views/customer/recycleBin.vue')
         }
       ]
     }

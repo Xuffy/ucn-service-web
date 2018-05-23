@@ -21,8 +21,9 @@
 
                 </el-row>
                   </el-form>
-                <div class="btns" v-if="noEdit">
-<!--                   <el-button @click='deleted' type='danger'>{{$i.common.delete}}</el-button>-->
+                <div class="btns">
+                   <el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>
+
 <!--
                     <el-button @click='createInquiry'>{{$i.common.createInquiry}}</el-button>
                     <el-button @click='createOrder'>{{$i.common.createOrder}}</el-button>
@@ -30,6 +31,7 @@
                     <el-button @click='supplierProducts'>{{$i.common.supplierProducts}}</el-button>
                     <el-button @click='addToBookmark'>{{$i.common.addToBookmark}}</el-button>
 -->
+
                 </div>
 <!--
                 <div class="btns" v-else>
@@ -82,6 +84,7 @@
 </template>
 
 <script>
+    import { mapActions } from 'vuex'
     import VCompareList from '../product/compareList'
     import VRemark from './remark'
     import VAttachment from './attachment'
@@ -118,9 +121,17 @@
             }
         },
         methods: {
-
-            deleted() {
-
+              ...mapActions([
+                'setRecycleBin','setDraft'
+            ]),
+             deleteCustomer(){             
+                 this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
+                    .then(res => {
+                       this.$router.push('/customer/recycle')
+                    })
+                    .catch((res) => {
+                        console.slog(res)
+                    });
             },
             addToBookmark() {
                 this.$ajax.post(this.$apis.post_supplier_addbookmark, [this.id])
@@ -169,6 +180,10 @@
         },
         created() {
             this.get_data()
+            this.setRecycleBin({
+                name: 'customerRecycleBinDetail',
+                show: true
+            });
         },
     }
 
