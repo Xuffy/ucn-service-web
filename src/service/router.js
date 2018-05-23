@@ -16,44 +16,6 @@ export const routerMap = [
       hidden: true, // 在侧边栏中不显示该菜单
     },
     {
-      path: '/sellerNegotiation',
-      name: 'sellerNegotiation',
-      noDropdown: true,
-      component: Layout,
-      redirect: '/sellerNegotiation/inquiry',
-      meta: {
-        name: 'sellerNegotiation',
-      },
-      children: [
-        {
-          path: 'inquiry',
-          name: 'sellerInquiry',
-          meta: {
-            name: 'seller Negotiation inquiry',
-          },
-          component: () => import('../views/sellerNegotiation/inquiryOverview')
-        },
-        {
-          path: 'inquiryDetail',
-          name: 'sellerInquiryDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: 'Inquiry Detail',
-            messageBoard: 'code'
-          },
-          component: () => import('../views/sellerNegotiation/inquiryDetail')
-        },
-        {
-          path: 'recycleBin',
-          name: 'sellerRecycleBin',
-          component: () => import('../views/sellerNegotiation/recycleBin')
-        }
-      ]
-    },
-    {
       path: '/login',
       hidden: true,
       component: () => import('../views/login/index.vue')
@@ -177,77 +139,6 @@ export const routerMap = [
           },
           component: () => import('../views/product/compare/compare'),
         },
-      ]
-    },
-    {
-      path: '/negotiation',
-      component: Layout,
-      redirect: '/negotiation/inquiry',
-      name: 'negotiation',
-      meta: {name: 'Negotiation'},
-      children: [
-        {
-          path: 'inquiry',
-          name: 'negotiationInquiry',
-          meta: {
-            name: 'Inquiry Overview'
-          },
-          component: () => import('../views/negotiation/inquiryOverview')
-        },
-        {
-          path: 'inquiryDetail',
-          name: 'negotiationInquiryDetail',
-          hidden: true,
-          meta: {
-            name: 'Inquiry Detail',
-            messageBoard: 'code'
-          },
-          component: () => import('../views/negotiation/inquiryDetail')
-        },
-        {
-          path: 'createInquiry',
-          name: 'negotiationCreateInquiry',
-          hidden: true,
-          meta: {
-            name: 'Create Inquiry'
-          },
-          component: () => import('../views/negotiation/createInquiry')
-        },
-        {
-          path: 'compare',
-          name: 'negotiationCompare',
-          meta: {
-            name: 'Compare Overview'
-          },
-          component: () => import('../views/negotiation/compareOverview')
-        },
-        {
-          path: 'compareDetail/:type',
-          name: 'negotiationCompareDetail',
-          hidden: true,
-          meta: {
-            name: 'Compare Detail'
-          },
-          component: () => import('../views/negotiation/compare')
-        },
-        {
-          path: 'draft/:type',
-          name: 'negotiationDraft',
-          hidden: true,
-          meta: {
-            name: 'draft'
-          },
-          component: () => import('../views/negotiation/draft')
-        },
-        {
-          path: 'recycleBin/:type',
-          name: 'negotiationRecycleBin',
-          hidden: true,
-          meta: {
-            name: 'recycleBin'
-          },
-          component: () => import('../views/negotiation/recycleBin')
-        }
       ]
     },
     {
@@ -621,26 +512,6 @@ export const routerMap = [
             log: false,
           },
           component: () => import('../views/customer/recycleBin.vue')
-        }
-      ]
-    },
-    {
-      path: '/sellerSettings',
-      name: 'sellerSettings',
-      noDropdown: false,
-      component: Layout,
-      redirect: '/sellerSettings/CategorySetting',
-      meta: {
-        name: 'sellerSettings',
-      },
-      children: [
-        {
-          path: 'sellerCategorySetting',
-          name: 'sellerCategorySetting',
-          meta: {
-            name: 'Category setting',
-          },
-          component: () => import('../views/sellerSettings/CategorySetting'),
         }
       ]
     }

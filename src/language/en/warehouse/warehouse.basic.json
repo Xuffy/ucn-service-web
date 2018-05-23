@@ -1,14 +1,10 @@
 {
-  "qcOverview":"货单预览",
-  "status":"状态",
-  "all":"全部",
-  "download":"下载",
-  "basicInfo":"基本信息",
-  "qcOrderDetail":"货单详情",
-  "payment":"付款信息",
-  "pressMoney":"催款",
-  "productInfo":"产品信息",
-  "edit":"编辑",
-  "cancel":"取消",
-  "submit":"提交"
+  "warehouseOverview":"Warehouse Overview",
+  "status":"Status",
+  "all":"All",
+  "download":"Download",
+  "qcOverview":"QC Overview",
+  "create":"Create",
+  "addProduct":"Add Product",
+  "remove":"Remove"
 }
