@@ -44,6 +44,7 @@ export const routerMap = [
       component: Layout,
       meta: {name: 'Product'},
       redirect: '/product/sourcing',
+      hidden:true,
       children: [
         {
           path: 'sourcing',
@@ -348,42 +349,6 @@ export const routerMap = [
       ],
     },
     // todo 供应商路由
-    {
-      path: '/sellerProduct',
-      component: Layout,
-      redirect: '/sellerProduct/overview',
-      name: 'sellerProduct',
-      meta: {
-        name: 'sellerProduct'
-      },
-      // hidden: true,
-      children: [
-        {
-          path: 'overview',
-          name: 'overview',
-          meta: {
-            name: 'overview'
-          },
-          component: () => import('../views/sellerProduct/overview')
-        },
-        {
-          path: 'addNewProduct',
-          name: 'Add New Product',
-          meta: {
-            name: 'Add New Product'
-          },
-          component: () => import('../views/sellerProduct/addNewProduct')
-        },
-        {
-          path: 'detail',
-          name: 'Detail',
-          meta: {
-            name: 'Detail'
-          },
-          component: () => import('../views/sellerProduct/detail')
-        },
-      ]
-    },
     //draft  草稿箱路由
     {
       path: '/draft',

@@ -235,7 +235,7 @@
                     <template slot-scope="scope">
                         <div v-if="v.showType==='select'">
                             <div v-if="v.isQcResult">
-                                <el-select v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
                                     <el-option
                                             v-for="item in qcResultOption"
                                             :key="item.id"
@@ -245,7 +245,7 @@
                                 </el-select>
                             </div>
                             <div v-else-if="v.isBarCodeResult">
-                                <el-select v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
                                     <el-option
                                             v-for="item in barCodeResult"
                                             :key="item.id"
@@ -277,11 +277,10 @@
                     </template>
                 </el-table-column>
             </el-table>
-
         </div>
 
         <div class="footBtn">
-            <el-button :disabled="loadingData" @click="submit" type="primary">{{$i.warehouse.submit}}</el-button>
+            <el-button :disabled="loadingData" :loading="disableClickSubmit" @click="submit" type="primary">{{$i.warehouse.submit}}</el-button>
             <el-button :disabled="loadingData" @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
     </div>
@@ -325,6 +324,7 @@
                         }
                     }]
                 },
+                disableClickSubmit:false,
                 /**
                  * 字典数据
                  * */
@@ -430,8 +430,31 @@
                 this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
                 this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
 
+                // console.log(this.productInfoData,'productInfoData')
+                let allow=true;
+                this.productInfoData.forEach(v=>{
+                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remarks){
+                        if(!v.skuQcResultDictCode){
+                            allow=false;
+                        }
+                    }
+                });
+                if(!allow){
+                    return this.$message({
+                        message: '产品填了数值之后必须选择验货结果',
+                        type: 'warning'
+                    });
+                }
+
                 this.qcOrderConfig.qcResultDetailParams=[];
                 this.productInfoData.forEach(v=>{
+                    let skuQcResultDictCode;
+                    if(v.skuQcResultDictCode){
+                        skuQcResultDictCode=v.skuQcResultDictCode;
+                    }else{
+                        skuQcResultDictCode='WAIT_FOR_QC';
+                    }
+
                     this.qcOrderConfig.qcResultDetailParams.push({
                         actInnerCartonSkuQty: v.actInnerCartonSkuQty,
                         actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
@@ -450,27 +473,29 @@
                         outerCartonLength: v.outerCartonHeight,
                         outerCartonNetWeight: v.outerCartonNetWeight,
                         outerCartonWidth: v.outerCartonWidth,
-                        qcOrderDetailId: v.id,   //?????
+                        qcOrderDetailId: v.id,
                         qcPic: v.qcPic,
                         qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
                         remark: v.remark,
                         shippingMarkResultDictCode: v.shippingMarkResultDictCode,
                         skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
                         skuLabelResultDictCode: v.skuLabelResultDictCode,
-                        skuQcResultDictCode: v.skuQcResultDictCode,
+                        skuQcResultDictCode: skuQcResultDictCode,
                         unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
                         unqualifiedType: v.unqualifiedType
                     });
                 });
-
-                console.log(this.$copyArr(this.qcOrderConfig))
-
-                // this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                //     this.$router.push('/warehouse/overview');
-                // }).catch(err=>{
-                //
-                // });
-
+                this.disableClickSubmit=true;
+                this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
+                    this.disableClickSubmit=false;
+                    this.$message({
+                        message: '提交成功',
+                        type: 'success'
+                    });
+                    this.$router.push('/warehouse/overview');
+                }).catch(err=>{
+                    this.disableClickSubmit=false;
+                });
             },
 
             cancel(){
