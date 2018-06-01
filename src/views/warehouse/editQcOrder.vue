@@ -3,6 +3,7 @@
         <div class="title">
             <span>{{$i.warehouse.qcOrderDetail}}</span>
         </div>
+
         <div class="second-title">
             {{$i.warehouse.basicInfo}}
         </div>
@@ -287,7 +288,7 @@
 </template>
 <script>
 
-    import {VTable } from '@/components/index';
+    import {VTable, } from '@/components/index';
 
     export default {
         name:'qc-detail',
