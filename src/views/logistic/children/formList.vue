@@ -20,7 +20,7 @@
   </div>
 </template>
 <script>
-import { disabledFields } from '@/database/logistic/plan/staticData'
+// import { disabledFields } from '@/database/logistic/plan/staticData'
 
 export default {
   props: {

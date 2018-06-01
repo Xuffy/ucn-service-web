@@ -70,7 +70,7 @@ import btns from '@/views/logistic/children/btns'
 import productModify from '@/views/logistic/children/productModify'
 import addProduct from '@/views/logistic/children/addProduct'
 
-import { basicInfoInput, basicInfoSelector, basicInfoDate, basicInfoObj, transportInfoObj } from '@/database/logistic/plan/staticData'
+// import { basicInfoInput, basicInfoSelector, basicInfoDate, basicInfoObj, transportInfoObj } from '@/database/logistic/plan/staticData'
 
 export default {
   name: 'logisticPlanDetail',
