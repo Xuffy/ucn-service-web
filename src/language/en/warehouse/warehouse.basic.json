@@ -1,10 +1,17 @@
 {
-  "warehouseOverview":"Warehouse Overview",
-  "status":"Status",
-  "all":"All",
-  "download":"Download",
-  "qcOverview":"QC Overview",
-  "create":"Create",
-  "addProduct":"Add Product",
-  "remove":"Remove"
+  "warehouseOverview":"仓库预览",
+  "status":"状态",
+  "all":"全部",
+  "download":"下载",
+  "qcOverview":"货单预览",
+  "create":"创建",
+  "addProduct":"添加产品",
+  "remove":"移除",
+  "qcOrderDetail":"货单详情",
+  "basicInfo":"基础信息",
+  "payment":"付款信息",
+  "productInfo":"产品信息",
+  "submit":"提交",
+  "cancel":"取消",
+  "detail":"详情"
 }

@@ -69,21 +69,10 @@ const json = {
     require(`./${lang}/track/trackBysku`)
   ),
   warehouse: _.extend(
-    require(`./${lang}/warehouse/qcWarehouse`),
-    require(`./${lang}/warehouse/warehouse.table`),
-    require(`./${lang}/warehouse/warehouse.basic`),
-    require(`./${lang}/warehouse/qcDetailBasicInfo.pending`),
-    require(`./${lang}/warehouse/payment.pending`),
-    require(`./${lang}/warehouse/qcDetailBasicInfo.pending`),
-    require(`./${lang}/warehouse/qcDetailProductInfo.pending`),
-    require(`./${lang}/warehouse/summary.pending`),
-
-
-      /**
-       * 新配置
-       * */
-    require(`./${lang}/warehouse/warehouse.overview`),
+    require(`./${lang}/warehouse/warehouse.qcOverview`),
     require(`./${lang}/warehouse/warehouse.createQc`),
+    require(`./${lang}/warehouse/warehouse.basic`),
+    require(`./${lang}/warehouse/warehouse.editQc`),
   ),
   workbench: _.extend({},
     require(`./${lang}/workbench/page`),

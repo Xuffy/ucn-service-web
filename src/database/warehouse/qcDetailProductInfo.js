@@ -2,11 +2,18 @@ export default{
     id: {
         _hide: true
     },
+    skuId:{
+        _hide:true
+    },
     skuQcResultDictCode: {
         key: 'skuQcResultDictCode',
         type: 'String',
         showType:'select',
         isQcResult:true
+    },
+    skuInventoryStatusDictCode:{
+        key: 'skuInventoryStatusDictCode',
+        type: 'String'
     },
     skuCode: {
         key: 'skuCode',
@@ -304,8 +311,4 @@ export default{
         type: 'String',
         showType:'input'
     },
-    skuInventoryStatusDictCode:{
-        key: 'skuInventoryStatusDictCode',
-        type: 'String'
-    }
 }

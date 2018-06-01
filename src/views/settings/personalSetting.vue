@@ -33,7 +33,7 @@
             </el-col>
             <el-col :span="12" >
               <el-form-item prop="department" :label="$i.setting.department" v-if="isVisible">
-                  <el-input style="max-width:200px"v-model="form.deptName"  disabled="disabled"></el-input>
+                  <el-input style="max-width:200px" v-model="form.deptName"  disabled="disabled"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -221,6 +221,7 @@ export default {
             }
             this.$ajax.put(this.$apis.put_user_profile_password,this.modifyPass)
             .then(res => {
+              this.dialogVisibleO = false;
               this.$message({type: 'success', message: '修改成功!'});
             });
         },
