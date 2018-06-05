@@ -97,14 +97,14 @@
                             </el-input>
                         </el-form-item>
                     </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.timeZone">
-                            <el-input
-                                    v-model="qcDetail.timeZone"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
+                    <!--<el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">-->
+                        <!--<el-form-item prop="11" :label="$i.warehouse.timeZone">-->
+                            <!--<el-input-->
+                                    <!--v-model="qcDetail.timeZone"-->
+                                    <!--:disabled="true">-->
+                            <!--</el-input>-->
+                        <!--</el-form-item>-->
+                    <!--</el-col>-->
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-form-item prop="11" :label="$i.warehouse.remark">
                             <el-input
@@ -190,7 +190,7 @@
             <v-table
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
-                    :buttons="[{'label': 'Detail', type: 1}]"
+                    :buttons="[{'label': $i.warehouse.detail, type: 1}]"
                     @action="btnClick"
                     @change-checked="changeChecked"
                     :totalRow="true"
@@ -204,7 +204,7 @@
         </div>
 
         <div class="footBtn">
-            <el-button @click="edit" type="primary">{{$i.warehouse.edit}}</el-button>
+            <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
             <el-button @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
     </div>
@@ -233,7 +233,6 @@
                     }
                 ],
 
-
                 /**
                  * product info data
                  * */
@@ -257,7 +256,7 @@
         methods:{
             getQcOrderDetail(){
                 this.loadingData=true;
-                this.$ajax.get(`${this.$apis.get_serviceQcDetail}?id=${this.$route.query.id}`)
+                this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
                         this.loadingData=false;
@@ -281,7 +280,13 @@
              * product info表格事件
              * */
             btnClick(e){
-                console.log(e)
+                // this.$windowOpen({
+                //     url:'/product/sourcingDetail',
+                //     params:{
+                //         id:e.skuId.value
+                //     }
+                // });
+                console.log(e.skuId.value)
             },
             changeChecked(e){
                 this.selectList=e;

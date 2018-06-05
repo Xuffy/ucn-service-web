@@ -3,6 +3,7 @@
         <div class="title">
             <span>{{$i.warehouse.qcOrderDetail}}</span>
         </div>
+
         <div class="second-title">
             {{$i.warehouse.basicInfo}}
         </div>
@@ -235,7 +236,7 @@
                     <template slot-scope="scope">
                         <div v-if="v.showType==='select'">
                             <div v-if="v.isQcResult">
-                                <el-select v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
                                     <el-option
                                             v-for="item in qcResultOption"
                                             :key="item.id"
@@ -245,7 +246,7 @@
                                 </el-select>
                             </div>
                             <div v-else-if="v.isBarCodeResult">
-                                <el-select v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
                                     <el-option
                                             v-for="item in barCodeResult"
                                             :key="item.id"
@@ -277,18 +278,17 @@
                     </template>
                 </el-table-column>
             </el-table>
-
         </div>
 
         <div class="footBtn">
-            <el-button :disabled="loadingData" @click="submit" type="primary">{{$i.warehouse.submit}}</el-button>
+            <el-button :disabled="loadingData" :loading="disableClickSubmit" @click="submit" type="primary">{{$i.warehouse.submit}}</el-button>
             <el-button :disabled="loadingData" @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
     </div>
 </template>
 <script>
 
-    import {VTable } from '@/components/index';
+    import {VTable, } from '@/components/index';
 
     export default {
         name:'qc-detail',
@@ -325,6 +325,7 @@
                         }
                     }]
                 },
+                disableClickSubmit:false,
                 /**
                  * 字典数据
                  * */
@@ -387,7 +388,7 @@
         methods:{
             getQcOrderDetail(){
                 this.loadingData=true;
-                this.$ajax.get(`${this.$apis.get_serviceQcDetail}?id=${this.$route.query.id}`)
+                this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
                         this.loadingData=false;
@@ -400,6 +401,9 @@
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = res.datas;
+                    this.productInfoData.forEach(v=>{
+                        v.skuQcResultDictCode='';
+                    })
                     this.loadingProductInfoTable=false;
                 }).catch(err=>{
                     this.loadingProductInfoTable=false;
@@ -427,8 +431,31 @@
                 this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
                 this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
 
+                // console.log(this.productInfoData,'productInfoData')
+                let allow=true;
+                this.productInfoData.forEach(v=>{
+                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remarks){
+                        if(!v.skuQcResultDictCode){
+                            allow=false;
+                        }
+                    }
+                });
+                if(!allow){
+                    return this.$message({
+                        message: '产品填了数值之后必须选择验货结果',
+                        type: 'warning'
+                    });
+                }
+
                 this.qcOrderConfig.qcResultDetailParams=[];
                 this.productInfoData.forEach(v=>{
+                    let skuQcResultDictCode;
+                    if(v.skuQcResultDictCode){
+                        skuQcResultDictCode=v.skuQcResultDictCode;
+                    }else{
+                        skuQcResultDictCode='WAIT_FOR_QC';
+                    }
+
                     this.qcOrderConfig.qcResultDetailParams.push({
                         actInnerCartonSkuQty: v.actInnerCartonSkuQty,
                         actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
@@ -447,26 +474,29 @@
                         outerCartonLength: v.outerCartonHeight,
                         outerCartonNetWeight: v.outerCartonNetWeight,
                         outerCartonWidth: v.outerCartonWidth,
-                        qcOrderDetailId: v.id,   //?????
+                        qcOrderDetailId: v.id,
                         qcPic: v.qcPic,
                         qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
                         remark: v.remark,
                         shippingMarkResultDictCode: v.shippingMarkResultDictCode,
                         skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
                         skuLabelResultDictCode: v.skuLabelResultDictCode,
-                        skuQcResultDictCode: v.skuQcResultDictCode,
+                        skuQcResultDictCode: skuQcResultDictCode,
                         unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
                         unqualifiedType: v.unqualifiedType
                     });
                 });
-
-
+                this.disableClickSubmit=true;
                 this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
+                    this.disableClickSubmit=false;
+                    this.$message({
+                        message: '提交成功',
+                        type: 'success'
+                    });
                     this.$router.push('/warehouse/overview');
                 }).catch(err=>{
-
+                    this.disableClickSubmit=false;
                 });
-
             },
 
             cancel(){
@@ -485,6 +515,9 @@
                         }else if(v.code==='QC_MD'){
                             this.qcMethodOption=v.codes;
                         }else if(v.code==='SKU_QC_RS'){
+                            v.codes=_.filter(v.codes, e=>{
+                                return e.code!=='WAIT_FOR_QC' && e.code!=='CONFIRMED';
+                            });
                             this.qcResultOption=v.codes;
                         }else if(v.code==='PB_CODE'){
                             this.barCodeResult=v.codes;

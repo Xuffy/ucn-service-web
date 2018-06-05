@@ -1,5 +1,22 @@
 {
     "compareOverview": "Compare Overview",
+    "sourcing":"sourcing",
+    "detail":"detail",
+    "bookmark":"bookmark",
+    "compareDetail":"compare detail",
+    "overview": "overview",
+    "overviewCustomer": "overview customer",
+    "supplierBookmark": "Supplier Bookmark",
+    "supplierSourcing": " Supplier Sourcing",
+    "supplierName": "Supplier Name",
+    "supplierType": "supplier type",
+    "skuNameEN": "SKU name EN",
+    "skuCode": "Category",
+    "description": "Description",
+    "supplierNO": "Supplier No.",
+    "country": "country",
+    "provideIncoterm": "Provide incoterm",
+    "exportLicense":"Export license",
     "customerName": "customer name",
     "customerType": "customer type",
     "customerCountry": "customer country",
@@ -10,5 +27,8 @@
     "customerShortName": "customer short name",
     "mainBusinessScope": "main business scope",
     "shipAgent": "ship agent",
-    "incoterm": "incoterm"
+    "incoterm": "incoterm",
+    "shipAgent ": "ship agent ",
+    "provideincoterm": "Provide incoterm",
+    "currency": "currency"
 }

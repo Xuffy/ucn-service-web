@@ -4,6 +4,13 @@ import config from 'service/config';
 const lang = localStore.get('language') || config.LANGUAGE;
 
 const json = {
+  importTemplate:_.extend({},
+    require(`./${lang}/importTemplate/page`)
+  ),
+  table:_.extend({},
+    require(`./${lang}/table/page`),
+    require(`./${lang}/table/message`)
+  ),
   common: _.extend({},
     require(`./${lang}/common/quickLinks`),
     require(`./${lang}/common/basePlaceholder`),
@@ -29,7 +36,8 @@ const json = {
   ),
   logs: _.extend({},
     require(`./${lang}/logs/logs.basic`),
-    require(`./${lang}/logs/logs.basic`)
+    require(`./${lang}/logs/logs.basic`),
+    require(`./${lang}/logs/import`)
   ),
   message: _.extend({},
     require(`./${lang}/message/message.table`),
@@ -39,7 +47,13 @@ const json = {
     require(`./${lang}/order/basicinfo.pending`),
     require(`./${lang}/order/overview`),
     require(`./${lang}/order/productinfo.pending`),
-    require(`./${lang}/order/payment`)
+    require(`./${lang}/order/payment`),
+
+    //新引入
+    require(`./${lang}/order/order.basic`),
+    require(`./${lang}/order/order.prompt`),
+    require(`./${lang}/order/order.overviewTable`),
+    require(`./${lang}/order/order.orderDetail`),
   ),
   payment: _.extend({},
     require(`./${lang}/payment/payment`),
@@ -50,11 +64,7 @@ const json = {
     require(`./${lang}/product/productDetail`),
     require(`./${lang}/product/productOverview`),
     require(`./${lang}/product/productOverviewTable`),
-  ),
-  productCn: _.extend({},
-    require(`./${lang}/productCn/product.basic`),
-    require(`./${lang}/productCn/productDetail`),
-    require(`./${lang}/productCn/productOverview`)
+    require(`./${lang}/product/product.prompt`),
   ),
   setting: _.extend({},
     require(`./${lang}/setting/department`),
@@ -73,18 +83,19 @@ const json = {
     require(`./${lang}/warehouse/qcWarehouse`),
     require(`./${lang}/warehouse/warehouse.table`),
     require(`./${lang}/warehouse/warehouse.basic`),
-    require(`./${lang}/warehouse/qcDetailBasicInfo.pending`),
     require(`./${lang}/warehouse/payment.pending`),
     require(`./${lang}/warehouse/qcDetailBasicInfo.pending`),
     require(`./${lang}/warehouse/qcDetailProductInfo.pending`),
     require(`./${lang}/warehouse/summary.pending`),
-
+    require(`./${lang}/warehouse/qcDetailBasicInfo.pending`),
 
       /**
        * 新配置
        * */
     require(`./${lang}/warehouse/warehouse.overview`),
     require(`./${lang}/warehouse/warehouse.createQc`),
+    require(`./${lang}/warehouse/warehouse.qcOrderDetail`),
+    require(`./${lang}/warehouse/warehouse.prompt`),
   ),
   workbench: _.extend({},
     require(`./${lang}/workbench/page`),
@@ -100,7 +111,5 @@ const json = {
     require(`./${lang}/hintMessage/index`)
   ),
 }
-
-console.log(`%c这是优化后的国际化配置，请仔细看，修改并不麻烦。\n只需要把之前下划线 ‘$i.’ 去掉就行了`, "color:#409EFF", json,'\n\n');
 
 export default json;

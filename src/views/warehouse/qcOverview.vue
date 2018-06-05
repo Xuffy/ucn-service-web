@@ -8,7 +8,7 @@
                 <span>{{$i.warehouse.status}}</span>
                 <el-radio-group class="radios" @change="changeStatus" v-model="qcOrderConfig.qcStatusDictCode" size="mini">
                     <el-radio-button label="">{{$i.warehouse.all}}</el-radio-button>
-                    <el-radio-button v-for="v in qcStatusOption" :key="v.id" :label="v.code">{{v.code}}</el-radio-button>
+                    <el-radio-button v-for="v in qcStatusOption" :key="v.id" :label="v.code">{{v.name}}</el-radio-button>
                 </el-radio-group>
                 <select-search
                         class="search"
@@ -52,6 +52,7 @@
                  * */
                 loadingTable:false,
                 qcStatusOption:[],
+                qcMethodsOption:[],         //qc方法集合
                 qcOrderStatus:'0',
                 tableDataList:[],
                 downloadBtnInfo:'All',
@@ -87,7 +88,10 @@
             getQcData(){
                 this.loadingTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                    this.tableDataList = this.$getDB(this.$db.warehouse.qcOverview, res.datas);
+                    console.log(this.qcMethodsOption)
+                    this.tableDataList = this.$getDB(this.$db.warehouse.qcOverview, res.datas,e=>{
+                        e.qcMethodDictCode.value=this.$change(this.qcMethodsOption,'qcMethodDictCode',e).name;
+                    });
                     this.loadingTable=false;
                 }).catch(err=>{
                     this.loadingTable=false;
@@ -106,8 +110,14 @@
             },
 
             btnClick(e){
+                let url='';
+                if(e.qcStatusDictCode.value==='WAITING_QC'){
+                    url='/warehouse/editQc';
+                }else if(e.qcStatusDictCode.value==='COMPLETED_QC'){
+                    url='/warehouse/qcDetail';
+                }
                 this.$windowOpen({
-                    url:'/warehouse/qcDetail',
+                    url:url,
                     params:{
                         id:e.id.value
                     }
@@ -122,23 +132,24 @@
              * 字典获取
              * */
             getUnit(){
-                this.$ajax.post(this.$apis.get_partUnit,['QC_STATUS'],{_cache:true}).then(res=>{
-                    console.log(res[0].codes)
-                    this.qcStatusOption=res[0].codes;
-                    // this.qcStatusOption.forEach(v=>{
-                    //     if(v.code==='1'){
-                    //         v.label='已验货';
-                    //     }else if(v.code==='2'){
-                    //         v.label='待验货';
-                    //     }
-                    // })
+                this.$ajax.post(this.$apis.get_partUnit,['QC_STATUS','QC_MD'],{_cache:true}).then(res=>{
+                    res.forEach(v=>{
+                        if(v.code==='QC_STATUS'){
+                            this.qcStatusOption=v.codes;
+                        }else if(v.code==='QC_MD'){
+                            this.qcMethodsOption=v.codes;
+                        }
+                    });
+                    this.getQcData();
                 }).catch(err=>{
 
                 });
+                // this.$ajax.get(this.$apis.get_allUnit).then(res=>{
+                //     console.log(res)
+                // })
             },
         },
         created(){
-            this.getQcData();
             this.getUnit();
         },
         watch:{

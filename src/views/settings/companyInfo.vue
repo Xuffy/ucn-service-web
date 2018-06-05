@@ -6,7 +6,7 @@
     <div class="summary">
       <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
         <div style="overflow: hidden">
-          <!--<v-upload ref="uploadFile" onlyImage style="float: left" />-->
+          <v-upload ref="uploadFile" onlyImage style="float: left" />
           <!--<img :src="companyInfo.logo" class="logo"/>-->
         </div>
         <div class="section-btn" style="padding-top:10px">
@@ -110,7 +110,7 @@
           <div class="section-btn">
             <el-button @click="upload" type="primary">{{$i.button.upload}}</el-button>
           </div>
-          <!--<v-upload ref="uploadAttachment" :limit="20" />-->
+          <v-upload ref="uploadAttachment" :limit="20" />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -266,7 +266,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.QQ">
+            <el-form-item  :label="$i.setting.qq">
               <el-input size="mini" v-model="contactData.qq" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -281,12 +281,12 @@
 </template>
 
 <script>
-  import { VTable} from '@/components/index'
+  import { VTable,VUpload} from '@/components/index'
   export default {
     name: "companyInfo",
     components:{
       VTable,
-      // VUpload
+      VUpload
     },
     data(){
       return{
@@ -342,12 +342,12 @@
           id: "",
           name: "",
           status: "",
-          serviceId: "",
+          servicerId: "",
           version: "",
         },
         contactData:{
           cellphone: "",
-          serviceId: "",
+          servicerId: "",
           deptId: "",
           deptName: "",
           email: "",
@@ -371,7 +371,7 @@
           beneficiaryName: "",
           currency: "",
           id: "",
-          serviceId: "",
+          servicerId: "",
           version: ""
         },
         logoParmas:{
@@ -409,7 +409,7 @@
       },
       //获取币种
       getCurrency(){
-        this.$ajax.get(this.$apis.get_currency_all).then(res=>{s
+        this.$ajax.get(this.$apis.get_currency_all).then(res=>{
           this.options.currency = res
         }).catch(err=>{
           console.log(err)
@@ -661,10 +661,10 @@
       },
       sureAddContact(){
         this.allowAddContact=true;
-        this.contactData.supplierId=this.companyInfo.id;
+        this.contactData.servicerId=this.companyInfo.id;
         if(this.isModifyContact){
           //表示是在修改account
-          this.$ajax.post(`${this.$apis.post_servicer_account_id}/${this.contactData.id}`,this.contactData).then(res=>{
+          this.$ajax.post(`${this.$apis.post_servicer_concat_id}/${this.contactData.id}`,this.contactData).then(res=>{
             this.allowAddContact=false;
             this.$message({
               message: '修改成功',
@@ -679,7 +679,7 @@
         }
         else{
           //表示是在新增account
-          this.$ajax.post(this.$apis.post_servicer_account,this.contactData).then(res=>{
+          this.$ajax.post(this.$apis.post_servicer_concat,this.contactData).then(res=>{
             this.allowAddContact=false;
             this.$message({
               message: '添加成功',
@@ -741,7 +741,6 @@
        * Attachment操作
        * */
       upload(){
-        console.log(this.$refs.uploadAttachment.getFiles())
         //ATTACHMENT,文件 PICTURE 图片
         const uploadParams = {
           id: this.companyInfo.id,

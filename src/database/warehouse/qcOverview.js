@@ -20,5 +20,4 @@ export default {
     unqualifiedSkuVolume:{},
     unqualifiedSkuGrossWeight:{},
     skuRowNum:{},
-    checkOuterCartonQty:{},
 }
