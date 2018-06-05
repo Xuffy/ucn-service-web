@@ -2,83 +2,89 @@
     <div class="souringDetail">
         <div class="head">
             <div class="title">
-                <img :src='basicDate.logo'/> 
+                <img :src='basicDate.logo'/>
                 <span>{{basicDate.name}}</span>
             </div>
-            <div class="detail">             
-                 <el-form  label-width="190px">          
-                    <el-row>             
+            <div class="detail">
+                 <el-form  label-width="190px">
+                    <el-row>
                         <el-row class="right">
                             <el-col class="list" :xs="24" :sm="12" :md="8" :lg="8" :xl="8"
                                    v-for='(item,index) in $db.supplier.detail'
                                    :key='index'
-                                   >                         
+                                   >
                                     <el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">
                                        {{basicDate[item.key]}}
                                     </el-form-item>
-                            </el-col>                          
+                            </el-col>
                         </el-row>
 
                 </el-row>
                   </el-form>
                 <div class="btns">
-                   <el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>
-
-<!--
-                    <el-button @click='createInquiry'>{{$i.common.createInquiry}}</el-button>
-                    <el-button @click='createOrder'>{{$i.common.createOrder}}</el-button>
-                    <el-button @click='addToCompare'>{{$i.common.addToCompare}}</el-button>
-                    <el-button @click='supplierProducts'>{{$i.common.supplierProducts}}</el-button>
-                    <el-button @click='addToBookmark'>{{$i.common.addToBookmark}}</el-button>
--->
-
+                   <!--<el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>-->
+                   <!--<el-button @click='$router.go(-1)'>{{$i.button.cancel}}</el-button>-->
                 </div>
-<!--
-                <div class="btns" v-else>
-                    <el-button @click="finishEdit" type="primary">{{$i.common.finish}}</el-button>
-                    <el-button @click="cancelEdit" type="info">{{$i.common.cancel}}</el-button>
-                </div>
--->
             </div>
         </div>
         <div class="body">
-            <el-tabs v-model="tabName" type="card" >          
+            <el-tabs v-model="tabName" type="card" >
                 <el-tab-pane :label="$i.supplier.address" name="address">
                     <v-table  :data="address"  style='marginTop:10px'/>
                 </el-tab-pane>
-                
-                <el-tab-pane :label="$i.supplier.concats"  name="concats">
+
+                <el-tab-pane :label="$i.supplier.contactInfo"  name="concats">
                     <v-table  :data="concats"  style='marginTop:10px'/>
                 </el-tab-pane>
-                
-                <el-tab-pane :label="$i.supplier.document" name="document">
-                    <v-table  :data="document"   style='marginTop:10px'/>
+
+                <el-tab-pane :label="$i.supplier.orderHistory" name="order">
+                    <v-table  :data="orderList"   style='marginTop:10px'/>
                 </el-tab-pane>
-                
-<!--
-                <el-tab-pane :label="$i.supplier.inquiry"  name="inquiry">
-                  <v-table  :data="tabData"   style='marginTop:10px'/>
-                </el-tab-pane>
--->
-                
-<!--
-                <el-tab-pane :label="$i.supplier.tradeHistory"  name="tradeHistory">
-                  <v-table  :data="tabData"   style='marginTop:10px'/> 
-                </el-tab-pane>
--->
-                
-                <el-tab-pane :label="$i.supplier.remark" name="remark">
-                    <v-remark  
-                     style='marginTop:10px'
-                     :id=id              
-                     />
-                </el-tab-pane>
-                
-                <el-tab-pane label="attachment" name="attchment">
-                     <v-attachment></v-attachment>
-                </el-tab-pane>
+              <el-tab-pane :label="$i.supplier.remark" name="remark">
+                <div class="section-btn">
+                  <el-button  @click="createRemark" type="primary">{{$i.button.add}}</el-button>
+                </div>
+                  <v-table
+                    :data="remarkData"
+                    style='marginTop:10px'
+                    :buttons="[{label: 'view', type: 1},{label: 'modify', type: 2},{label: 'delete', type: 3}]"
+                    @action="remarkAction"/>
+              </el-tab-pane>
 
             </el-tabs>
+
+
+          <el-dialog :title="$i.supplier.addRemark" :visible.sync="addRemarkFormVisible" center width="600px">
+            <el-form :model="addRemarkData">
+              <el-form-item :label="$i.supplier.remark" :label-width="formLabelWidth">
+                <el-input
+                  type="textarea"
+                  :rows="4"
+                  v-model="addRemarkData.remark">
+                </el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button :loading="disableCreateRemark" type="primary" @click="createRemarkSubmit">{{$i.button.submit}}</el-button>
+              <el-button @click="addRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
+            </div>
+          </el-dialog>
+
+          <el-dialog :title="$i.supplier.remark" :visible.sync="lookRemarkFormVisible" center width="600px">
+            <el-form :model="addRemarkData">
+              <el-form-item :label="$i.supplier.remark" :label-width="formLabelWidth">
+                <el-input
+                  type="textarea"
+                  :rows="4"
+                  v-model="addRemarkData.remark">
+                </el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <!--<el-button :loading="disableCreateRemark" type="primary" >{{$i.button.submit}}</el-button>-->
+              <el-button @click="lookRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
+            </div>
+          </el-dialog>
         </div>
     </div>
 </template>
@@ -108,6 +114,7 @@
                 basicDate: [],
                 accounts: [],
                 concats: [],
+                orderList:[],
                 address: [],
                 document:[],
                 inquiry:[],
@@ -116,25 +123,146 @@
                 compareConfig: {
                     showCompareList: false, //是否显示比较列表
                 },
+                params:{
+                  customerId:'',
+                  pn:'1',
+                  ps:'50'
+                },
+                addRemarkData:{
+                  customerId: null,
+                  id: null,
+                  remark: "",
+                  servicerCustomerId: null,
+                  version: null
+                },
                 code: '',
-                loading: false
+                loading: false,
+                isModifyAddress: false,
+                addRemarkFormVisible:false,
+                lookRemarkFormVisible:false,
+                disableCreateRemark:false,
+                formLabelWidth:'80px',
             }
         },
         methods: {
               ...mapActions([
                 'setRecycleBin','setDraft'
             ]),
-             deleteCustomer(){             
+             deleteCustomer(){
                  this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
                     .then(res => {
                        this.$router.push('/customer/recycle')
                     })
                     .catch((res) => {
-                        console.slog(res)
+                        console.log(res)
                     });
             },
+            getListRemark(){
+                const id = Number(this.$route.query.id);
+                const remark ={
+                  pn: 1,
+                  ps: 50,
+                }
+              this.$ajax.post(`${this.$apis.post_getCustomerListRemark}/${id}`,remark)
+              .then(res => {
+                this.remarkData = this.$getDB(this.$db.supplier.detailTable, res.datas);
+              })
+              .catch((res) => {
+                console.slog(res)
+              });
+            },
+            modifyRemark(e){
+               var result = {}
+              // for(const i in e){
+              //   result[e[i].key]= e[i].value
+              // }
+               result.remark = e.remark.value;
+               result.version = e.version.value;
+               result.id = e.id.value;
+               this.isModifyAddress=true;      //标识正在修改地
+               this.addRemarkData=Object.assign({}, result);
+               this.addRemarkFormVisible=true;
+            },
+            createRemark(){
+              this.addRemarkFormVisible=true;
+              // this.addRemarkData.id=null;     //新增的时候要置为null
+              // this.addRemarkData.skuId=this.productForm.id;
+              // this.addRemarkData.remark='';
+            },
+            lookRemark(e){
+              var result = {}
+              result.remark = e.remark.value;
+              this.addRemarkData=Object.assign({}, result);
+              this.lookRemarkFormVisible=true;
+            },
+          createRemarkSubmit(){
+            this.disableCreateRemark = true;
+            this.addRemarkData.servicerCustomerId = Number(this.$route.query.id);
+            this.addRemarkData.customerId = Number(this.$route.query.customerId);
+            if (this.isModifyAddress){
+
+              this.$ajax.post(`${this.$apis.post_customerUpdataRmark}/${this.addRemarkData.id}`,this.addRemarkData)
+                .then(res => {
+                  this.$message({
+                    message: '修改成功',
+                    type: 'success'
+                  });
+                  this.getListRemark();
+                  this.disableCreateRemark = false;
+                  this.addRemarkFormVisible = false;
+                })
+                .catch((res) => {
+                  this.disableCreateRemark = false;
+                  this.addRemarkFormVisible = false;
+                });
+            }else{
+              this.$ajax.post(this.$apis.post_addCustomerListRemark,this.addRemarkData)
+                  .then(res => {
+                    this.$message({
+                      message: '添加成功',
+                      type: 'success'
+                    });
+                    this.getListRemark();
+                    this.disableCreateRemark = false;
+                    this.addRemarkFormVisible = false;
+                  })
+                  .catch((res) => {
+                    this.disableCreateRemark = false;
+                    this.addRemarkFormVisible = false;
+                  });
+              }
+            },
+            deleteRemark(e){
+              this.$confirm('确定删除该备注?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                this.$ajax.post(this.$apis.post_deleteCustomerRemark,{id:e.id.value}).then(res=>{
+                  this.$message({
+                    type: 'success',
+                    message: '删除成功!'
+                  });
+                  this.getListRemark();
+                }).catch(err=>{
+                });
+              })
+            },
+            remarkAction(item,type){
+              switch(type) {
+                case 1:
+                  this.lookRemark(item);
+                  break;
+                case 2:
+                  this.modifyRemark(item);
+                  break;
+                case 3:
+                  this.deleteRemark(item);
+                  break;
+              }
+            },
             addToBookmark() {
-                this.$ajax.post(this.$apis.post_supplier_addbookmark, [this.id])
+                this.$ajax.post(this.$apis.post_addCustomerListRemark, [this.id])
                     .then(res => {
                         this.$message({
                             message: 'success',
@@ -162,29 +290,49 @@
                     .then(res => {
                 this.code = res.code
                 this.basicDate = res;
-                    
-                this.accounts = this.$getDB(this.$db.supplier.detailTable, res.accounts);
-                    
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address);
-                    
                 this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
-                    
-                this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);  
-                    
+                this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);
                 this.loading = false
                     })
                     .catch((res) => {
                         this.loading = false
                     });
             },
+          //history
+          getQcHistory(){
+            this.loading = true
+            this.params.customerId = Number(this.$route.query.customerId)
+            this.$ajax.post(this.$apis.post_servicer_customer_history,this.params)
+              .then(res => {
+                this.orderList = this.$getDB(this.$db.supplier.detailTable, res.documents);
+                this.loading = false
+              })
+              .catch((res) => {
+                this.loading = false
+              });
+          },
+
         },
         created() {
-            this.get_data()
+            this.get_data();
+            this.getQcHistory();
+            this.getListRemark();
             this.setRecycleBin({
                 name: 'customerRecycleBinDetail',
                 show: true
             });
         },
+      watch:{
+        addRemarkFormVisible(n){
+          if(!n){
+            _.map(this.addRemarkData,(v,k)=>{
+              this.$set(this.addRemarkData,k,'');
+            });
+            this.isModifyAddress=false;
+          }
+        },
+      }
     }
 
 </script>

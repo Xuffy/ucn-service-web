@@ -1,34 +1,14 @@
 {
     "compareOverview": "Compare Overview",
-    "supplierBookmark": "Supplier Bookmark",
-    "supplierSourcing": " Supplier Sourcing",
-
-    "supplierName": "Supplier Name",
-    "businessScope": "Main Business Scope",
-    "categoryId": "Category",
-    "supplierType": "Supplier Type",
-    "SKUnameEN": "SKU Name(EN)",
-    "SKUcode": "SKU Code",
-    "description": "description",
-
-
-    "supplierNO": "Supplier NO",
-    "suppliername": "supplier name",
-    "suppliertype": "Supplier type",
-    "compareRecycleBin":"Compare RecycleBin",
-
-
-
-    "provideincoterm": "Provide incoterm",
-
-    "description": "description",
-    "id": "id",
-
-
-    "country": "Country",
-    "provideIncoterm": "Provide Incoterm",
-    "exportLicense": "Export License",
-    "mainBusinessScope": "Main Business Scope",
-    "category": "Category"
-
+    "customerName": "customer name",
+    "customerType": "customer type",
+    "customerCountry": "customer country",
+    "city": "city",
+    "businessScope": "business scope",
+    "paymentItem": "payment item",
+    "customerNO": "customer NO",
+    "customerShortName": "customer short name",
+    "mainBusinessScope": "main business scope",
+    "shipAgent": "ship agent",
+    "incoterm": "incoterm"
 }

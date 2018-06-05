@@ -11,61 +11,54 @@
 
 export default {
     //顶部简介字段
-    supplierCodeSetting: {
+  serviceProviderCode: {
         key: 'code',
         type: 'input',
         belong:'summary'
     },
-    supplierCompanyNameSetting:{
+  serviceProviderName:{
         key: 'name',
         type: 'input',
         belong:'summary'
     },
-    supplierTypeSetting:{
+  serviceProviderShortName:{
+        key: 'abbreviation',
+        type: 'input',
+        belong:'summary'
+    },
+  serviceProviderType:{
         key: 'type',
         type: 'select',
         belong:'summary'
     },
-    countrySetting:{
+  country:{
         key: 'country',
         type: 'select',
         belong:'summary'
     },
-    citySetting:{
+  city:{
         key: 'city',
-        type: 'select',
+        type: 'input',
         belong:'summary'
     },
-    provideIncotermSetting:{
-        key: 'incoterm',
-        type: 'select',
-        belong:'summary'
-    },
-    exportLicenseSetting:{
-        key: 'exportLicense',
-        type: 'select',
-        belong:'summary'
-    },
-    currencySetting:{
-        key: 'currency',
-        type: 'select',
-        belong:'summary'
-    },
-    paymentTermSetting:{
+  paymentTerm:{
         key: 'payment',
         type: 'select',
         belong:'summary'
     },
-    supplierShortNameSetting:{
-        key: 'shortName',
-        type: 'input',
+  currency:{
+        key: 'currency',
+        type: 'select',
         belong:'summary'
     },
-    descriptionSetting:{
-        key: 'description',
-        type: 'textarea',
-        belong:'summary',
-        fullLine:true
+  ProvideIncoterm:{
+        key: 'incoterm',
+        type: 'select',
+        belong:'summary'
     },
-
+  ServiceCity:{
+        key: 'serviceCity',
+        type: 'input',
+        belong:'summary'
+    }
 }

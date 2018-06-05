@@ -1,83 +1,135 @@
 export default {
     //ADRESS
-    companyAddress: {
-        key: "address",
-        belong: "address"
-    },
-    receiveAddress:{
-        key:'receiveAddress',
-         belong: "address"
-    },
-    //???????  后台没返
-    companyRegisteredAddress: {
-        key: "companyRegisteredAddress",
-        belong: "address"
-    },
-     //?????? 后台没返
-    notify: {
-        key: "notify",
-        belong: "address"
-    },  
-    city:{
-        key:"city"
-    },
-    country:{
-        key:'country'
-    },
-   
-    id: {
-        _hide: true,
-        key: "id",
-    },
-  
+  country: {
+    key: 'country',
+    belong: "address"
+  },
+  province: {
+    key: 'province',
+    belong: "address"
+  },
+  city: {
+    key: 'city',
+    belong: "address"
+  },
+  companyAddress: {
+    key: 'address',
+    belong: "address"
+  },
+  receiveCountry: {
+    key: 'receiveCountry',
+    belong: "address"
+  },
+  receiveProvince: {
+    key: 'receiveProvince',
+    belong: "address"
+  },
+  receiveCity: {
+    key: 'receiveCity',
+    belong: "address"
+  },
+  receiverAddress: {
+    key: 'receiveAddress',
+    belong: "address"
+  },
+  notify: {
+      key: "notify",
+      belong: "address"
+  },
+  id: {
+      _hide: true,
+      key: "id",
+  },
+
     //.............concats
-    concatsName: {
-        key: 'name'
+    contactName: {
+      key: 'name',
+      belong: "concats"
     },
     department: {
-        key: 'deptName'
+      key: 'deptName',
+      belong: "concats"
     },
     gender: {
-        key: 'gender'
+      key: 'gender',
+      belong: "concats"
     },
     position: {
-        key: 'position'
+      key: 'position',
+      belong: "concats"
     },
-    mobileNumber: {
-        key: 'cellphone'
+   mobileNo: {
+      key: 'cellphone',
+     belong: "concats"
     },
-    telNumber: {
-        key: 'telphone'
+    tel: {
+      key: 'telphone',
+      belong: "concats"
     },
-    faxNumber: {
-        key: 'fax'
+   faxNumber: {
+      key: 'fax',
+     belong: "concats"
     },
-    emailAddress: {
-        key: 'email'
+    email: {
+      key: 'email',
+      belong: "concats"
     },
     skype: {
-        key: 'skype'
+      key: 'skype',
+      belong: "concats"
     },
-    QQ: {
-        key: 'qq'
+    qq: {
+      key: 'qq',
+      belong: "concats"
     },
-    //       document
-    documentRequired:{
-        key:"document"
+    //       order
+    orderNo: {
+      key: 'qcOrderNo',
+      belong: "order"
     },
-    factoryInspectionReport:{
-        key:"factoryInspectionReport"
+    orderPrice: {
+      key: '',
+      belong: "order"
     },
-    invoice:{
-        key:'invoice'
-    },
-    examiningReport:{
-        key:'examiningReport'
-    },
-    packingList:{
-        key:"packingList"
-    },
-    examiningReport:{
-        key:"examiningReport"
-    }
+   // remark
+  time: {
+    key: 'updateDt',
+    belong: "remark"
+  },
+  remark: {
+    key: 'remark',
+    belong: "remark"
+  },
+  operater: {
+    key: 'entryName',
+    belong: "remark"
+  },
+  version: {
+    key: 'version',
+    belong: "remark",
+    _hide: true,
+  },
+  id: {
+    key: 'id',
+    belong: "remark",
+    _hide: true,
+  },
+    // documentRequired:{
+    //     key:"document"
+    // },
+    // factoryInspectionReport:{
+    //     key:"factoryInspectionReport"
+    // },
+    // invoice:{
+    //     key:'invoice'
+    // },
+    // examiningReport:{
+    //     key:'examiningReport'
+    // },
+    // packingList:{
+    //     key:"packingList"
+    // },
+    // examiningReport:{
+    //     key:"examiningReport"
+    // }
 }

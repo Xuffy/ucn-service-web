@@ -1,33 +1,30 @@
 export default {
     //.......................表格
-    customerNO: {
+   customerNO: {
         key: 'code'
     },
     customerName: {
         key: 'name'
     },
-    customerShortName: {
+   customerShortName: {
         key: 'shortName'
     },
     customerType: {
         key: 'type'
     },
-    country: {
+   customerCountry: {
         key: 'country'
     },
     city: {
         key: 'city'
     },
-    mainbusinessscope: {
+   mainBusinessScope: {
         key: 'mainBuiness'
     },
-    payment: {
+   paymentItem: {
         key: 'payment'
     },
-    currency:{
-        key:'currency'
-    },
-    shipAgent: {
+   shipAgent: {
         key: "shipAgent"
     },
     incoterm: {
@@ -37,35 +34,10 @@ export default {
         _hide:true,
         key:"customerId"
     },
-    //    companyId: {
-    //        _hide: true,
-    //        key: 'companyId'
-    //    },
-    //    category: {
-    //        key: "category"
-    //    },
+    id: {
+        _hide: true,
+        key: 'id',
 
-    //    provideincoterm: {
-    //        key: 'incoterm'
-    //    },
-    //    exportlicense: {
-    //        key: 'exportLicense'
-    //    },
-    //    description: {
-    //        key: 'description'
-    //    },
-    //
-        id: {
-            _hide: true,
-            key: 'id',
-    
-        },
-    //    logo: {
-    //        _hide: true,
-    //    },
-    //
-    //
-    //    recycle: {
-    //        _hide: true,
-    //    }
+    },
+
 }
