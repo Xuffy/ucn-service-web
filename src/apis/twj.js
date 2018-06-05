@@ -38,6 +38,21 @@ export default {
 
   //user
   get_user_list: ['/user/list','UPURCHASE_URL','UUSER_URL'], //获取当前登录用户所在企业下所有用户信息
-  get_user_privilege: ['/user/privilege','UUSER_URL','UUSER_URL']
+  get_user_privilege: ['/user/privilege','UUSER_URL','UUSER_URL'],
+
+  //company info
+  post_servicer_account: ['/servicer/account','BASE_CS','USERVICE_URL'],
+  post_servicer_account_id: ['/servicer/account','BASE_CS','USERVICE_URL'],
+  post_servicer_address: ['/servicer/address','BASE_CS','USERVICE_URL'],
+  post_servicer_address_id: ['/servicer/address','BASE_CS','USERVICE_URL'],
+  post_servicer_concat: ['/servicer/concat','BASE_CS','USERVICE_URL'],
+  post_servicer_concat_id: ['/servicer/concat','BASE_CS','USERVICE_URL'],
+  post_servicer_deleteAccount: ['/servicer/deleteAccount/{id}','BASE_CS','USERVICE_URL'],
+  post_servicer_deleteAddress: ['/servicer/deleteAddress/{id}','BASE_CS','USERVICE_URL'],
+  post_servicer_deleteConcat: ['/servicer/deleteConcat/{id}','BASE_CS','USERVICE_URL'],
+  post_servicer_getServicer: ['/servicer/getServicer','BASE_CS','USERVICE_URL'],
+  post_servicer: ['/servicer','BASE_CS','USERVICE_URL'],
+  post_servicer_purchase_batchUpload: ['/supplier/purchase/oss/company/batchUpload','BASE_CS','USERVICE_URL'],
+  post_servicer_purchase_upload: ['/supplier/purchase/oss/company/upload','BASE_CS','USERVICE_URL'],
 
 }

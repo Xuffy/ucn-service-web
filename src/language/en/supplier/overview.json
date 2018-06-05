@@ -1,8 +1,8 @@
 {
+    "compareOverview": "Compare Overview",
     "sourcing":"sourcing",
     "detail":"detail",
     "bookmark":"bookmark",
-    "compareOverview":"compare overview",
     "compareDetail":"compare detail",
     "overview": "overview",
     "overviewCustomer": "overview customer",
@@ -17,8 +17,6 @@
     "country": "country",
     "provideIncoterm": "Provide incoterm",
     "exportLicense":"Export license",
-
-   
     "customerName": "customer name",
     "customerType": "customer type",
     "customerCountry": "customer country",
@@ -28,10 +26,9 @@
     "customerNO": "customer NO",
     "customerShortName": "customer short name",
     "mainBusinessScope": "main business scope",
-    "shipAgent ": "ship agent ",
+    "shipAgent": "ship agent",
     "incoterm": "incoterm",
-
-   
+    "shipAgent ": "ship agent ",
     "provideincoterm": "Provide incoterm",
     "currency": "currency"
 }

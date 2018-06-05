@@ -54,12 +54,12 @@
     "date": "Date",
     "operater": "operater",
     "action": "action",
-
     "customerNO": "customer NO",
     "customerName": "customer name",
     "customerShortName": "customer short name",
     "customerType": "customer type",
     "customerCountry": "customer country",
+    "customerSource": "customer source",
     "customer source": "customer source",
     "paymentItem": "payment item",
     "filingDate": "filing date",
@@ -69,12 +69,21 @@
     "receiverAddress": "receiver address",
     "notify": "notify",
     "contactName": "contact name",
+    "address": "address",
+    "contactInfo": "contact info",
+    "province": "province",
+    "receiveCountry": "receiver country",
+    "receiveProvince": "receiver province",
+    "receiveCity": "receiver city",
+    "addRemark": "add remark",
+    "orderHistory": "Order history",
+    "time":"time",
+    "version": "version",
+    "id": "id",
     "tel": "notify",
     "mobileNo": "mobile No",
     "faxNumber": "fax number",
     "email": "email",
-
-   
     "documentRequired": "document required",
     "factoryInspectionReport": "factory inspection report",
     "invoice": "invoice",
@@ -97,5 +106,4 @@
     "totalSkuVolume": "total sku volume",
     "loadingDate": "loading date",
     "dateOfBL": "date of BL"
- 
 }
