@@ -19,15 +19,15 @@
       <el-col :span="12">
         <v-table-data :type="1"></v-table-data>
       </el-col>
-      <el-col :span="12">
+      <!--<el-col :span="12">
         <v-table-data :type="2"></v-table-data>
-      </el-col>
+      </el-col>-->
       <el-col :span="12">
         <v-table-data :type="3"></v-table-data>
       </el-col>
-      <el-col :span="12">
+      <!--<el-col :span="12">
         <v-table-data :type="4"></v-table-data>
-      </el-col>
+      </el-col>-->
     </el-row>
 
     <v-import-template ref="importFile" code="PRODUCT_SUPPLIER" biz-code="PRODUCT_SUPPLIER"></v-import-template>

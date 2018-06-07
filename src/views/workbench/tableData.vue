@@ -101,6 +101,10 @@
       }
     },
     mounted() {
+      this.dataList[0] = null;
+      this.dataList[1] = null;
+      this.dataList[2] = null;
+      this.dataList = _.compact(this.dataList);
       this.getData();
     },
     watch: {},
