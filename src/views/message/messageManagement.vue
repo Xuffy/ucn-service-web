@@ -125,11 +125,7 @@
           },
           postAddMessage(){
             let url
-            if(this.$route.query.type == 1) {;
-              url = this.$apis.post_sys_addsystemmessage;
-            } else {
-              url = this.$apis.post_company_addcompanymessage;
-            };
+            url = this.$apis.post_company_addcompanymessage;
             this.$ajax.post(url, this.params)
             .then(res => {
               this.$message({
