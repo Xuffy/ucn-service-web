@@ -1,34 +1,34 @@
 {
     "compareOverview": "Compare Overview",
+    "sourcing":"sourcing",
+    "detail":"detail",
+    "bookmark":"bookmark",
+    "compareDetail":"compare detail",
+    "overview": "overview",
+    "overviewCustomer": "overview customer",
     "supplierBookmark": "Supplier Bookmark",
     "supplierSourcing": " Supplier Sourcing",
-
     "supplierName": "Supplier Name",
-    "businessScope": "Main Business Scope",
-    "categoryId": "Category",
-    "supplierType": "Supplier Type",
-    "SKUnameEN": "SKU Name(EN)",
-    "SKUcode": "SKU Code",
-    "description": "description",
-
-
-    "supplierNO": "Supplier NO",
-    "suppliername": "supplier name",
-    "suppliertype": "Supplier type",
-    "compareRecycleBin":"Compare RecycleBin",
-
-
-
+    "supplierType": "supplier type",
+    "skuNameEN": "SKU name EN",
+    "skuCode": "Category",
+    "description": "Description",
+    "supplierNO": "Supplier No.",
+    "country": "country",
+    "provideIncoterm": "Provide incoterm",
+    "exportLicense":"Export license",
+    "customerName": "customer name",
+    "customerType": "customer type",
+    "customerCountry": "customer country",
+    "city": "city",
+    "businessScope": "business scope",
+    "paymentItem": "payment item",
+    "customerNO": "customer NO",
+    "customerShortName": "customer short name",
+    "mainBusinessScope": "main business scope",
+    "shipAgent": "ship agent",
+    "incoterm": "incoterm",
+    "shipAgent ": "ship agent ",
     "provideincoterm": "Provide incoterm",
-
-    "description": "description",
-    "id": "id",
-
-
-    "country": "Country",
-    "provideIncoterm": "Provide Incoterm",
-    "exportLicense": "Export License",
-    "mainBusinessScope": "Main Business Scope",
-    "category": "Category"
-
+    "currency": "currency"
 }

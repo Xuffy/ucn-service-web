@@ -61,9 +61,11 @@
 </template>
 
 <script>
-  /*
-                      具体后台返回数据，等结构出来再做更改
-                              */
+  /**
+   * <v-message-board module="业务模块名称/workbench" code="子业务模块/workbench" id="详情id"></v-message-board>
+   */
+
+
   import VUpload from '../upload/upload.vue'
 
   export default {
@@ -247,7 +249,8 @@
     background-color: #FFFFFF;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, .1);
   }
-  .ucn-message-board .title-box .ucn-content-title{
+
+  .ucn-message-board .title-box .ucn-content-title {
     padding-left: 10px;
     font-size: 14px;
   }
