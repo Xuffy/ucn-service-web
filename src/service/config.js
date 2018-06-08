@@ -37,6 +37,7 @@ export default {
       // BASE_BUY: '//192.168.51.33:11001',
       BASE_BUY: '//192.168.51.208:11001',
       BASE_SELL: '//192.168.51.208:11002',
+        BASE_SERVICE:'//192.168.51.208:11003',
       //BASE_SELL: '//dev.usupply-facade.ucnholding.com',
       //USUPPLY_URL: '//dev.usupply-facade.ucnholding.com', // 供应商端
       // BASE_BUY: '//192.168.51.208:11001',
@@ -97,8 +98,8 @@ export default {
       ULOG_URL: '//test.ulog-facade.ucnscm.cn', // 日志服务
       UPURCHASE_URL: '//test.upurchase-facade.ucnscm.cn', // 采购端
       USUPPLY_URL: '//test.usupply-facade.ucnscm.cn', // 供应商端
-      USERVICE_URL: '//test.uservice.ucnscm.cn', // 服务商端
-      UBIZLOG_URL: '//test.ubizlog.ucnscm.cn', // 业务日志
+      USERVICE_URL: '//test.uservice-facade.ucnscm.cn', // 服务商端
+      UBIZLOG_URL: '//test.ubizlog-facade.ucnscm.cn', // 业务日志
       UWORKBENCH_URL: '//test.uworkbench-facade.ucnscm.cn',
       LOGIN_URL: '//test.auth.ucnscm.cn' // 登录授权
     },
