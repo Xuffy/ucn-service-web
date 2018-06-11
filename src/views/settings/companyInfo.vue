@@ -6,7 +6,7 @@
     <div class="summary">
       <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
         <div style="overflow: hidden">
-          <v-upload ref="uploadFile" onlyImage style="float: left" />
+          <v-upload ref="uploadFile" onlyImage style="float: left" :list="companyInfo.logo"/>
           <!--<img :src="companyInfo.logo" class="logo"/>-->
         </div>
         <div class="section-btn" style="padding-top:10px">
@@ -110,7 +110,7 @@
           <div class="section-btn">
             <el-button @click="upload" type="primary">{{$i.button.upload}}</el-button>
           </div>
-          <v-upload ref="uploadAttachment" :limit="20" />
+          <v-upload ref="uploadAttachment" :limit="20"  :list="attachments" />
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -321,11 +321,12 @@
           serviceCity: '',
           type: '',
           companyId:'',
-          version: ''
+          version: '',
         },
         accountsData:[],
         contactDatas:[],
         addressDatas:[],
+        attachments:[],
         cloneData:{},                   //用于克隆存储的对象
         //验证规则
         companyInfoRules:{
@@ -397,6 +398,7 @@
       //获取整个页面数据
       getWholeData(){
         this.$ajax.get(this.$apis.post_servicer_getServicer).then(res=>{
+          this.attachments =res.attachments
           // this.addressData contactData
           this.accountsData = this.$getDB(this.$db.setting.servicerAccount, res.accounts);
           this.contactDatas = this.$getDB(this.$db.setting.servicerContact, res.concats);
