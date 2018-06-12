@@ -46,13 +46,14 @@ const json = {
   order: _.extend({},
     require(`./${lang}/order/basicinfo.pending`),
     require(`./${lang}/order/overview`),
-    require(`./${lang}/order/productinfo.pending`),
     require(`./${lang}/order/payment`),
 
     //新引入
     require(`./${lang}/order/order.basic`),
     require(`./${lang}/order/order.prompt`),
     require(`./${lang}/order/order.overviewTable`),
+    require(`./${lang}/order/order.orderDetail`),
+    require(`./${lang}/order/order.inquiryOverview`),
     require(`./${lang}/order/order.orderDetail`),
   ),
   payment: _.extend({},
@@ -70,7 +71,8 @@ const json = {
     require(`./${lang}/setting/department`),
     require(`./${lang}/setting/personalInfo`),
     require(`./${lang}/setting/setting.basic`),
-    require(`./${lang}/setting/companyInfo`)
+    require(`./${lang}/setting/companyInfo`),
+    require(`./${lang}/setting/setting.prompt`),
   ),
   supplier: _.extend({},
     require(`./${lang}/supplier/detail.pending`),
@@ -109,6 +111,9 @@ const json = {
   ),
   hintMessage: _.extend({},
     require(`./${lang}/hintMessage/index`)
+  ),
+  element: _.extend({},
+    require(`./${lang}/element/date`)
   ),
 }
 
