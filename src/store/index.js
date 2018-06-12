@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import type from './types';
+import {sessionStore} from 'service/store';
 
 Vue.use(Vuex);
 
@@ -16,7 +17,11 @@ const state = {
       url: '',
       params: {}
     },
-    log: false,
+    log: {
+      show: false,
+      url: '',
+      params: {}
+    },
     show: false,
     list: [],
   },
@@ -25,33 +30,40 @@ const state = {
     paddingRight: 0
   },
   dic: '',
-  /*messageBoard: {
-    show: true,
-    code: null
-  }*/
 };
 
 const actions = {
-  setDraft({ commit }, newData) {
-    commit(type.SETDRAFT, newData);
+  setDraft({commit}, params) {
+    commit(type.SETDRAFT, params);
   },
-  setRecycleBin({ commit }, newData) {
-    commit(type.SETRECYCLEBIN, newData);
+  setRecycleBin({commit}, params) {
+    commit(type.SETRECYCLEBIN, params);
   },
-  setDic({ commit }, newData) {
-    commit(type.DIC, newData);
+  setLog({commit}, params) {
+    commit(type.SETLOG, params);
+  },
+  setDic({commit}, params) {
+    commit(type.DIC, params);
   }
 };
 
 const mutations = {
-  [type.SETDRAFT](state, newData) {
-    state.quickLink.draft = newData;
+  [type.SETDRAFT](state, params) {
+    params.show = true;
+    state.quickLink.draft = params;
   },
-  [type.SETRECYCLEBIN](state, newData) {
-    state.quickLink.recycleBin = newData;
+  [type.SETRECYCLEBIN](state, params) {
+    params.show = true;
+    state.quickLink.recycleBin = params;
   },
-  [type.DIC](state, newData) {
-    state.dic = newData;
+  [type.SETLOG](state, params) {
+    params.show = true;
+    params.url = params.url || '/logs/index';
+    console.log(params)
+    state.quickLink.log = params;
+  },
+  [type.DIC](state, params) {
+    state.dic = params;
   }
 };
 

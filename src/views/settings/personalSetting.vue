@@ -33,7 +33,7 @@
             </el-col>
             <el-col :span="12" >
               <el-form-item prop="department" :label="$i.setting.department" v-if="isVisible">
-                  <el-input style="max-width:200px" v-model="form.deptName"  disabled="disabled"></el-input>
+                  <el-input style="max-width:200px"v-model="form.deptName"  disabled="disabled"></el-input>
                 </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -70,8 +70,17 @@
         </el-row>
     </el-form>
     <div class="button_div">
-        <el-button @click="putUserProfile">{{$i.common.modify}}</el-button>
-        <el-button  type="danger">{{$i.common.cancel}}</el-button>
+      <div class="summary-btn">
+        <div v-if="summaryDisabled">
+          <el-button @click="modifySummary">{{$i.common.modify}}</el-button>
+        </div>
+        <div v-else>
+          <el-button :loading="allowModifySummary" @click="putUserProfile" type="primary">保存</el-button>
+          <el-button @click="cancelModifySummary">取消</el-button>
+        </div>
+      </div>
+        <!--<el-button @click="putUserProfile">{{$i.common.modify}}</el-button>-->
+        <!--<el-button  type="danger">{{$i.common.cancel}}</el-button>-->
     </div>
     <el-dialog
         class="speDialog"
@@ -90,7 +99,7 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="putUserPassword">{{$i.common.ok}}</el-button>
+            <el-button type="primary" @click="submitForm('modifyPass')">{{$i.common.ok}}</el-button>
             <el-button @click="dialogVisibleO = false">{{$i.common.cancel}}</el-button>
         </span>
     </el-dialog>
@@ -107,7 +116,7 @@ export default {
             if (this.modifyPass.comfirmNewPassword.length !== '') {
                 this.$refs.modifyPass.validateField('comfirmNewPassword');
             }
-            callback();
+            callback()
             }
         };
         var validatePass2 = (rule, value, callback) => {
@@ -120,6 +129,8 @@ export default {
             }
         };
       return {
+          summaryDisabled:true,
+          allowModifySummary:false,
            form: {
               email:'',
               userName:'',
@@ -170,15 +181,30 @@ export default {
             dialogVisibleO:false,
             formLabelWidth: '140px',
             language:[],
-            isVisible:false
+            isVisible:false,
         };
     },
     methods: {
+        submitForm(formName) {
+          this.$refs[formName].validate((valid) => {
+            if (valid) {
+              this.putUserPassword()
+            } else {
+              console.log('error submit!!');
+              return false;
+            }
+          });
+        },
         getUserPrivilege(){
           this.$ajax.get(this.$apis.get_user_privilege)
             .then(res => {
               //用户类型：0 管理员，1 普通用户
-              res.userType === this.isVisible
+              if (res.userType === 1 ){
+                this.isVisible = true;
+              }else{
+                this.isVisible = false;
+              }
+              console.log()
             })
         },
         postLanguage(){
@@ -193,6 +219,12 @@ export default {
                 this.form = res
             })
         },
+        modifySummary(){
+          this.summaryDisabled=false;
+        },
+        cancelModifySummary(){
+          this.summaryDisabled=true;
+        },
         putUserProfile(){
             const params = {
                 userName: this.form.userName,
@@ -201,13 +233,19 @@ export default {
                 birthday: this.form.birthday,
                 lang: this.form.lang
             }
+          this.allowModifySummary=true;
             this.$ajax.put(this.$apis.put_user_profile,params)
             .then(res => {
                 this.$message({
                     type: 'success',
                     message: '修改成功!'
                 });
+              this.summaryDisabled=true;
+              this.allowModifySummary=false;
               this.getUserProfile()
+            }).catch(err=>{
+              this.allowModifySummary=false;
+              this.summaryDisabled=true;
             });
         },
         putUserPassword(){
@@ -219,11 +257,13 @@ export default {
                 });
                 return false;
             }
-            this.$ajax.put(this.$apis.put_user_profile_password,this.modifyPass)
-            .then(res => {
-              this.dialogVisibleO = false;
-              this.$message({type: 'success', message: '修改成功!'});
-            });
+
+           this.$ajax.put(this.$apis.put_user_profile_password,this.modifyPass)
+             .then(res => {
+               this.dialogVisibleO = false;
+               this.$message({type: 'success', message: '修改成功!'});
+               this.modifyPass = {}
+             });
         },
         handleClose(){
             this.dialogVisibleO = false;
