@@ -547,7 +547,7 @@
 
         <div class="title">{{$i.productCn.attachment}}</div>
 
-        <input style="display: none" id="pic" name="file" type="file" accept="image/*" @change="uploadPic">
+        <!--<input style="display: none" id="pic" name="file" type="file" accept="image/*" @change="uploadPic">-->
 
         <div class="footBtn">
             <el-button @click="finish" :loading="disabledSubmit" type="primary">{{$i.productCn.finish}}</el-button>
@@ -607,7 +607,7 @@
 </template>
 
 <script>
-    import upLoad from '@/components/common/upload/upload'
+    // import upLoad from '@/components/common/upload/upload'
     import imgHandler from '../product/bookmark/imgHandler'
     import {dropDownSingle} from '@/components/index'
 
@@ -615,7 +615,7 @@
         name: "addNewProduct",
         components:{
             imgHandler,
-            upLoad,
+            // upLoad,
             dropDown:dropDownSingle
         },
         data(){

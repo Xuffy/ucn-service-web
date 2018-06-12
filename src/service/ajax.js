@@ -24,6 +24,19 @@ const axios = Axios.create({
   transformRequest: [function (data) {
     return data;
   }],
+  transformResponse: [function (data) {
+    let res = JSON.parse(data);
+
+    if (res.status === 'SUCCESS') {
+      return data;
+    }
+
+    if (!validate_error(res.errorCode)){
+      throw new Error(`Interface return exception \n [requestUid] ${res.requestUid}`);
+    }
+
+
+  }],
 });
 
 /**
@@ -34,8 +47,8 @@ const axios = Axios.create({
 const validate_error = (code, msg) => {
   switch (code) {
     case 'AUTH-011': // 登录失效
-      return router.push('/login');
-
+      router.push('/login');
+      return true;
   }
 
   Message.warning(msg || $i.hintMessage.dataException);
@@ -75,14 +88,14 @@ const $ajax = (config) => {
     let t = localStore.get('token') || '';
 
     options.headers = options.headers || {};
-    if (config._contentType === 'F') {
+    if (config.contentType === 'F') {
       options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
       options.data = Qs.stringify(options.data);
     } else {
       options.data = JSON.stringify(options.data);
     }
 
-    if (!config._noAuth && _config.AUTH) {
+    if (!config.noAuth && _config.AUTH) {
       options.headers['U-Session-Token'] = t;
     }
     return [options, config]
@@ -98,11 +111,11 @@ const $ajax = (config) => {
     let {url, data} = options
       , resCache = sessionStore.get('request_cache')
       , resData = false
-      , _options;
+      , _options = _.extend(...this.sethHeader(options, config));
 
-    if (config._cache) {
+    if (!config.updateCache && config.cache) {
       if (!_.isEmpty(resCache) && _.isArray(resCache)) {
-        let res = _.findWhere(resCache, {id: md5(url + JSON.stringify(data))});
+        let res = _.findWhere(resCache, {id: md5(url + _options.data)});
         if (res) {
           resData = res;
         }
@@ -114,13 +127,13 @@ const $ajax = (config) => {
         return resolve(resData.data.content);
       });
     } else {
-      _options = _.extend(...this.sethHeader(options, config));
-
       switch (_options.method) {
         case 'DELETE':
-          return axios.delete(_options.url);
+          return axios.delete(_options.url, _options);
         case 'PUT':
           return axios.put(_options.url, options.data, _options);
+        case 'GET':
+          _options.params = JSON.parse(_options.data);
         default:
           return axios(_options);
       }
@@ -206,7 +219,7 @@ NProgress.configure({
 axios.interceptors.request.use(config => {
   NProgress.start();
 
-  if (!config.headers['U-Session-Token'] && !config._noAuth && _config.AUTH) {
+  if (!config.headers['U-Session-Token'] && !config.noAuth && _config.AUTH) {
     Message({
       message: $i.hintMessage.loginExpired,
       type: 'warning',
@@ -218,7 +231,6 @@ axios.interceptors.request.use(config => {
     });
     Promise.reject();
     return config;
-  } else {
   }
 
   return config
@@ -237,36 +249,27 @@ axios.interceptors.response.use(
 
     NProgress.done();
 
-    if (_.isEmpty(response.data)) {
-      throw new Error('api data is undefined');
-    }
-
     // 数据格式转换
     if (_.isString(response.data)) {
       response.data = JSON.parse(response.data);
     }
 
-    if (response.data.status !== 'SUCCESS') {
-      return validate_error(response.data.errorCode, response.data.errorMsg);
-    }
-
     // 缓存设置
     resCache = sessionStore.get('request_cache') || [];
 
-    if (config._cache) {
-      let rcList = [];
-      _.map(resCache, val => {
-        if (config.url !== val.url || !_.isEqual(config.data, val.params)) {
-          rcList.push(val);
-        }
+    if (config.updateCache || config.cache) {
+      let rcList = [], id = md5(config.url + config.data);
+
+      rcList = _.filter(resCache, val => {
+        return val.id !== id;
       });
-      rcList.push({url: config.url, params: config.data, data: response.data, id: md5(config.url + config.data)});
+      rcList.push({url: config.url, params: config.data, data: response.data, id});
       sessionStore.set('request_cache', rcList);
     }
 
 
-    // _fullData 判断时候返回完整数据
-    if (response.config._fullData) {
+    // fullData 判断时候返回完整数据
+    if (response.config.fullData) {
       return response.data;
     } else {
       return response.data.content;

@@ -335,7 +335,7 @@
 </template>
 
 <script>
-    import upLoad from '@/components/common/upload/upload'
+    // import upLoad from '@/components/common/upload/upload'
     import imgHandler from './imgHandler'
     import {dropDownSingle} from '@/components/index'
 
@@ -343,7 +343,7 @@
         name: "manually-add",
         components:{
             imgHandler,
-            upLoad,
+            // upLoad,
             dropDown:dropDownSingle
         },
         data(){
