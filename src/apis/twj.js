@@ -40,6 +40,9 @@ export default {
   get_user_list: ['/user/list','UPURCHASE_URL','UUSER_URL'], //获取当前登录用户所在企业下所有用户信息
   get_user_privilege: ['/user/privilege','UUSER_URL','UUSER_URL'],
 
+  //track
+  get_track_getTrackInfoByPage: ['/track/getTrackInfoByPage', 'UWORKBENCH_URL', 'UWORKBENCH_URL'],
+
   //company info
   post_servicer_account: ['/servicer/account','BASE_CS','USERVICE_URL'],
   post_servicer_account_id: ['/servicer/account','BASE_CS','USERVICE_URL'],
