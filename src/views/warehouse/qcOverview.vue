@@ -18,17 +18,23 @@
             </div>
             <div class="section">
                 <v-table
+                        :height="500"
                         :loading="loadingTable"
                         :data="tableDataList"
-                        :buttons="[{label: '详情', type: 1}]"
+                        :buttons="[{label: $i.warehouse.detail, type: 1}]"
                         @change-checked="changeChecked"
                         @action="btnClick">
-                    <template slot="header">
-                        <div class="btns">
-                            <el-button>{{$i.warehouse.download}}({{selectList.length?selectList.length:'All'}})</el-button>
-                        </div>
-                    </template>
+                    <!--<template slot="header">-->
+                        <!--<div class="btns">-->
+                            <!--<el-button>{{$i.warehouse.download}}({{selectList.length?selectList.length:'All'}})</el-button>-->
+                        <!--</div>-->
+                    <!--</template>-->
                 </v-table>
+                <page
+                        @size-change="changeSize"
+                        @change="changePage"
+                        :page-sizes="[50,100,200,500]"
+                        :page-data="pageData"></page>
             </div>
         </div>
 
@@ -36,14 +42,15 @@
 </template>
 
 <script>
-    import VTable from '@/components/common/table/index'
+    import {VPagination,VTable} from '@/components/index'
     import selectSearch from '@/components/common/fnCompon/selectSearch'
 
     export default {
         name: "qcOverview",
         components:{
             selectSearch,
-            VTable
+            VTable,
+            page:VPagination
         },
         data(){
             return{
@@ -57,6 +64,7 @@
                 tableDataList:[],
                 downloadBtnInfo:'All',
                 selectList:[],
+                pageData:{},
                 qcOrderConfig:{
                     pn: 1,
                     ps: 50,
@@ -88,11 +96,11 @@
             getQcData(){
                 this.loadingTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                    console.log(this.qcMethodsOption)
                     this.tableDataList = this.$getDB(this.$db.warehouse.qcOverview, res.datas,e=>{
                         e.qcMethodDictCode.value=this.$change(this.qcMethodsOption,'qcMethodDictCode',e).name;
                     });
                     this.loadingTable=false;
+                    this.pageData=res;
                 }).catch(err=>{
                     this.loadingTable=false;
                 });
@@ -148,6 +156,19 @@
                 //     console.log(res)
                 // })
             },
+
+
+            /**
+             * 分页操作
+             * */
+            changePage(e){
+                this.qcOrderConfig.pn=e;
+                this.getQcData();
+            },
+            changeSize(e){
+                this.qcOrderConfig.ps=e;
+                this.getQcData();
+            }
         },
         created(){
             this.getUnit();
