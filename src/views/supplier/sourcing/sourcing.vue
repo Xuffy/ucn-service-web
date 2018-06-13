@@ -278,7 +278,7 @@
         },
         created() {
             this.get_data()
-            this.getCategoryId()
+            // this.getCategoryId()
         },
         watch: {}
     }
