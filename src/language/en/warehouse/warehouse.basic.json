@@ -60,7 +60,10 @@
   "currency":"Currency",
   "available":"Available",
   "confirm":"Confirm",
-  "prompt":"Prompt"
+  "prompt":"Prompt",
+  "pleaseChoose":"Please Choose",
+  "pleaseInout":"Please Input",
+  "attachments":"附件"
 
 
 }

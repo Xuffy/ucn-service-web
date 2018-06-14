@@ -10,135 +10,105 @@
         <div>
             <el-form label-width="190px">
                 <el-row class="speZone">
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item :label="$i.warehouse.qcOrderNo">
-                            <el-input
-                                    v-model="qcDetail.qcOrderNo"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item :label="$i.warehouse.qcTypeDictCode">
-                            <el-select size="mini" class="speInput" v-model="qcDetail.qcTypeDictCode" clearable placeholder="请选择">
-                                <el-option
-                                        v-for="item in qcTypeOption"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.code">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.qcDate">
-                            <el-date-picker
-                                    size="mini"
-                                    class="speInput"
-                                    v-model="qcDetail.qcDate"
-                                    align="right"
-                                    type="date"
-                                    placeholder="选择日期"
-                                    :picker-options="pickerOptions1">
-                            </el-date-picker>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.factoryAddress">
-                            <el-input
-                                    v-model="qcDetail.factoryAddress"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.factoryContactPhone">
-                            <el-input
-                                    v-model="qcDetail.factoryContactPhone"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.qcStatusDictCode">
-                            <el-input
-                                    v-model="qcDetail.qcStatusDictCode"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.qcMethodDictCode">
-                            <el-select size="mini" class="speInput" v-model="qcDetail.qcMethodDictCode" clearable placeholder="请选择">
-                                <el-option
-                                        v-for="item in qcMethodOption"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.code">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.surveyor">
-                            <el-select size="mini" class="speInput" v-model="qcDetail.surveyor" clearable placeholder="请选择">
-                                <el-option
-                                        v-for="item in surveyorOption"
-                                        :key="item.id"
-                                        :label="item.name"
-                                        :value="item.code">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.serviceFee">
-                            <el-input-number
-                                    :controls="false"
-                                    size="mini"
-                                    class="speInput"
-                                    v-model="qcDetail.serviceFee"
-                                    label="描述文字"></el-input-number>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.serviceName">
-                            <el-input
-                                    v-model="qcDetail.serviceName"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.exchangeCurrencyDictCode">
-                            <el-input
-                                    v-model="qcDetail.exchangeCurrencyDictCode"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-                        <el-form-item prop="11" :label="$i.warehouse.timeZone">
-                            <el-input
-                                    v-model="qcDetail.timeZone"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-form-item prop="11" :label="$i.warehouse.remark">
-                            <el-input
-                                    v-model="qcDetail.remark"
-                                    :disabled="true">
-                            </el-input>
-                        </el-form-item>
-                    </el-col>
-                    <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-                        <el-form-item prop="11" :label="$i.warehouse.attachment">
-                            <el-input
-                                    v-model="qcDetail.attachment"
-                                    :disabled="true">
-                            </el-input>
+                    <el-col v-for="v in $db.warehouse.qcOrderDetailBasicInfo" :key="v.key" class="speCol" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
+                        <el-form-item :label="$i.warehouse[v.key]">
+                            <div v-if="v.type==='input'">
+                                <el-input
+                                        class="speInput"
+                                        v-model="qcDetail[v.key]"
+                                        :disabled="v.disabled">
+                                </el-input>
+                            </div>
+                            <div v-else-if="v.type==='select'">
+                                <el-select
+                                        class="speInput"
+                                        v-model="qcDetail[v.key]"
+                                        clearable
+                                        :disabled="v.disabled"
+                                        :placeholder="$i.warehouse.pleaseChoose">
+                                    <div v-if="v.isQcType">
+                                        <el-option
+                                                v-for="item in qcTypeOption"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.code">
+                                        </el-option>
+                                    </div>
+                                    <div v-else-if="v.isQcStatus">
+                                        <el-option
+                                                v-for="item in qcStatusOption"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.code">
+                                        </el-option>
+                                    </div>
+                                    <div v-else-if="v.isQcMethod">
+                                        <el-option
+                                                v-for="item in qcMethodOption"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.code">
+                                        </el-option>
+                                    </div>
+                                    <div v-else-if="v.isSurveyor">
+                                        <el-option
+                                                v-for="item in surveyorOption"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.code">
+                                        </el-option>
+                                    </div>
+                                    <div v-else-if="v.isServiceName">
+                                        <el-option
+                                                v-for="item in serviceList"
+                                                :key="item.id"
+                                                :label="item.name"
+                                                :value="item.name">
+                                        </el-option>
+                                    </div>
+                                    <div v-else-if="v.isCurrency">
+                                        <el-option
+                                                v-for="item in currencyOptions"
+                                                :key="item.id"
+                                                :label="item.code"
+                                                :value="item.code">
+                                        </el-option>
+                                    </div>
+
+                                </el-select>
+                            </div>
+                            <div v-else-if="v.type==='date'">
+                                <el-date-picker
+                                        size="mini"
+                                        class="speInput"
+                                        v-model="qcDetail[v.key]"
+                                        align="right"
+                                        type="date"
+                                        :placeholder="$i.warehouse.pleaseChoose"
+                                        :picker-options="pickerOptions1">
+                                </el-date-picker>
+                            </div>
+                            <div v-else-if="v.type==='number'">
+                                <el-input-number
+                                        class="speInput speNumber"
+                                        :controls="false"
+                                        v-model="qcDetail[v.key]"
+                                        :disabled="v.disabled"></el-input-number>
+                            </div>
+                            <div v-else-if="v.type==='attachment'">
+                                <v-upload readonly :list="qcDetail[v.key]" :limit="20" ref="attachmentUpload"></v-upload>
+                            </div>
+                            <div v-else-if="v.type==='textarea'">
+                                <el-input
+                                        class="speInput"
+                                        type="textarea"
+                                        :disabled="true"
+                                        :autosize="{ minRows: 2}"
+                                        :placeholder="$i.warehouse.pleaseInput"
+                                        v-model="qcDetail[v.key]">
+                                </el-input>
+                            </div>
+
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -284,16 +254,20 @@
             <el-button :disabled="loadingData" :loading="disableClickSubmit" @click="submit" type="primary">{{$i.warehouse.submit}}</el-button>
             <el-button :disabled="loadingData" @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
+
+        <v-message-board module="warehouse" code="qcDetail" :id="$route.query.id"></v-message-board>
     </div>
 </template>
 <script>
 
-    import {VTable, } from '@/components/index';
+    import {VTable,VUpload,VMessageBoard} from '@/components/index';
 
     export default {
         name:'qc-detail',
         components:{
-            VTable
+            VTable,
+            VUpload,
+            VMessageBoard
         },
         data(){
             return{
@@ -334,6 +308,8 @@
                 surveyorOption:[],
                 qcResultOption:[],
                 barCodeResult:[],
+                qcStatusOption:[],
+                currencyOptions:[],
 
 
                 /**
@@ -508,7 +484,8 @@
              * 获取字典
              * */
             getUnit(){
-                this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','SKU_QC_RS','PB_CODE'],{_cache:true}).then(res=>{
+                this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','SKU_QC_RS','PB_CODE','QC_STATUS'],{_cache:true}).then(res=>{
+                    console.log(res)
                     res.forEach(v=>{
                         if(v.code==='QC_TYPE'){
                             this.qcTypeOption=v.codes;
@@ -521,8 +498,16 @@
                             this.qcResultOption=v.codes;
                         }else if(v.code==='PB_CODE'){
                             this.barCodeResult=v.codes;
+                        }else if(v.code==='QC_STATUS'){
+                            this.qcStatusOption=v.codes;
                         }
                     })
+                });
+
+                this.$ajax.get(this.$apis.get_currencyUnit,{},{cache:true}).then(res=>{
+                    this.currencyOptions=res;
+                }).catch(err=>{
+
                 });
 
                 //获取验货员
@@ -537,11 +522,37 @@
                 //     console.log(res)
                 // });
             },
+
+            /**
+             * 选择服务商的方法
+             * */
+            getService(name){
+                this.serviceList=[];
+                if(!name){
+                    name='';
+                }
+                this.$ajax.get(`${this.$apis.get_supplyProviders}?name=${name}`).then(res=>{
+                    res.forEach(v=>{
+                        this.serviceList.push(v);
+                    });
+                    this.$ajax.get(`${this.$apis.get_serviceProviders}?name=${name}`).then(res=>{
+                        res.forEach(v=>{
+                            this.serviceList.push(v);
+                        });
+
+                    }).catch(err=>{
+
+                    });
+                }).catch(err=>{
+
+                });
+            },
         },
         created(){
             this.getQcOrderDetail();
             this.getProductInfo();
             this.getUnit();
+            this.getService();
         }
     }
 </script>
@@ -566,7 +577,10 @@
     }
 
     .speInput{
-        width: 100%;
+        width: 80%;
+    }
+    .speNumber >>> input{
+        text-align: left;
     }
 
     .product-table >>> .el-checkbox{
