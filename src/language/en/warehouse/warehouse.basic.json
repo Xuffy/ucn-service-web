@@ -47,7 +47,20 @@
   "acceptReturn":"接受退货",
   "qcOrderDetail":"货单详情",
   "detail":"详情",
-  "pressMoney":"催款"
+  "pressMoney":"催款",
+
+
+
+  "paymentNumber":"Payment Number",
+  "paymentName":"Payment Name",
+  "estPayDate":"Est. Pay Date",
+  "actPayDate":"Act. Pay Date",
+  "estAmount":"Est. Amount",
+  "actAmount":"Act. Amount",
+  "currency":"Currency",
+  "available":"Available",
+  "confirm":"Confirm",
+  "prompt":"Prompt"
 
 
 }

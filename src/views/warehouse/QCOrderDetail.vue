@@ -128,13 +128,14 @@
             {{$i.warehouse.payment}}
         </div>
         <div class="payment-table">
-            <el-button class="payment-btn" type="primary">{{$i.warehouse.pressMoney}}</el-button>
+            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" type="primary">{{$i.warehouse.pressMoney}}</el-button>
             <el-table
-                    :data="tableData"
+                    :data="paymentData"
                     border
+                    v-loading="loadingPaymentTable"
                     style="width: 100%">
                 <el-table-column
-                        label="No."
+                        label="#"
                         align="center"
                         width="60">
                     <template slot-scope="scope">
@@ -142,46 +143,56 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                        prop="date"
-                        label="Payment Number"
+                        prop="no"
+                        :label="$i.warehouse.paymentNumber"
                         width="180">
                 </el-table-column>
                 <el-table-column
                         prop="name"
-                        label="Payment Item"
+                        :label="$i.warehouse.paymentName"
                         width="180">
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Est. Pay Date">
+                        prop="planPayDt"
+                        :label="$i.warehouse.estPayDate">
+                    <template slot-scope="scope">
+                        {{$dateFormat(scope.row.planPayDt,'yyyy-mm-dd')}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Act. Pay Date">
+                        prop="planPayAmount"
+                        :label="$i.warehouse.estAmount">
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Est. Amount">
+                        prop="actualPayDt"
+                        :label="$i.warehouse.actPayDate">
+                    <template slot-scope="scope">
+                        {{$dateFormat(scope.row.actualPayDt,'yyyy-mm-dd')}}
+                    </template>
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Act. Amount">
+                        prop="actualPayAmount"
+                        :label="$i.warehouse.actAmount">
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Currency">
+                        prop="currencyCode"
+                        :label="$i.warehouse.currency">
                 </el-table-column>
                 <el-table-column
-                        prop="address"
-                        label="Available">
+                        prop="status"
+                        :label="$i.warehouse.available">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status===40">已确认</span>
+                        <span v-else>待确认</span>
+                    </template>
                 </el-table-column>
                 <el-table-column
                         fixed="right"
                         label="Action"
+                        align="center"
                         width="100">
                     <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
+                        <el-button v-if="scope.row.status!==40" @click="confirmPay(scope.row)" type="text" size="small">{{$i.warehouse.confirm}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -193,8 +204,7 @@
                     :buttons="[{'label': $i.warehouse.detail, type: 1}]"
                     @action="btnClick"
                     @change-checked="changeChecked"
-                    :totalRow="true"
-            >
+                    :totalRow="true">
                 <template slot="header">
                     <div class="second-title">
                         {{$i.warehouse.productInfo}}
@@ -207,31 +217,27 @@
             <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
             <el-button @click="cancel">{{$i.warehouse.cancel}}</el-button>
         </div>
+        <v-message-board module="warehouse" code="qcDetail" :id="$route.query.id"></v-message-board>
     </div>
 </template>
 <script>
-
-    import {VTable } from '@/components/index';
+    import {VTable,VMessageBoard } from '@/components/index';
 
     export default {
         name:'qc-detail',
         components:{
-            VTable
+            VTable,
+            VMessageBoard
         },
         data(){
             return{
                 qcDetail:{},
                 loadingData:false,
+                loadingPaymentTable:false,
                 /**
                  * paymentTable data
                  * */
-                tableData: [
-                    {
-                        date: '2016-05-02',
-                        name: '王小虎',
-                        address: '上海市普陀区金沙江路 1518 弄'
-                    }
-                ],
+                paymentData: [],
 
                 /**
                  * product info data
@@ -259,8 +265,8 @@
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
                     .then(res=>{
                         this.qcDetail=res;
-                        this.loadingData=false;
-                    }).catch(err=>{
+                        this.getPaymentInfo();
+                    }).finally(err=>{
                         this.loadingData=false;
                     }
                 );
@@ -274,7 +280,17 @@
                     this.loadingProductInfoTable=false;
                 });
             },
-
+            getPaymentInfo(){
+                this.loadingPaymentTable=true;
+                this.$ajax.post(this.$apis.PAYMENT_LIST,{
+                    orderNo:this.qcDetail.qcOrderNo,
+                    orderType:20
+                }).then(res=>{
+                    this.paymentData=res.datas;
+                }).finally(()=>{
+                    this.loadingPaymentTable=false;
+                })
+            },
 
             /**
              * product info表格事件
@@ -300,6 +316,51 @@
                     }
                 });
             },
+
+            /**
+             * payment事件
+             * */
+            dunningPay(){
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+                console.log(this.paymentData)
+            },
+            confirmPay(data){
+                this.$confirm(this.$i.warehouse.sureConfirm, this.$i.warehouse.prompt, {
+                    confirmButtonText: this.$i.warehouse.sure,
+                    cancelButtonText: this.$i.warehouse.cancel,
+                    type: 'warning'
+                }).then(() => {
+                    this.$ajax.post(this.$apis.PAYMENT_ACCEPT,{
+                        id:data.id,
+                        version:data.version
+                    }).then(res=>{
+                        this.$message({
+                            message: this.$i.warehouse.confirmSuccess,
+                            type: 'success'
+                        });
+                        this.getPaymentInfo();
+                    }).finally(()=>{
+
+                    });
+                }).catch(() => {
+
+                });
+            },
+
 
             cancel(){
                 window.close();
