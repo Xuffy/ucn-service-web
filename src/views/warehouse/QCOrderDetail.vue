@@ -115,10 +115,7 @@
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-form-item prop="11" :label="$i.warehouse.attachment">
-                            <el-input
-                                    v-model="qcDetail.attachment"
-                                    :disabled="true">
-                            </el-input>
+                            <v-upload readonly :list="qcDetail.attachments" :limit="20" ref="upload"></v-upload>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -128,10 +125,11 @@
             {{$i.warehouse.payment}}
         </div>
         <div class="payment-table">
-            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" type="primary">{{$i.warehouse.pressMoney}}</el-button>
+            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" :loading="disableDunning" type="primary">{{$i.warehouse.pressMoney}}</el-button>
             <el-table
                     :data="paymentData"
                     border
+                    :row-class-name="tableRowClassName"
                     v-loading="loadingPaymentTable"
                     style="width: 100%">
                 <el-table-column
@@ -182,8 +180,11 @@
                         prop="status"
                         :label="$i.warehouse.available">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status===40">已确认</span>
-                        <span v-else>待确认</span>
+                        <span v-if="scope.row.status===-1">{{$i.warehouse.abandon}}</span>
+                        <span v-if="scope.row.status===10">{{$i.warehouse.waitCustomerConfirm}}</span>
+                        <span v-if="scope.row.status===20">{{$i.warehouse.waitSupplierConfirm}}</span>
+                        <span v-if="scope.row.status===30">{{$i.warehouse.waitServiceConfirm}}</span>
+                        <span v-if="scope.row.status===40">{{$i.warehouse.hasConfirm}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -192,7 +193,7 @@
                         align="center"
                         width="100">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.row.status!==40" @click="confirmPay(scope.row)" type="text" size="small">{{$i.warehouse.confirm}}</el-button>
+                        <el-button v-if="scope.row.status!==40 && scope.row.status!==-1" @click="confirmPay(scope.row)" type="text" size="small">{{$i.warehouse.confirm}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -221,19 +222,21 @@
     </div>
 </template>
 <script>
-    import {VTable,VMessageBoard } from '@/components/index';
+    import {VTable,VMessageBoard,VUpload } from '@/components/index';
 
     export default {
         name:'qc-detail',
         components:{
             VTable,
-            VMessageBoard
+            VMessageBoard,
+            VUpload
         },
         data(){
             return{
                 qcDetail:{},
                 loadingData:false,
                 loadingPaymentTable:false,
+                disableDunning:false,
                 /**
                  * paymentTable data
                  * */
@@ -320,23 +323,38 @@
             /**
              * payment事件
              * */
+            tableRowClassName({row}) {
+                if(row.status===-1){
+                    return 'warning-row';
+                }
+                return '';
+            },
             dunningPay(){
-                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
+                let params=[];
+                _.map(this.paymentData,v=>{
+                    if(v.status===40 && v.planPayAmount>v.actualPayAmount){
+                        params.push({
+                            id:v.id
+                        })
+                    }
                 });
-                console.log(this.paymentData)
+
+                if(params.length===0){
+                    return this.$message({
+                        message: this.$i.warehouse.nothingDunning,
+                        type: 'warning'
+                    });
+                }
+
+                this.disableDunning=true;
+                this.$ajax.post(this.$apis.PAYMENT_DUNNING,params).then(res=>{
+                    this.$message({
+                        message: this.$i.warehouse.dunningSuccess,
+                        type: 'success'
+                    });
+                }).finally(()=>{
+                    this.disableDunning=false;
+                })
             },
             confirmPay(data){
                 this.$confirm(this.$i.warehouse.sureConfirm, this.$i.warehouse.prompt, {
@@ -373,6 +391,9 @@
     }
 </script>
 <style scoped>
+    .el-table >>> .warning-row {
+        background: #f5f7fa;
+    }
     .title{
         font-weight: bold;
         font-size: 18px;

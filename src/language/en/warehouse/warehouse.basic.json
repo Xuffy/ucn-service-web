@@ -49,8 +49,6 @@
   "detail":"详情",
   "pressMoney":"催款",
 
-
-
   "paymentNumber":"Payment Number",
   "paymentName":"Payment Name",
   "estPayDate":"Est. Pay Date",
@@ -63,7 +61,14 @@
   "prompt":"Prompt",
   "pleaseChoose":"Please Choose",
   "pleaseInout":"Please Input",
-  "attachments":"附件"
+  "attachments":"附件",
+
+
+  "abandon":"废弃",
+  "waitCustomerConfirm":"待采购商确认",
+  "waitSupplierConfirm":"待供应商确认",
+  "waitServiceConfirm":"待服务商确认",
+  "hasConfirm":"已确认"
 
 
 }
