@@ -51,7 +51,7 @@
               :class="{rowspan:index % rowspan !== 0,disabled:item._disabled}">
             <td v-if="selection && (index % rowspan === 0) " :rowspan="rowspan">
               <div>
-                <input type="checkbox" ref="checkbox" :disabled="item._disabled"
+                <input type="checkbox" ref="checkbox" :disabled="item._disabled || item._disabledCheckbox"
                        v-if="typeof selection === 'function' ? selection(item) : true"
                        @change="changeCheck(item)"
                        v-model="item._checked"/>
@@ -69,10 +69,10 @@
                    v-text="cItem._value || cItem.value"></div>
 
               <v-image class="img" v-else
-                       :src="getImage(cItem.value)"
+                       :src="getImage(cItem._value || cItem.value)"
                        height="30px"
                        width="30px"
-                       @click="$refs.tableViewPicture.show(cItem.value)"></v-image>
+                       @click="$refs.tableViewPicture.show(cItem._value || cItem.value)"></v-image>
             </td>
             <!--操作按钮显示-->
             <td v-if="buttons && (index % rowspan === 0)" :rowspan="rowspan">
@@ -220,7 +220,7 @@
       },
       checkedAll(value) {
         this.setDataList(_.map(this.dataList, val => {
-          if (!val._disabled) {
+          if (!val._disabled && !val._disabledCheckbox) {
             this.$set(val, '_checked', value);
           }
           return val;
@@ -315,7 +315,7 @@
           this.$refs.tableBox.scrollTop = 0;
         }
 
-        if (!this.hideFilterColumn && this.code){
+        if (!this.hideFilterColumn && this.code) {
           this.$refs.filterColumn.getConfig().then(res => {
             let to = setTimeout(() => {
               clearTimeout(to);
@@ -323,7 +323,7 @@
               type && this.filterColumn();
             }, 50);
           })
-        }else {
+        } else {
           let to = setTimeout(() => {
             clearTimeout(to);
             this.dataList = val;

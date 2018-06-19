@@ -19,5 +19,10 @@ export default {
   IMPORTFILE_GETIMPORTTASK: ['/importfile/getimporttask', 'UIE_URL'],
   IMPORTTEMPLATE_DOWNLOADURL: ['/importtemplate/downloadurl', 'UIE_URL'],
   USER_CUSTOMER_ISSETUSERINFO: ['/user/customer/isSetUserInfo?type={type}', 'UWORKBENCH_URL'],
+  USER_DISABLE: ['/user/disable/{userId}', 'UUSER_URL'],
+  USER_ENABLE: ['/user/enable/{userId}', 'UUSER_URL'],
+  PRIVILEGE_DATA_BIZDOMAIN: ['/privilege/data/biz-domain', 'UUSER_URL'],
+  PRIVILEGE_RESOURCE: ['/privilege/resource', 'UUSER_URL'],
+  ROLE_PRIVILEGE: ['/role/privilege', 'UUSER_URL'],
   // IMPORTTEMPLATE_DOWNLOADURL: ['/customer/isSetCompanyInfo', 'UIE_URL']
 }
