@@ -1,8 +1,8 @@
 {
-  "sureRework":"Sure Rework",
-  "sureReturn":"Sure Return",
+  "sureRework":"Sure Rework?",
+  "sureReturn":"Sure Return?",
   "alreadyHandled":"Already Handled",
-  "confirmSuccess":"Confirm Success!",
+  "confirmSuccess":"Confirm Success",
   "reworkSuccess":"Rework Success!",
   "returnSuccess":"Return Success!",
   "createSuccess":"Create Success!",
@@ -13,7 +13,5 @@
   "invalidSuccess":"Invalid Success!",
   "sureRestore":"Sure Restore?",
   "restoreSuccess":"Restore Success!",
-  "sureConfirm":"Sure Confirm?",
-  "dunningSuccess":"Dunning Success!",
-  "nothingDunning":"Nothing to dunning"
+  "sureConfirm":"Sure Confirm?"
 }
