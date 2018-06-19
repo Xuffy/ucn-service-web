@@ -21,6 +21,7 @@ export default {
     qcStatusDictCode:{
         type:'select',
         isQcStatus:true,
+        disabled:true
     },
     qcMethodDictCode:{
         type:'select',

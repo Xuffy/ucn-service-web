@@ -114,68 +114,68 @@
                 </el-row>
             </el-form>
         </div>
-        <div class="second-title">
-            {{$i.warehouse.payment}}
-        </div>
-        <div class="payment-table">
-            <el-button class="payment-btn" type="primary">{{$i.warehouse.pressMoney}}</el-button>
-            <el-table
-                    :data="tableData"
-                    border
-                    style="width: 100%">
-                <el-table-column
-                        label="No."
-                        align="center"
-                        width="60">
-                    <template slot-scope="scope">
-                        {{scope.$index+1}}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="date"
-                        label="Payment Number"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="Payment Item"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Est. Pay Date">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Act. Pay Date">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Est. Amount">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Act. Amount">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Currency">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Available">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="Action"
-                        width="100">
-                    <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
+        <!--<div class="second-title">-->
+            <!--{{$i.warehouse.payment}}-->
+        <!--</div>-->
+        <!--<div class="payment-table">-->
+            <!--<el-button class="payment-btn" type="primary">{{$i.warehouse.pressMoney}}</el-button>-->
+            <!--<el-table-->
+                    <!--:data="tableData"-->
+                    <!--border-->
+                    <!--style="width: 100%">-->
+                <!--<el-table-column-->
+                        <!--label="No."-->
+                        <!--align="center"-->
+                        <!--width="60">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--{{scope.$index+1}}-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="date"-->
+                        <!--label="Payment Number"-->
+                        <!--width="180">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="name"-->
+                        <!--label="Payment Item"-->
+                        <!--width="180">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Est. Pay Date">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Act. Pay Date">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Est. Amount">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Act. Amount">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Currency">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--prop="address"-->
+                        <!--label="Available">-->
+                <!--</el-table-column>-->
+                <!--<el-table-column-->
+                        <!--fixed="right"-->
+                        <!--label="Action"-->
+                        <!--width="100">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>-->
+                        <!--<el-button type="text" size="small">编辑</el-button>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
+            <!--</el-table>-->
+        <!--</div>-->
 
         <div class="product-info">
             <div class="second-title">
