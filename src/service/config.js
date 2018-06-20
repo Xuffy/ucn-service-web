@@ -8,6 +8,7 @@ export default {
       // LOGIN_URL: 'http://192.168.51.138:8070',
       LOGIN_URL: 'http://dev.auth.ucnscm.cn',
       BASE_URL: '//192.168.51.208:11003', // 采购端
+      BASE_BUYER:'//192.168.51.208:11001',
       USSO_URL: '//192.168.51.208:11006', // sso 服务
       // UUSER_URL: '//192.168.51.198:11004', // 用户中心
       UUSER_URL: '//192.168.51.208:11004', // 用户中心
