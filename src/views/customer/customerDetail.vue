@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="body">
-            <el-tabs v-model="tabName" type="card" >
+            <el-tabs v-model="tabName" type="card" @tab-click="handleClick">
                 <el-tab-pane :label="$i.supplier.address" name="address">
                     <v-table  :data="address"  style='marginTop:10px'/>
                 </el-tab-pane>
@@ -146,8 +146,23 @@
         },
         methods: {
               ...mapActions([
-                'setRecycleBin','setDraft'
+                // 'setRecycleBin','setDraft'
             ]),
+            //获取国家
+            getCountryAll(){
+                this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
+                this.options.country = res
+                }).catch(err=>{
+                console.log(err)
+                });
+            },
+             handleClick(tab, event) {
+              switch(Number(tab.index)){
+                case 2:
+                  this.getQcHistory();
+                  break;
+              }
+            },
              deleteCustomer(){
                  this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
                     .then(res => {
@@ -290,7 +305,14 @@
                     .then(res => {
                 this.code = res.code
                 this.basicDate = res;
-                this.address = this.$getDB(this.$db.supplier.detailTable, res.address);
+                this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
+                    let country,receiveCountry;
+                    country = _.findWhere(this.options.country, {code: e.country.value}) || {};
+                    receiveCountry = _.findWhere(this.options.country, {code: e.receiveCountry.value}) || {};
+                    e.country._value = country.name || '';
+                    e.receiveCountry._value = receiveCountry.name || '';
+                    return e;
+                });
                 this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
                 this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);
                 this.loading = false
@@ -316,12 +338,12 @@
         },
         created() {
             this.get_data();
-            this.getQcHistory();
             this.getListRemark();
-            this.setRecycleBin({
-                name: 'customerRecycleBinDetail',
-                show: true
-            });
+            this.getCountryAll();
+            // this.setRecycleBin({
+            //     name: 'customerRecycleBinDetail',
+            //     show: true
+            // });
         },
       watch:{
         addRemarkFormVisible(n){
