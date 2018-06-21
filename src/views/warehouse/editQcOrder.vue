@@ -114,68 +114,6 @@
                 </el-row>
             </el-form>
         </div>
-        <div class="second-title">
-            {{$i.warehouse.payment}}
-        </div>
-        <div class="payment-table">
-            <el-button class="payment-btn" type="primary">{{$i.warehouse.pressMoney}}</el-button>
-            <el-table
-                    :data="tableData"
-                    border
-                    style="width: 100%">
-                <el-table-column
-                        label="No."
-                        align="center"
-                        width="60">
-                    <template slot-scope="scope">
-                        {{scope.$index+1}}
-                    </template>
-                </el-table-column>
-                <el-table-column
-                        prop="date"
-                        label="Payment Number"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="name"
-                        label="Payment Item"
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Est. Pay Date">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Act. Pay Date">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Est. Amount">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Act. Amount">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Currency">
-                </el-table-column>
-                <el-table-column
-                        prop="address"
-                        label="Available">
-                </el-table-column>
-                <el-table-column
-                        fixed="right"
-                        label="Action"
-                        width="100">
-                    <template slot-scope="scope">
-                        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-                        <el-button type="text" size="small">编辑</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </div>
 
         <div class="product-info">
             <div class="second-title">
@@ -206,7 +144,7 @@
                     <template slot-scope="scope">
                         <div v-if="v.showType==='select'">
                             <div v-if="v.isQcResult">
-                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" :placeholder="$i.warehouse.pleaseChoose">
                                     <el-option
                                             v-for="item in qcResultOption"
                                             :key="item.id"
@@ -216,7 +154,7 @@
                                 </el-select>
                             </div>
                             <div v-else-if="v.isBarCodeResult">
-                                <el-select clearable v-model="scope.row[v.key]" placeholder="请选择">
+                                <el-select clearable v-model="scope.row[v.key]" :placeholder="$i.warehouse.pleaseChoose">
                                     <el-option
                                             v-for="item in barCodeResult"
                                             :key="item.id"
@@ -232,22 +170,153 @@
                         <div v-else-if="v.showType==='number'">
                             <el-input-number
                                     :controls="false"
-                                    v-model="scope.row[v.key]"
-                                    label="描述文字"></el-input-number>
+                                    v-model="scope.row[v.key]"></el-input-number>
                         </div>
                         <div v-else-if="v.showType==='input'">
                             <el-input
-                                    placeholder="请输入内容"
+                                    :placeholder="$i.warehouse.pleaseInput"
                                     v-model="scope.row[v.key]"
                                     clearable>
                             </el-input>
+                        </div>
+                        <div v-else-if="v.showType==='pic'">
+                            <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload>
                         </div>
                         <div v-else>
                             {{scope.row[v.key]}}
                         </div>
                     </template>
                 </el-table-column>
+                <!--<el-table-column-->
+                        <!--fixed="right"-->
+                        <!--align="center"-->
+                        <!--:label="$i.warehouse.action"-->
+                        <!--width="100">-->
+                    <!--<template slot-scope="scope">-->
+                        <!--<el-button @click="handleClick(scope.row)" type="text" size="small">{{$i.warehouse.detail}}</el-button>-->
+                    <!--</template>-->
+                <!--</el-table-column>-->
             </el-table>
+        </div>
+
+        <div class="summary">
+            <div class="second-title">
+                {{$i.warehouse.summary}}
+            </div>
+            <el-form label-width="280px">
+                <el-row class="speZone">
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.cartonOfQualifiedProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.qualifiedSkuCartonTotalQty"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.quantityOfQualifiedProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.qualifiedSkuQty"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.volumeOfQualifiedProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.qualifiedSkuVolume"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.netWeightOfQualifiedProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.qualifiedSkuNetWeight"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.grossWeightOfQualifiedProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.qualifiedSkuGrossWeight"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.quantityOfSubQualityProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.unqualifiedSkuQty"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.cartonOfSubQualityProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.unqualifiedSkuCartonTotalQty"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.netWeightOfSubQualityProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.unqualifiedSkuNetWeight"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.volumeOfSubQualityProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.unqualifiedSkuVolume"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.grossWeightOfSubQualityProducts">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="qcDetail.unqualifiedSkuGrossWeight"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+                        <el-form-item :label="$i.warehouse.skuQuantity">
+                            <el-input
+                                    class="summaryInput"
+                                    size="mini"
+                                    v-model="summaryData.skuQuantity"
+                                    :disabled="true">
+                            </el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
         </div>
 
         <div class="footBtn">
@@ -278,26 +347,6 @@
                     disabledDate(time) {
                         return time.getTime() > Date.now();
                     },
-                    shortcuts: [{
-                        text: '今天',
-                        onClick(picker) {
-                            picker.$emit('pick', new Date());
-                        }
-                    }, {
-                        text: '昨天',
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24);
-                            picker.$emit('pick', date);
-                        }
-                    }, {
-                        text: '一周前',
-                        onClick(picker) {
-                            const date = new Date();
-                            date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                            picker.$emit('pick', date);
-                        }
-                    }]
                 },
                 disableClickSubmit:false,
                 /**
@@ -312,6 +361,7 @@
                 currencyOptions:[],
 
 
+
                 /**
                  * paymentTable data
                  * */
@@ -322,6 +372,13 @@
                         address: '上海市普陀区金沙江路 1518 弄'
                     }
                 ],
+
+                /**
+                 * summary Data
+                 * */
+                summaryData:{
+                    skuQuantity:0
+                },
 
 
                 /**
@@ -380,6 +437,11 @@
                     this.productInfoData.forEach(v=>{
                         v.skuQcResultDictCode='';
                     })
+                    let diffData=[];
+                    _.map(this.productInfoData,v=>{
+                        diffData.push(v.skuId+v.orderNo);
+                    });
+                    this.summaryData.skuQuantity=_.uniq(diffData).length;
                     this.loadingProductInfoTable=false;
                 }).catch(err=>{
                     this.loadingProductInfoTable=false;
@@ -397,6 +459,14 @@
             changeChecked(e){
                 this.selectList=e;
             },
+            handleClick(e){
+                this.$windowOpen({
+                    url:'/product/sourcingDetail',
+                    params:{
+                        id:e.skuId
+                    }
+                })
+            },
 
             submit(){
                 this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
@@ -409,8 +479,8 @@
 
                 // console.log(this.productInfoData,'productInfoData')
                 let allow=true;
-                this.productInfoData.forEach(v=>{
-                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remarks){
+                this.productInfoData.forEach((v,k)=>{
+                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){
                         if(!v.skuQcResultDictCode){
                             allow=false;
                         }
@@ -418,7 +488,7 @@
                 });
                 if(!allow){
                     return this.$message({
-                        message: '产品填了数值之后必须选择验货结果',
+                        message: this.$i.warehouse.mustHaveQcResult,
                         type: 'warning'
                     });
                 }
@@ -462,11 +532,16 @@
                         unqualifiedType: v.unqualifiedType
                     });
                 });
+
+                _.map(this.qcOrderConfig.qcResultDetailParams,(v,k)=>{
+                    v.qcPics=this.$refs['picUpload'+k][0].getFiles();
+                });
+
                 this.disableClickSubmit=true;
                 this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
                     this.disableClickSubmit=false;
                     this.$message({
-                        message: '提交成功',
+                        message: this.$i.warehouse.submitSuccess,
                         type: 'success'
                     });
                     this.$router.push('/warehouse/overview');
@@ -485,7 +560,6 @@
              * */
             getUnit(){
                 this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','SKU_QC_RS','PB_CODE','QC_STATUS'],{_cache:true}).then(res=>{
-                    console.log(res)
                     res.forEach(v=>{
                         if(v.code==='QC_TYPE'){
                             this.qcTypeOption=v.codes;

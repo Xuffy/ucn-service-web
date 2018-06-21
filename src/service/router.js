@@ -254,7 +254,7 @@ export const routerMap = [
           },
           component: () => import('../views/settings/departmentSetting.vue')
         },
-        {
+        /*{
           path: 'category',
           name: 'settingsCategory',
           meta: {
@@ -264,7 +264,7 @@ export const routerMap = [
             name: $i.router.settingsCategory
           },
           component: () => import('../views/settings/CategorySetting')
-        },
+        },*/
         {
           path: 'Personal',
           name: 'settingsPersonal',

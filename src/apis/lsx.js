@@ -64,7 +64,7 @@ export default {
     delete_buyerProductCompareDetail: ['/purchase/supplier/listCompareDetails', 'BASE_URL'],
     get_buyerProductCompareDetail: ['/purchase/sku/listCompareDetails', 'BASE_URL'],
     delete_buyerProductCompare: ['/purchase/sku/deleteCompare', 'BASE_URL'],
-    get_buyerProductDetail: ['/purchase/sku/{id}', 'BASE_URL'],
+    get_buyerProductDetail: ['/purchase/sku/{id}','BASE_BUYER', 'BASE_BUYER'],
     edit_buyerProductBookmark: ['/purchase/sku/bookmark/{id}', 'BASE_URL'],
     update_buyerProductCompare: ['/purchase/sku/compare/{id}', 'BASE_URL'],
     delete_buyerProductRemark: ['/purchase/sku/deleteSkuRemark/{id}', 'BASE_URL'],
@@ -97,8 +97,8 @@ export default {
      * buyer Warehouse
      * */
     get_qcProductData: ['/qc/inbound/sku/all', 'BASE_URL'],
-    get_serviceProviders: ['/purchase/servicer/listServicerByName', 'BASE_URL'],
-    get_supplyProviders: ['/purchase/supplier/listSupplierByName', 'BASE_URL'],
+    get_serviceProviders: ['/purchase/servicer/listServicerByName', 'BASE_BUYER'],
+    get_supplyProviders: ['/purchase/supplier/listSupplierByName', 'BASE_BUYER'],
     get_currency: ['/currency/all', 'UMETA_URL', 'UMETA_URL'],
     add_buyerQcOrder: ['/qc/add', 'BASE_URL'],
     GET_QC_DETAIL_GETBYID: ['/qc/detail/getById', 'USUPPLY_URL', 'USUPPLY_URL'],
