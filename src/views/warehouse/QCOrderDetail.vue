@@ -19,18 +19,28 @@
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item :label="$i.warehouse.qcTypeDictCode">
-                            <el-input
-                                    v-model="qcDetail.qcTypeDictCode"
-                                    :disabled="true">
-                            </el-input>
+                            <el-select style="width: 100%" placeholder="service choose" :disabled="true" class="speInput" size="mini" v-model="qcDetail.qcTypeDictCode">
+                                <el-option
+                                        v-for="item in qcTypeOption"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item prop="11" :label="$i.warehouse.qcDate">
-                            <el-input
+                            <el-date-picker
+                                    style="width: 100%"
+                                    :disabled="true"
+                                    class="speInput"
+                                    size="mini"
                                     v-model="qcDetail.qcDate"
-                                    :disabled="true">
-                            </el-input>
+                                    align="right"
+                                    type="date"
+                                    placeholder="service input">
+                            </el-date-picker>
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
@@ -59,15 +69,20 @@
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item prop="11" :label="$i.warehouse.qcMethodDictCode">
-                            <el-input
-                                    v-model="qcDetail.qcMethodDictCode"
-                                    :disabled="true">
-                            </el-input>
+                            <el-select style="width: 100%;" placeholder="service choose" :disabled="true" class="speInput" size="mini" v-model="qcDetail.qcMethodDictCode">
+                                <el-option
+                                        v-for="item in qcMethodOption"
+                                        :key="item.id"
+                                        :label="item.name"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item prop="11" :label="$i.warehouse.surveyor">
                             <el-input
+                                    :placeholder="$i.warehouse.serviceChoose"
                                     v-model="qcDetail.surveyor"
                                     :disabled="true">
                             </el-input>
@@ -76,6 +91,7 @@
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item prop="11" :label="$i.warehouse.serviceFee">
                             <el-input
+                                    :placeholder="$i.warehouse.serviceFill"
                                     v-model="qcDetail.serviceFee"
                                     :disabled="true">
                             </el-input>
@@ -98,12 +114,12 @@
                         </el-form-item>
                     </el-col>
                     <!--<el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">-->
-                        <!--<el-form-item prop="11" :label="$i.warehouse.timeZone">-->
-                            <!--<el-input-->
-                                    <!--v-model="qcDetail.timeZone"-->
-                                    <!--:disabled="true">-->
-                            <!--</el-input>-->
-                        <!--</el-form-item>-->
+                    <!--<el-form-item prop="11" label="Time Zone">-->
+                    <!--<el-input-->
+                    <!--v-model="qcDetail.timeZone"-->
+                    <!--:disabled="true">-->
+                    <!--</el-input>-->
+                    <!--</el-form-item>-->
                     <!--</el-col>-->
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-form-item prop="11" :label="$i.warehouse.remark">
@@ -393,6 +409,8 @@
                 totalRow:[],
                 productInfoData:[],
                 selectList:[],
+                qcTypeOption:[],
+                qcMethodOption:[]
             }
         },
         methods:{
@@ -568,8 +586,26 @@
             },
         },
         created(){
-            this.getQcOrderDetail();
-            this.getProductInfo();
+            this.loadingData=true;
+            this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD'],{cache:true})
+                .then(res=>{
+                    res.forEach(v=>{
+                        if(v.code==='QC_TYPE'){
+                            this.qcTypeOption=v.codes;
+                        }else if(v.code==='QC_MD'){
+                            this.qcMethodOption=v.codes;
+                        }
+                    });
+                    this.getQcOrderDetail();
+                    this.getProductInfo();
+                })
+                .catch(err=>{
+                    this.loadingData=false;
+                });
+
+
+
+
         }
     }
 </script>
