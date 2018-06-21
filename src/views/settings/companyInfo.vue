@@ -6,11 +6,11 @@
     <div class="summary">
       <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
         <div style="overflow: hidden">
-          <v-upload ref="uploadFile" onlyImage style="float: left" :list="companyInfo.logo"/>
+          <v-upload ref="uploadFile" only-image style="float: left" :list="companyInfo.logo" oss-private/>
           <!--<img :src="companyInfo.logo" class="logo"/>-->
         </div>
         <div class="section-btn" style="padding-top:10px">
-          <el-button @click="uploadLogo" type="primary">{{$i.button.upload}}</el-button>
+          <el-button @click="uploadLogo" type="primary">{{$i.button.save}}</el-button>
         </div>
         <el-row class="speZone">
           <el-col :class="{speCol:v.key!=='description'}" v-if="v.belong==='summary'" v-for="v in $db.setting.companyInfo" :key="v.key" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
@@ -30,7 +30,7 @@
                     v-for="item in options[v.key]"
                     :key="item.code"
                     :label="item.name"
-                    :value="item.typeCode === 'EL_IS' ? !!parseInt(item.code) : item.code">
+                    :value="item.typeCode === 'EL_IS' ? !!parseInt(item.code) :Number(item.code) || item.code">
                   </el-option>
                 </el-select>
               </div>
@@ -108,9 +108,9 @@
 
         <el-tab-pane :label="$i.setting.attachment">
           <div class="section-btn">
-            <el-button @click="upload" type="primary">{{$i.button.upload}}</el-button>
+            <el-button @click="upload" type="primary">{{$i.button.save}}</el-button>
           </div>
-          <v-upload ref="uploadAttachment" :limit="20"  :list="attachments" />
+          <v-upload ref="uploadAttachment" :limit="20"  :list="attachments"  oss-private/>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -775,14 +775,11 @@
       },
     },
     created(){
-      // this.supplierWhole();
-
       this.getCurrency();
       this.getCountryAll();
       this.getCodePart();
       this.getDepartment();
       this.getWholeData();
-      // console.log(this.$db,'db')
     },
     watch:{
       addressDialogVisible(n){

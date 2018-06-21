@@ -22,9 +22,15 @@
         <v-table
           :data="tabData"
           @change-checked="changeChecked"
-          :height="450"
+          :height="500"
           hide-filter-value
+          :style="computeStyle"
         />
+        <page
+          :page-data="pageData"
+          @change="handleSizeChange"
+          :page-sizes="[50,100,200,500]"
+          @size-change="pageSizeChange"></page>
       </div>
 
       <div v-show="isShow" class="box">
@@ -58,29 +64,18 @@
       </div>
     </div>
 
-    <!--<el-dialog-->
-        <!--title="提示"-->
-        <!--:visible.sync="centerDialogVisible"-->
-        <!--width="30%"-->
-        <!--center>-->
-          <!--<span>系统通过邮件来发送消息</span>-->
-          <!--<span slot="footer" class="dialog-footer">-->
-        <!--<el-button @click="centerDialogVisible = false">取 消</el-button>-->
-        <!--<el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>-->
-      <!--</span>-->
-    <!--</el-dialog>-->
-
   </div>
 </template>
 
 <script>
-  import { selectSearch, VTable } from '@/components/index';
+  import { selectSearch, VTable,VPagination } from '@/components/index';
 
   export default {
     name: "message",
     components:{
       VTable,
-      selectSearch
+      selectSearch,
+      page:VPagination
     },
     data(){
       return{
@@ -88,6 +83,7 @@
         viewByStatus:'1',
         isShow:false,
         isHide:true,
+        pageData:{},
         options: [{
           id: '1',
           label: 'Tittle'
@@ -101,7 +97,7 @@
         params: {
           mark: 0,
           content: '',
-          ps:10,
+          ps:50,
           pn:1
         },
         checked1:true,
@@ -114,7 +110,7 @@
           subscribeEmail:0,
           subscribePlatform:1,
           messageType:''
-        }
+        },
       }
     },
     methods:{
@@ -125,10 +121,12 @@
         this.multipleSelection = val;
       },
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+          this.params.pn = val;
+          this.getDataInfo();
       },
-      handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+      pageSizeChange(val) {
+          this.params.ps = val;
+          this.getDataInfo();
       },
       changeChecked(item) { //tab 勾选
         this.checkedData = item;
@@ -174,11 +172,11 @@
         this.params.mark = val.keyType;
         this.params.content = val.key;
         this.searchLoad = true;
+        this.getDataInfo();
       },
       getDataInfo() {
-        let url, column;
+        let url;
         this.tabLoad = true;
-        column = this.$db.message.table;
         if(this.viewByStatus + '' === '1') {
           url = this.$apis.post_systemmessage_query;
         } else {
@@ -186,17 +184,19 @@
         };
         this.$ajax.post(url, this.params)
           .then(res => {
-              this.tabData = this.$getDB(column, res.datas,item=>{
-                _.mapObject(item, val => {
+              this.tabData = this.$getDB(this.$db.message.table, res.datas, e => {
+                _.mapObject(e, val => {
                   val.type === 'textDate' && val.value && (val.value = this.$dateFormat(val.value, 'yyyy-mm-dd hh:ss:mm'));
                   return val
-                });
-                if(item.isRead.value){
-                  item.isRead.value = '已读'
+                })
+                if(e.read.value){
+                  e.read.value = '已读';
                 }else{
-                  item.isRead.value = '未读'
+                  e.read.value = '未读'
                 }
+
               });
+            this.pageData=res;
             this.tabLoad = false;
             this.searchLoad = false;
           })
@@ -218,7 +218,11 @@
         });
         this.$ajax.post(url, arr)
           .then(res => {
-             this.$message('系统将消息置为已读');
+            this.$message({
+              type: 'success',
+              message: '系统将消息置为已读!'
+            });
+            this.getDataInfo()
           })
           .catch(() => {
 
@@ -226,7 +230,7 @@
       },
       getMessageQuery(){
         let url = this.$apis.get_messagesetting_query
-        this.$ajax.get(`${url}?type=${3}`)
+        this.$ajax.get(`${url}?type=${1}`)
           .then(res => {
             res = _.map(res,val=>{
               switch (val.messageType)
@@ -279,6 +283,15 @@
     created(){
       this.getDataInfo()
       this.getMessageQuery()
+    },
+    computed: {
+      computeStyle() {
+        this.tabData.forEach((v, k) => {
+          if (v.read.value = '未读'){
+            return { fontWeight:200 }
+          }
+        });
+      }
     }
   }
 </script>

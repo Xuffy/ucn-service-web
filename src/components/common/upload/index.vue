@@ -18,7 +18,7 @@
         <div :class="{close:!item.progress || item.progress === 1}" class="progress"
              :style="{width: (item.progress * 100) + '%'}">
         </div>
-
+        readonly
         <div class="operation-box" :class="{readonly:readonly,image:readonly && item.isImage}"
              v-show="item.progress === 1 || item.url">
 
