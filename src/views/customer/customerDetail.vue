@@ -30,15 +30,15 @@
         <div class="body">
             <el-tabs v-model="tabName" type="card" @tab-click="handleClick">
                 <el-tab-pane :label="$i.supplier.address" name="address">
-                    <v-table  :data="address"  style='marginTop:10px'/>
+                    <v-table  :data="address" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
 
                 <el-tab-pane :label="$i.supplier.contactInfo"  name="concats">
-                    <v-table  :data="concats"  style='marginTop:10px'/>
+                    <v-table  :data="concats" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
 
                 <el-tab-pane :label="$i.supplier.orderHistory" name="order">
-                    <v-table  :data="orderList"   style='marginTop:10px'/>
+                    <v-table  :data="orderList"   :selection="false" style='marginTop:10px'/>
                 </el-tab-pane>
               <el-tab-pane :label="$i.supplier.remark" name="remark">
                 <div class="section-btn">
@@ -47,8 +47,9 @@
                   <v-table
                     :data="remarkData"
                     style='marginTop:10px'
-                    :buttons="[{label: 'view', type: 1},{label: 'modify', type: 2},{label: 'delete', type: 3}]"
-                    @action="remarkAction"/>
+                    :buttons="[{label: 'Modify', type: 2},{label: 'Delete', type: 3}]"
+                    @action="remarkAction"
+                    :selection="false"/>
               </el-tab-pane>
 
             </el-tabs>
@@ -67,22 +68,6 @@
             <div slot="footer" class="dialog-footer">
               <el-button :loading="disableCreateRemark" type="primary" @click="createRemarkSubmit">{{$i.button.submit}}</el-button>
               <el-button @click="addRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
-            </div>
-          </el-dialog>
-
-          <el-dialog :title="$i.supplier.remark" :visible.sync="lookRemarkFormVisible" center width="600px">
-            <el-form :model="addRemarkData">
-              <el-form-item :label="$i.supplier.remark" :label-width="formLabelWidth">
-                <el-input
-                  type="textarea"
-                  :rows="4"
-                  v-model="addRemarkData.remark">
-                </el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <!--<el-button :loading="disableCreateRemark" type="primary" >{{$i.button.submit}}</el-button>-->
-              <el-button @click="lookRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
             </div>
           </el-dialog>
         </div>
@@ -204,12 +189,6 @@
               // this.addRemarkData.skuId=this.productForm.id;
               // this.addRemarkData.remark='';
             },
-            lookRemark(e){
-              var result = {}
-              result.remark = e.remark.value;
-              this.addRemarkData=Object.assign({}, result);
-              this.lookRemarkFormVisible=true;
-            },
           createRemarkSubmit(){
             this.disableCreateRemark = true;
             this.addRemarkData.servicerCustomerId = Number(this.$route.query.id);
@@ -265,9 +244,6 @@
             },
             remarkAction(item,type){
               switch(type) {
-                case 1:
-                  this.lookRemark(item);
-                  break;
                 case 2:
                   this.modifyRemark(item);
                   break;
