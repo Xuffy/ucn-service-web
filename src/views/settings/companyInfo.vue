@@ -70,7 +70,7 @@
             <v-table
               :data="addressDatas"
               :height="500"
-              :buttons="[{label: 'modify', type: 1},{label: 'delete', type: 2}]"
+              :buttons="[{label: 'Modify', type: 1},{label: 'Delete', type: 2}]"
               @action="btnAddressClick"
             />
           </div>
@@ -84,7 +84,7 @@
               <v-table
                 :data="accountsData"
                 :height="500"
-                :buttons="[{label: 'modify', type: 1},{label: 'delete', type: 2}]"
+                :buttons="[{label: 'Modify', type: 1},{label: 'Delete', type: 2}]"
                 @action="btnClick"
               />
             </div>
@@ -100,7 +100,7 @@
               <v-table
                 :data="contactDatas"
                 :height="500"
-                :buttons="[{label: 'modify', type: 1},{label: 'delete', type: 2}]"
+                :buttons="[{label: 'Modify', type: 1},{label: 'Delete', type: 2}]"
                 @action="btnContactClick"
               />
             </div>
