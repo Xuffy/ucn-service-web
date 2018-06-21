@@ -5,16 +5,9 @@
     </div>
     <div class="summary">
       <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
-        <div style="overflow: hidden">
-          <v-upload ref="uploadFile" only-image style="float: left" :list="companyInfo.logo" oss-private/>
-          <!--<img :src="companyInfo.logo" class="logo"/>-->
-        </div>
-        <div class="section-btn" style="padding-top:10px">
-          <el-button @click="uploadLogo" type="primary">{{$i.button.save}}</el-button>
-        </div>
         <el-row class="speZone">
           <el-col :class="{speCol:v.key!=='description'}" v-if="v.belong==='summary'" v-for="v in $db.setting.companyInfo" :key="v.key" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
-            <el-form-item class="speWidth" :prop="v.key"  :label="v.label +'：'">
+            <el-form-item class="speWidth"   :label="v.label +'：'"  :required="v._rules?v._rules.required:false">
               <div v-if="v.type==='input'">
                 <el-input
                   :disabled="v.key==='code' ? true :summaryDisabled"
@@ -127,13 +120,13 @@
       <el-form label-width="200px" :model="addressData">
         <el-row>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.factoryName +'：'">
-              <el-input size="mini" v-model="addressData.name" placeholder="请输入内容" required="required"></el-input>
+            <el-form-item  :label="$i.setting.factoryName +'：'" required>
+              <el-input size="mini" v-model="addressData.name" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.factoryAddress +'：'">
-              <el-input size="mini" v-model="addressData.address" placeholder="请输入内容" required="required"></el-input>
+            <el-form-item  :label="$i.setting.factoryAddress +'：'" required>
+              <el-input size="mini" v-model="addressData.address" placeholder="请输入内容" ></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
@@ -142,17 +135,17 @@
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.ContacctPerson1 +'：'">
-              <el-input size="mini" v-model="addressData.contactPerson1" placeholder="请输入内容" required="required"></el-input>
+            <el-form-item  :label="$i.setting.ContacctPerson1 +'：'" required>
+              <el-input size="mini" v-model="addressData.contactPerson1" placeholder="请输入内容" ></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.contactPhoneNo1 +'：'">
-              <el-input size="mini" v-model="addressData.concatPhone1" placeholder="请输入内容" required="required"></el-input>
+            <el-form-item  :label="$i.setting.contactPhoneNo1 +'：'" required>
+              <el-input size="mini" v-model="addressData.concatPhone1" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.contacctPerson2 +'：'">
+            <el-form-item  :label="$i.setting.contacctPerson2 +'：'" >
               <el-input size="mini" v-model="addressData.contactPerson2" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -173,12 +166,12 @@
       <el-form label-width="200px" :model="accountData">
         <el-row>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.beneficiaryName +'：'">
+            <el-form-item  :label="$i.setting.beneficiaryName +'：'" required>
               <el-input size="mini" v-model="accountData.beneficiaryName" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.beneficiaryAccount +'：'">
+            <el-form-item  :label="$i.setting.beneficiaryAccount +'：'" required>
               <el-input size="mini" v-model="accountData.beneficiaryAccount" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -226,7 +219,7 @@
       <el-form label-width="200px" :model="contactData">
         <el-row>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.name +'：'">
+            <el-form-item  :label="$i.setting.name +'：'" required>
               <el-input size="mini" v-model="contactData.name" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -249,7 +242,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.mobileNumber +'：'">
+            <el-form-item  :label="$i.setting.mobileNumber +'：'" required>
               <el-input size="mini" v-model="contactData.cellphone" placeholder="请输入内容"></el-input>
             </el-form-item>
           </el-col>
@@ -408,8 +401,18 @@
         this.$ajax.get(this.$apis.post_servicer_getServicer).then(res=>{
           this.attachments =res.attachments
           // this.addressData contactData
-          this.accountsData = this.$getDB(this.$db.setting.servicerAccount, res.accounts);
-          this.contactDatas = this.$getDB(this.$db.setting.servicerContact, res.concats);
+          this.accountsData = this.$getDB(this.$db.setting.servicerAccount, res.accounts, e => {
+              let currency;
+              currency = _.findWhere(this.options.currency, {code: e.currency.value}) || {};
+              e.currency._value = currency.name || '';
+              return e;
+          });
+          this.contactDatas = this.$getDB(this.$db.setting.servicerContact, res.concats, e => {
+            let gender;
+            gender = _.findWhere(this.genderOptions, {code: e.gender.value}) || {};
+            e.gender._value = gender.label || '';
+            return e;
+          });
           this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address);
           res.exportLicense ? res.exportLicense = 'YES' : res.exportLicense = 'NO'
           this.companyInfo=res;
@@ -459,6 +462,9 @@
         this.cloneData=Object.assign({},this.companyInfo);
       },
       saveModifySummary(){
+         if (this.$validateForm(this.companyInfo, this.$db.setting.companyInfo)) {
+            return false;
+          }
         let params={
           abbreviation: this.companyInfo.abbreviation,
           city: this.companyInfo.city,
@@ -488,6 +494,16 @@
           this.allowModifySummary=false;
           this.summaryDisabled=true;
         });
+
+        this.logoParmas.id = this.companyInfo.id;
+        this.logoParmas.url = this.$refs.uploadFile[0].getFiles()[0];
+        this.$ajax.post(this.$apis.post_servicer_purchase_upload,this.logoParmas).then(res=>{
+          this.getWholeData();
+          this.$message({
+            message: '上传成功',
+            type: 'success'
+          })
+        })
       },
       cancelModifySummary(){
         this.companyInfo=Object.assign({},this.cloneData);
@@ -512,6 +528,9 @@
         }
       },
       sureAddAddress(){
+        if (this.$validateForm(this.addressData, this.$db.setting.servicerAddress)) {
+          return false;
+        }
         this.allowAddAddress=true;
         this.addressData.servicerId=this.companyInfo.id;
         if(this.isModifyAddress){
@@ -590,6 +609,9 @@
         this.accountDialogVisible=true;
       },
       sureAddAccount(){
+        if (this.$validateForm(this.accountData, this.$db.setting.servicerAccount)) {
+          return false;
+        }
         this.allowAddContact=true;
         this.accountData.servicerId=this.companyInfo.id;
 
@@ -670,6 +692,9 @@
         }
       },
       sureAddContact(){
+         if (this.$validateForm(this.contactData, this.$db.setting.servicerContact)) {
+          return false;
+        }
         this.allowAddContact=true;
         this.contactData.servicerId=this.companyInfo.id;
         if(this.isModifyContact){
@@ -730,22 +755,6 @@
         }).catch(() => {
 
         });
-      },
-      /**
-       * logo操作
-       * */
-      uploadLogo(){
-        this.logoParmas.id = this.companyInfo.id;
-        this.logoParmas.url = this.$refs.uploadFile.getFiles()[0];
-        console.log(this.$refs.uploadFile.getFiles()[0])
-        this.$ajax.post(this.$apis.post_servicer_purchase_upload,this.logoParmas).then(res=>{
-          this.getWholeData();
-          this.$message({
-            message: '上传成功',
-            type: 'success'
-          })
-        })
-
       },
       /**
        * Attachment操作

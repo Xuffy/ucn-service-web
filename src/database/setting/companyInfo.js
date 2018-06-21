@@ -19,7 +19,10 @@ export default {
   serviceProviderName:{
         key: 'name',
         type: 'input',
-        belong:'summary'
+        belong:'summary',
+        _rules:{
+            required:true,
+          }
     },
   serviceProviderShortName:{
         key: 'abbreviation',
@@ -29,7 +32,10 @@ export default {
   serviceProviderType:{
         key: 'type',
         type: 'select',
-        belong:'summary'
+        belong:'summary',
+        _rules:{
+            required:true,
+          }
     },
   country:{
         key: 'country',
