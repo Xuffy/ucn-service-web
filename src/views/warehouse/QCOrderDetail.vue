@@ -425,8 +425,6 @@
                         console.log(item,'item')
                     });
 
-
-
                     let diffData=[];
                     _.map(this.productInfoData,v=>{
                         diffData.push(v.skuId.value+v.orderNo.value);
