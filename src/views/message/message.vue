@@ -230,7 +230,8 @@
       },
       getMessageQuery(){
         let url = this.$apis.get_messagesetting_query
-        this.$ajax.get(`${url}?type=${1}`)
+        
+        this.$ajax.get(`${url}?type=${3}`)
           .then(res => {
             res = _.map(res,val=>{
               switch (val.messageType)

@@ -60,5 +60,10 @@ export default {
         key: 'serviceCity',
         type: 'input',
         belong:'summary'
-    }
+    },
+    logo:{
+        key: 'logo',
+        type: 'function',
+        belong:'summary'
+      }
 }
