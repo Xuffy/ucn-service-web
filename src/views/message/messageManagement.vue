@@ -1,14 +1,21 @@
 <template>
     <div>
         <div class="head">
-            <el-button @click="addNews">{{$i.common.add}}</el-button>
+            <el-button @click="addNews" type="primary">{{$i.common.add}}</el-button>
+            <!--<el-button @click="$router.back(-1)" >{{$i.button.cancel}}</el-button>-->
         </div>
         <div class="body">
           <v-table
             :data="tabData"
             hide-filter-value
-            :height="450"
+            :height="500"
+            :selection="false"
           />
+          <page
+          :page-data="pageData"
+          @change="handleSizeChange"
+          :page-sizes="[50,100,200,500]"
+          @size-change="pageSizeChange"></page>
         </div>
 
         <el-dialog
@@ -40,22 +47,25 @@
 </template>
 
 <script>
-    import { VTable } from '@/components/index';
+    import { VTable,VPagination } from '@/components/index';
     export default {
         name: "message-management",
         components:{
-          VTable
+          VTable,
+          page:VPagination
         },
         data(){
             return{
                 tabData:[],
                 tabLoad:true,
+                pageData:{},
                 params:{
                   title:'',
                   content:'',
+                  language:''
                 },
                 pData:{
-                  ps:10,
+                  ps:50,
                   pn:1
                 },
                 dialogVisible:false,            //弹出框显示隐藏
@@ -67,20 +77,18 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-
             //发布
             publish(e){
                 console.log(e)
             },
-
-            //分页操作
             handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
+                this.params.pn = val;
+                this.getMessageList();
             },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
+            pageSizeChange(val) {
+                this.params.ps = val;
+                this.getMessageList();
             },
-
             //新增消息
             addNews(){
                 this.dialogVisible=true;
@@ -104,11 +112,12 @@
             let url, column;
             this.tabLoad = true;
             column = this.$db.message.table;
-            if(this.$route.query.type == 1) {;
-              url = this.$apis.post_sys_queryownlist;
-            } else {
-              url = this.$apis.post_company_queryownlist;
-            };
+            url = this.$apis.post_company_queryownlist;
+            // if(this.$route.query.type == 1) {;
+            //   url = this.$apis.post_sys_queryownlist;
+            // } else {
+            //   url = this.$apis.post_company_queryownlist;
+            // };
             this.$ajax.post(url,this.pData)
               .then(res => {
                 this.tabData = this.$getDB(column, res.datas,item=>{
@@ -117,6 +126,7 @@
                     return val
                   })
                 });
+                this.pageData=res;
                 this.tabLoad = false;
               })
               .catch(() => {
@@ -125,7 +135,11 @@
           },
           postAddMessage(){
             let url
-            url = this.$apis.post_company_addcompanymessage;
+            if(this.$route.query.type == 1) {;
+              url = this.$apis.post_sys_addsystemmessage;
+            } else {
+              url = this.$apis.post_company_addcompanymessage;
+            };
             this.$ajax.post(url, this.params)
             .then(res => {
               this.$message({
