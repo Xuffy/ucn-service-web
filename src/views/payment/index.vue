@@ -1,16 +1,16 @@
 <template>
     <div class="payment">
         <div class="title">
-            {{$db.payment.title.orderOverview.key}}
+          {{$i.payment.orderOverview}}
         </div>
         <div class="body">
             <div class="head">
                 <div>
                     <span class="text">Status : </span>
                     <el-radio-group size="mini" v-model="params.conditions.overdue" @change="getList">
-                        <el-radio-button label="-1" border>{{$i.common.all}}</el-radio-button>
-                        <el-radio-button label="1" >已逾期</el-radio-button>
-                        <el-radio-button label="0" >未逾期</el-radio-button>
+                       <el-radio-button label="-1" border>{{$i.common.all}}</el-radio-button>
+                      <el-radio-button label="1" >{{$i.payment.overdue}}</el-radio-button>
+                      <el-radio-button label="0" >{{$i.payment.future}}</el-radio-button>
                     </el-radio-group>
                 </div>
                 <div class="spe-div">
@@ -32,7 +32,7 @@
                         </select-search>
                     </div>
                     <div class="Date">
-                        <span class="text">Time : </span>
+                        <span class="text" style="width:170px">{{$i.payment.orderCreateDate}} : </span>
                         <el-date-picker
                                 v-model="date"
                                 type="daterange"
@@ -63,6 +63,7 @@
                 :page-data.sync="params"
                 @change="handleSizeChange"
                 @size-change="pageSizeChange"
+                :page-sizes="[50,100,200]"
               />
             </div>
         </div>
@@ -176,6 +177,15 @@
             pageSizeChange(val) {
               this.params.ps = val;
             },
+            //获取币种
+            getCurrency(){
+              this.$ajax.get(this.$apis.get_currency_all).then(res=>{
+                this.currency = res
+                console.log(this.currency)
+              }).catch(err=>{
+                console.log(err)
+              });
+            },
             getList(){
               this.tabLoad = true;
               this.$ajax.post(this.$apis.post_ledgerPage, this.params)
@@ -184,15 +194,29 @@
                   this.tabLoad = false;
                   this.searchLoad = false;
                   this.tableDataList = this.$getDB(this.$db.payment.table, res.datas,item=>{
-                    item.waitPayment.value = Number(item.planPayAmount.value)-Number(item.actualPayAmount.value);
-                    item.waitReceipt.value = Number(item.planReceiveAmount.value)-Number(item.actualReceiveAmount.value);
-                    // this.flag = item.waitPayment.value === 0;
-                    // this.$set(this.flag,item.waitPayment.value === 0)
+                    item.waitPayment.value = (Number(item.planPayAmount.value)-Number(item.actualPayAmount.value)).toFixed(8);
+                    item.waitReceipt.value = (Number(item.planReceiveAmount.value)-Number(item.actualReceiveAmount.value)).toFixed(8);
+                    let currency;
+                    currency = _.findWhere(this.currency, {code: item.currencyCode.value}) || {};
+                    item.currencyCode._value = currency.name || '';
 
                     _.mapObject(item, val => {
                       val.type === 'textDate' && val.value && (val.value = this.$dateFormat(val.value, 'yyyy-mm-dd'))
                       return val
                     })
+                    switch (item.orderType.value)
+                    {
+                      case 10:
+                        item.orderType._value = 'Purchase order'
+                        break;
+                      case 20:
+                        item.orderType._value = 'QC order'
+                        break;
+                      case 30:
+                        item.orderType._value = 'Logisttic order'
+                        break;
+
+                    }
 
                     return item;
                   });
@@ -200,17 +224,11 @@
                   this.totalRow = this.$getDB(this.$db.payment.table, res.statisticalDatas, item => {
                     item.waitPayment.value = Number(item.planPayAmount.value)-Number(item.actualPayAmount.value);
                     item.waitReceipt.value = Number(item.planReceiveAmount.value)-Number(item.actualReceiveAmount.value);
-                    // if(item.currencyCode.value ==='BTC'){
-                    //   item._totalRow.label = 'BTC';
-                    // }else if(item.currencyCode.value ==='HKD'){
-                    //   item._totalRow.label = 'HKD';
-                    // }else{
-                    //   item._totalRow.label = 'EUR';
-                    // }
+                    let currency;
+                    currency = _.findWhere(this.currency, {code: item.currencyCode.value}) || {};
+                    item.currencyCode._value = currency.name || '';
                     return item;
                   });
-
-                  console.log(this.tableDataList)
                 })
                 .catch((res) => {
                   this.tabLoad = false;
@@ -231,27 +249,27 @@
             },
             detail(item) {
                 //点击进入对应po detail 10、lo detail 30、QC order detail 20页面
-               if(item.orderType.value == 10){
-                  this.$windowOpen({
-                    url: '/product/sourcingDetail',
-                    params: {
-                      number:item.orderNo.value
-                    }
-                  });
+              if(item.orderType.value == 10){
+                this.$windowOpen({
+                  url: '/order/detail',
+                  params: {
+                    orderNo:item.orderNo.value
+                  }
+                });
               }else if(item.orderType.value == 20){
-                  this.$windowOpen({
-                    url: '/',
-                    params: {
-                      number:item.orderNo.value
-                    }
-                  });
+                this.$windowOpen({
+                  url: '/warehouse/qcDetail',
+                  params: {
+                    orderNo:item.orderNo.value
+                  }
+                });
               }else{
-                  this.$windowOpen({
-                    url: '/logisticPlanDetail',
-                    params: {
-                      number:item.orderNo.value
-                    }
-                  });
+                this.$windowOpen({
+                  url: '/logisticPlanDetail',
+                  params: {
+                    logisticsNo:item.orderNo.value
+                  }
+                });
               }
             },
             urgingPayment(item) {
@@ -278,6 +296,7 @@
         created(){
            this.viewByStatus = '';
            this.getList();
+           this.getCurrency();
         },
     }
 </script>
