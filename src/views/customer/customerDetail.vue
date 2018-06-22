@@ -28,17 +28,17 @@
             </div>
         </div>
         <div class="body">
-            <el-tabs v-model="tabName" type="card" >
+            <el-tabs v-model="tabName" type="card" @tab-click="handleClick">
                 <el-tab-pane :label="$i.supplier.address" name="address">
-                    <v-table  :data="address"  style='marginTop:10px'/>
+                    <v-table  :data="address" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
 
                 <el-tab-pane :label="$i.supplier.contactInfo"  name="concats">
-                    <v-table  :data="concats"  style='marginTop:10px'/>
+                    <v-table  :data="concats" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
 
                 <el-tab-pane :label="$i.supplier.orderHistory" name="order">
-                    <v-table  :data="orderList"   style='marginTop:10px'/>
+                    <v-table  :data="orderList"   :selection="false" style='marginTop:10px'/>
                 </el-tab-pane>
               <el-tab-pane :label="$i.supplier.remark" name="remark">
                 <div class="section-btn">
@@ -47,8 +47,9 @@
                   <v-table
                     :data="remarkData"
                     style='marginTop:10px'
-                    :buttons="[{label: 'view', type: 1},{label: 'modify', type: 2},{label: 'delete', type: 3}]"
-                    @action="remarkAction"/>
+                    :buttons="[{label: 'Modify', type: 2},{label: 'Delete', type: 3}]"
+                    @action="remarkAction"
+                    :selection="false"/>
               </el-tab-pane>
 
             </el-tabs>
@@ -67,22 +68,6 @@
             <div slot="footer" class="dialog-footer">
               <el-button :loading="disableCreateRemark" type="primary" @click="createRemarkSubmit">{{$i.button.submit}}</el-button>
               <el-button @click="addRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
-            </div>
-          </el-dialog>
-
-          <el-dialog :title="$i.supplier.remark" :visible.sync="lookRemarkFormVisible" center width="600px">
-            <el-form :model="addRemarkData">
-              <el-form-item :label="$i.supplier.remark" :label-width="formLabelWidth">
-                <el-input
-                  type="textarea"
-                  :rows="4"
-                  v-model="addRemarkData.remark">
-                </el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <!--<el-button :loading="disableCreateRemark" type="primary" >{{$i.button.submit}}</el-button>-->
-              <el-button @click="lookRemarkFormVisible = false">{{$i.button.cancel}}</el-button>
             </div>
           </el-dialog>
         </div>
@@ -146,8 +131,23 @@
         },
         methods: {
               ...mapActions([
-                'setRecycleBin','setDraft'
+                // 'setRecycleBin','setDraft'
             ]),
+            //获取国家
+            getCountryAll(){
+                this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
+                this.options.country = res
+                }).catch(err=>{
+                console.log(err)
+                });
+            },
+             handleClick(tab, event) {
+              switch(Number(tab.index)){
+                case 2:
+                  this.getQcHistory();
+                  break;
+              }
+            },
              deleteCustomer(){
                  this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
                     .then(res => {
@@ -188,12 +188,6 @@
               // this.addRemarkData.id=null;     //新增的时候要置为null
               // this.addRemarkData.skuId=this.productForm.id;
               // this.addRemarkData.remark='';
-            },
-            lookRemark(e){
-              var result = {}
-              result.remark = e.remark.value;
-              this.addRemarkData=Object.assign({}, result);
-              this.lookRemarkFormVisible=true;
             },
           createRemarkSubmit(){
             this.disableCreateRemark = true;
@@ -250,9 +244,6 @@
             },
             remarkAction(item,type){
               switch(type) {
-                case 1:
-                  this.lookRemark(item);
-                  break;
                 case 2:
                   this.modifyRemark(item);
                   break;
@@ -290,7 +281,14 @@
                     .then(res => {
                 this.code = res.code
                 this.basicDate = res;
-                this.address = this.$getDB(this.$db.supplier.detailTable, res.address);
+                this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
+                    let country,receiveCountry;
+                    country = _.findWhere(this.options.country, {code: e.country.value}) || {};
+                    receiveCountry = _.findWhere(this.options.country, {code: e.receiveCountry.value}) || {};
+                    e.country._value = country.name || '';
+                    e.receiveCountry._value = receiveCountry.name || '';
+                    return e;
+                });
                 this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
                 this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);
                 this.loading = false
@@ -316,12 +314,12 @@
         },
         created() {
             this.get_data();
-            this.getQcHistory();
             this.getListRemark();
-            this.setRecycleBin({
-                name: 'customerRecycleBinDetail',
-                show: true
-            });
+            this.getCountryAll();
+            // this.setRecycleBin({
+            //     name: 'customerRecycleBinDetail',
+            //     show: true
+            // });
         },
       watch:{
         addRemarkFormVisible(n){
