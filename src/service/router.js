@@ -420,6 +420,17 @@ export const routerMap = [
           component: () => import('../views/warehouse/qcOverview'),
         },
         {
+          path: 'qcOverview',
+          name: 'qc Overview',
+          meta: {
+            draft: true,
+            recycleBin: true,
+            log: true,
+            name: '货单预览'
+          },
+          component: () => import('../views/warehouse/qcOverview'),
+        },
+        {
           path: 'editQc',
           name: 'edit qc',
           hidden:true,
