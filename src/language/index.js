@@ -73,6 +73,7 @@ const json = {
     require(`./${lang}/setting/setting.basic`),
     require(`./${lang}/setting/companyInfo`),
     require(`./${lang}/setting/setting.prompt`),
+    require(`./${lang}/setting/category`),
   ),
   supplier: _.extend({},
     require(`./${lang}/supplier/detail.pending`),
@@ -118,6 +119,9 @@ const json = {
   ),
   upload: _.extend({},
     require(`./${lang}/upload/message`)
+  ),
+  util: _.extend({},
+    require(`./${lang}/util/index`)
   )
 }
 
