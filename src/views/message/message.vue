@@ -2,7 +2,7 @@
   <div class="message">
     <div class="head">
       <el-button @click="manageMessage">{{$i.common.messageManagement}}</el-button>
-      <el-button type="primary" @click="postRead">{{$i.common.markAsRead}}</el-button>
+      <el-button type="primary" @click="postRead" :disabled="isResd">{{$i.common.markAsRead}}</el-button>
       <!-- <h1 style="color:red">这个页面表格要加一列title</h1> -->
     </div>
     <div class="spe-div">
@@ -24,12 +24,11 @@
           @change-checked="changeChecked"
           :height="500"
           hide-filter-value
-          :style="computeStyle"
         />
         <page
           :page-data="pageData"
           @change="handleSizeChange"
-          :page-sizes="[50,100,200,500]"
+          :page-sizes="[50,100,200]"
           @size-change="pageSizeChange"></page>
       </div>
 
@@ -111,6 +110,7 @@
           subscribePlatform:1,
           messageType:''
         },
+        isResd:true
       }
     },
     methods:{
@@ -129,6 +129,11 @@
           this.getDataInfo();
       },
       changeChecked(item) { //tab 勾选
+        if (item.length != 0){
+         this.isResd = false;
+        }else{
+          this.isResd = true;
+        }
         this.checkedData = item;
       },
       handleCheckedCitiesChange(index, row){
@@ -230,7 +235,7 @@
       },
       getMessageQuery(){
         let url = this.$apis.get_messagesetting_query
-        
+
         this.$ajax.get(`${url}?type=${3}`)
           .then(res => {
             res = _.map(res,val=>{

@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
 import Router from 'vue-router'
-import config from 'service/config';
+import Config from 'service/config';
 import Layout from 'components/layout/index.vue';
 import $i from '../language/index';
 import {Notification, Message} from 'element-ui';
 import {localStore, sessionStore} from 'service/store';
+import Util from 'service/util';
 
 Vue.use(Router);
 
@@ -247,9 +248,11 @@ export const routerMap = [
           path: 'department',
           name: 'settingsDepartment',
           meta: {
+          auth: [0],
             draft: true,
             recycleBin: true,
             log: true,
+          auth: [0],
             name: $i.router.settingsDepartment
           },
           component: () => import('../views/settings/departmentSetting.vue')
@@ -283,6 +286,7 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
+          auth: [0],
             name: $i.router.settingsCompany
           },
           component: () => import('../views/settings/companyInfo')
@@ -416,6 +420,17 @@ export const routerMap = [
           component: () => import('../views/warehouse/qcOverview'),
         },
         {
+          path: 'qcOverview',
+          name: 'qc Overview',
+          meta: {
+            draft: true,
+            recycleBin: true,
+            log: true,
+            name: '货单预览'
+          },
+          component: () => import('../views/warehouse/qcOverview'),
+        },
+        {
           path: 'editQc',
           name: 'edit qc',
           hidden:true,
@@ -498,11 +513,14 @@ router.beforeResolve((to, from, next) => {
     , cp = _.findWhere(cacheParam, {path: to.path}) // 从缓存中获取对应路由参数
     , version;
 
+  if (to.meta && to.meta.auth && !Util.$auth(to.meta.auth)) {
+    return next({path: '/'});
+  }
 
   if (to.path !== '/login' || from.path === '/login') {
     /*version = localStore.get('version');
 
-    if (version !== config.VERSION) { // 版本控制
+    if (version !== Config.VERSION) { // 版本控制
       return next({path: '/login'});
     }*/
     if (_.isEmpty(ts)) { // 登录验证
@@ -511,7 +529,7 @@ router.beforeResolve((to, from, next) => {
   }
 
   // 判断路由是否必须带入参数 todo 跳转之前页面地址没有带上参数
-  if (to.meta.needParam) {
+  /*if (to.meta.needParam) {
     if (_.isEmpty(to.params) && _.isEmpty(to.query)) {
       if (!_.isEmpty(cp)) {
         _.map(cp.query, (val, key) => {
@@ -535,7 +553,7 @@ router.beforeResolve((to, from, next) => {
     cacheParam.push(_.pick(to, 'path', 'params', 'query'));
     sessionStore.set('cache_router_param', cacheParam);
 
-  }
+  }*/
 
   // Notification.closeAll();
 

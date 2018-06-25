@@ -50,7 +50,7 @@
         </div>
 <!--        表格-->
           <div style="margin-top: 20px;">
-              <el-button @click="deleteCustomer" type="primary">{{$i.button.delete}}</el-button>
+              <!--<el-button @click="deleteCustomer" type="primary">{{$i.button.delete}}</el-button>-->
           </div>
              <v-table
                     :height=360

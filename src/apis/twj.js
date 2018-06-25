@@ -1,9 +1,9 @@
 export default {
   //payment
-  post_ledgerPage: ['/ledger/page', 'BASE_URL'],
-  post_payment_list: ['/payment/list/{orderNo}/{orderType}', 'BASE_URL'],
-  post_payment_accept: ['/payment/accept/{id}', 'BASE_URL'],
-  post_payment_dunning: ['/payment/dunning', 'BASE_URL'],
+  post_ledgerPage: ['/ledger/page', 'USERVICE_URL'],
+  post_payment_list: ['/payment/list/{orderNo}/{orderType}', 'USERVICE_URL'],
+  post_payment_accept: ['/payment/accept/{id}', 'USERVICE_URL'],
+  post_payment_dunning: ['/payment/dunning', 'USERVICE_URL'],
   //message
   post_companymessage_query: ['/companymessage/query', 'UMESSAGE_URL', 'UMESSAGE_URL'],
   post_systemmessage_query: ['/systemmessage/query', 'UMESSAGE_URL', 'UMESSAGE_URL'],

@@ -2,6 +2,9 @@ export default {
   pic: {
     key: 'pic'
   },
+  orderNo: {
+    key: 'orderNo'
+  },
   purchaseOrderNumber: {
     key: 'customerOrderNo'
   },
@@ -51,10 +54,10 @@ export default {
     key: 'skuQty'
   },
   outerCartonQuantity: {
-    key: ''
+    key: 'totalOuterCartonQty'
   },
   skuQuantityOfInnerCarton: {
-    key: ''
+    key: 'skuInnerCartonQty'    //中包商品数
   },
   packingMethodEn: {
     key: 'skuMethodPkgEn'
@@ -63,16 +66,16 @@ export default {
     key: 'skuMethodPkgCn'
   },
   packingMethodOfInnerCartonEn: {
-    key: ''
+    key: 'skuInnerCartonMethodEn'
   },
   packingMethodOfInnerCartonCn: {
-    key: ''
+    key: 'skuInnerCartonMethodCn'
   },
   packingMethodOfOuterCartonCn: {
-    key: ''
+    key: 'skuOuterCartonMethodCn'
   },
   packingMethodOfOuterCartonEn: {
-    key: ''
+    key: 'skuOuterCartonMethodEn'
   },
   unitOfWeight: {
     key: 'skuUnitWeight'
@@ -182,7 +185,7 @@ export default {
     type: 'textDate'
   },
   estDepartureDate: {
-    key: ''
+    key: 'estDeliveryDt'         //预计发运日期
   },
   actDepartureDate: {
     key: 'actDepartureDt',
@@ -235,13 +238,13 @@ export default {
     key: 'qualifiedSkuQty'
   },
   deliveredQuantity: {
-    key: ''
+    key: 'totalContainerQty'
   },
   undeliveredQuantity: {
     key: 'skuUndeliveredQty'
   },
   country: {
-    key: 'country'
+    key: 'customerCountry'
   },
   destinationPort: {
     key: 'destinationPort'
@@ -253,16 +256,16 @@ export default {
     key: 'customerCompanyId'
   },
   emailOfBuyer: {
-    key: ''
+    key: 'customerEmail'
   },
   phoneOfBuyer: {
-    key: ''
+    key: 'customerCellphone'
   },
   emailOfSeller: {
-    key: ''
+    key: 'supplierEmail'
   },
   phoneOfSeller: {
-    key: ''
+    key: 'supplierCellphone'
   },
   contactPersonOfSeller: {
     key: 'supplierCompanyId'
@@ -285,17 +288,25 @@ export default {
   logisticsNo: {
     key: 'logisticsNo'
   },
+  category:{
+    key: '',
+    _important:true,
+  },
   categoryLevel1: {
-    key: 'skuCategoryOneFour'
+    key: 'skuCategoryOne',
+    _hide:true
   },
   categoryLevel2: {
-    key: 'skuCategoryTwoFour'
+    key: 'skuCategoryTwo',
+    _hide:true
   },
   categoryLevel3: {
-    key: 'skuCategoryOneFour'
+    key: 'skuCategoryThree',
+    _hide:true
   },
   categoryLevel4: {
-    key: 'skuCategoryOneFour'
+    key: 'skuCategoryFour',
+    _hide:true
   },
   itemOrderDelayed: {
     key: 'isOrderDelay'
