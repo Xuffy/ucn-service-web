@@ -94,7 +94,8 @@ export default {
    // remark
   time: {
     key: 'updateDt',
-    belong: "remark"
+    belong: "remark",
+    type:"textDate"
   },
   remark: {
     key: 'remark',
