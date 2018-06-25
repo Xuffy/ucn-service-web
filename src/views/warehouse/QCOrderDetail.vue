@@ -364,6 +364,7 @@
 </template>
 <script>
     import {VTable,VMessageBoard,VUpload } from '@/components/index';
+    import {mapActions} from 'vuex'
 
     export default {
         name:'qc-detail',
@@ -414,6 +415,7 @@
             }
         },
         methods:{
+            ...mapActions(['setLog']),
             getQcOrderDetail(){
                 this.loadingData=true;
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
@@ -606,7 +608,10 @@
 
 
 
-        }
+        },
+        mounted(){
+            this.setLog({query: {code: 'WAREHOUSE'}});
+        },
     }
 </script>
 <style scoped>
