@@ -14,5 +14,6 @@
   "sureRestore":"Sure Restore?",
   "restoreSuccess":"Restore Success!",
   "sureConfirm":"Sure Confirm?",
-  "mustHaveQcResult":"Must have a Qc Result!"
+  "mustHaveQcResult":"Must have a Qc Result!",
+  "pleaseChooseQcMethod":"Please choose QC Method"
 }

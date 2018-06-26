@@ -25,7 +25,10 @@ export default {
     },
     qcMethodDictCode:{
         type:'select',
-        isQcMethod:true
+        isQcMethod:true,
+        _rules:{
+            required:true
+        }
     },
     surveyor:{
         type:'select',
