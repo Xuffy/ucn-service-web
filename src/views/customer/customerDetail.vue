@@ -97,6 +97,7 @@
                 id: Number(this.$route.query.id),
                 tabName: 'address', //默认打开的tab
                 basicDate: [],
+                country:{},
                 accounts: [],
                 concats: [],
                 orderList:[],
@@ -136,7 +137,7 @@
             //获取国家
             getCountryAll(){
                 this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
-                this.options.country = res
+                this.country = res
                 }).catch(err=>{
                 console.log(err)
                 });
@@ -165,7 +166,12 @@
                 }
               this.$ajax.post(`${this.$apis.post_getCustomerListRemark}/${id}`,remark)
               .then(res => {
-                this.remarkData = this.$getDB(this.$db.supplier.detailTable, res.datas);
+                this.remarkData = this.$getDB(this.$db.supplier.detailTable, res.datas, item => {
+                  _.mapObject(item, val => {
+                    val.type === 'textDate' && val.value && (val.value = this.$dateFormat(val.value, 'yyyy-mm-dd'))
+                    return val
+                  })
+                });
               })
               .catch((res) => {
                 console.slog(res)
@@ -283,8 +289,8 @@
                 this.basicDate = res;
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
                     let country,receiveCountry;
-                    country = _.findWhere(this.options.country, {code: e.country.value}) || {};
-                    receiveCountry = _.findWhere(this.options.country, {code: e.receiveCountry.value}) || {};
+                    country = _.findWhere(this.country, {code: e.country.value}) || {};
+                    receiveCountry = _.findWhere(this.country, {code: e.receiveCountry.value}) || {};
                     e.country._value = country.name || '';
                     e.receiveCountry._value = receiveCountry.name || '';
                     return e;

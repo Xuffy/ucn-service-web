@@ -18,6 +18,7 @@
             </div>
             <div class="section">
                 <v-table
+                        code="uwarehouse_qc_order_overview"
                         :height="500"
                         :loading="loadingTable"
                         :data="tableDataList"
@@ -44,6 +45,7 @@
 <script>
     import {VPagination,VTable} from '@/components/index'
     import selectSearch from '@/components/common/fnCompon/selectSearch'
+    import {mapActions} from 'vuex'
 
     export default {
         name: "qcOverview",
@@ -88,6 +90,7 @@
             }
         },
         methods:{
+            ...mapActions(['setLog']),
             changeStatus(e){
                 this.getQcData();
             },
@@ -172,6 +175,9 @@
         },
         created(){
             this.getUnit();
+        },
+        mounted(){
+            this.setLog({query: {code: 'WAREHOUSE'}});
         },
         watch:{
             selectList(n){

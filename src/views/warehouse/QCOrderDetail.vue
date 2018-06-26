@@ -124,6 +124,8 @@
                     <el-col class="speCol" :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                         <el-form-item prop="11" :label="$i.warehouse.remark">
                             <el-input
+                                    type="textarea"
+                                    :autosize="{minRows: 2}"
                                     v-model="qcDetail.remark"
                                     :disabled="true">
                             </el-input>
@@ -364,6 +366,7 @@
 </template>
 <script>
     import {VTable,VMessageBoard,VUpload } from '@/components/index';
+    import {mapActions} from 'vuex'
 
     export default {
         name:'qc-detail',
@@ -414,6 +417,7 @@
             }
         },
         methods:{
+            ...mapActions(['setLog']),
             getQcOrderDetail(){
                 this.loadingData=true;
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
@@ -606,7 +610,10 @@
 
 
 
-        }
+        },
+        mounted(){
+            this.setLog({query: {code: 'WAREHOUSE'}});
+        },
     }
 </script>
 <style scoped>

@@ -14,7 +14,7 @@
           <page
           :page-data="pageData"
           @change="handleSizeChange"
-          :page-sizes="[50,100,200,500]"
+          :page-sizes="[50,100,200]"
           @size-change="pageSizeChange"></page>
         </div>
 
