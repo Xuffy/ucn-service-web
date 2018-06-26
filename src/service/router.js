@@ -46,7 +46,7 @@ export const routerMap = [
       component: Layout,
       meta: {name: $i.router.product},
       redirect: '/product/sourcing',
-      hidden:true,
+      hidden: true,
       children: [
         {
           path: 'sourcing',
@@ -248,11 +248,11 @@ export const routerMap = [
           path: 'department',
           name: 'settingsDepartment',
           meta: {
-          auth: [0],
+            auth: [0],
             draft: true,
             recycleBin: true,
             log: true,
-          auth: [0],
+            auth: [0],
             name: $i.router.settingsDepartment
           },
           component: () => import('../views/settings/departmentSetting.vue')
@@ -286,7 +286,7 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-          auth: [0],
+            auth: [0],
             name: $i.router.settingsCompany
           },
           component: () => import('../views/settings/companyInfo')
@@ -422,6 +422,7 @@ export const routerMap = [
         {
           path: 'qcOverview',
           name: 'qc Overview',
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -433,7 +434,7 @@ export const routerMap = [
         {
           path: 'editQc',
           name: 'edit qc',
-          hidden:true,
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -445,7 +446,7 @@ export const routerMap = [
         {
           path: 'qcDetail',
           name: 'qc detail',
-          hidden:true,
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -486,7 +487,7 @@ export const routerMap = [
           },
           component: () => import('../views/customer/customerDetail.vue')
         },
-          {
+        {
           path: 'recycle',
           name: 'customerRecycleBinDetail',
           meta: {
