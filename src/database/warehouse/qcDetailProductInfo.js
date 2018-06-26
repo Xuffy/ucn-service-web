@@ -374,10 +374,11 @@ export default{
     checkOuterCartonQty:{
         key: 'checkOuterCartonQty',
         type: 'Number',
+        showType:'input',
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
     },
     remark:{
         key: 'remark',
