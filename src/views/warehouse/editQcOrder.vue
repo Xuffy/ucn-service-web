@@ -487,7 +487,6 @@
                 this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
                 this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
 
-
                 let allow=true;
                 this.productInfoData.forEach((v,k)=>{
                     if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){

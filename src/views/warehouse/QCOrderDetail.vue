@@ -223,8 +223,6 @@
             <v-table
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
-                    :total-row="totalRow"
-                    :buttons="[{'label': $i.warehouse.detail, type: 1}]"
                     @action="btnClick"
                     @change-checked="changeChecked">
                 <template slot="header">
