@@ -140,61 +140,105 @@ export default{
     innerCartonLength:{
         key: 'innerCartonLength',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     innerCartonWidth:{
         key: 'innerCartonWidth',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     innerCartonHeight:{
         key: 'innerCartonHeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     innerCartonNetWeight:{
         key: 'innerCartonNetWeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     innerCartonGrossWeight:{
         key: 'innerCartonGrossWeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     innerCartonVolume:{
         key: 'innerCartonVolume',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     outerCartonLength:{
         key: 'outerCartonLength',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     outerCartonWidth:{
         key: 'outerCartonWidth',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     outerCartonHeight:{
         key: 'outerCartonHeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     outerCartonNetWeight:{
         key: 'outerCartonNetWeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     outerCartonVolume:{
         key: 'outerCartonVolume',       //计算？？？？
-        type: 'Number'
+        type: 'Number',
     },
     outerCartonGrossWeight:{
         key: 'outerCartonGrossWeight',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     actSkuCartonTotalQty:{              //计算？？？？
         key: 'actSkuCartonTotalQty',
@@ -203,7 +247,11 @@ export default{
     qualifiedSkuCartonTotalQty:{
         key: 'qualifiedSkuCartonTotalQty',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
     },
     unqualifiedSkuCartonTotalQty:{
         key: 'unqualifiedSkuCartonTotalQty',
@@ -216,7 +264,7 @@ export default{
     },
     qualifiedSkuQty:{              //计算？？？？
         key: 'qualifiedSkuQty',
-        type: 'Number'
+        type: 'Number',
     },
     unqualifiedSkuQty:{              //计算？？？？
         key: 'unqualifiedSkuQty',
@@ -224,7 +272,7 @@ export default{
     },
     qualifiedSkuNetWeight:{              //计算？？？？
         key: 'qualifiedSkuNetWeight',
-        type: 'Number'
+        type: 'Number',
     },
     unqualifiedSkuNetWeight:{              //计算？？？？
         key: 'unqualifiedSkuNetWeight',
@@ -232,7 +280,7 @@ export default{
     },
     qualifiedSkuVolume:{              //计算？？？？
         key: 'qualifiedSkuVolume',
-        type: 'Number'
+        type: 'Number',
     },
     unqualifiedSkuVolume:{              //计算？？？？
         key: 'unqualifiedSkuVolume',
@@ -240,7 +288,7 @@ export default{
     },
     qualifiedSkuGrossWeight:{              //计算？？？？
         key: 'qualifiedSkuGrossWeight',
-        type: 'Number'
+        type: 'Number',
     },
     unqualifiedSkuGrossWeight:{              //计算？？？？
         key: 'unqualifiedSkuGrossWeight',
@@ -310,7 +358,11 @@ export default{
     checkOuterCartonQty:{
         key: 'checkOuterCartonQty',
         type: 'Number',
-
+        showType:'input',
+        _rules:{
+            required:true,
+            type:'Number'
+        },
     },
     remark:{
         key: 'remark',

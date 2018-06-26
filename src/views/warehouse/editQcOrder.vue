@@ -11,7 +11,7 @@
             <el-form label-width="190px">
                 <el-row class="speZone">
                     <el-col v-for="v in $db.warehouse.qcOrderDetailBasicInfo" :key="v.key" class="speCol" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
-                        <el-form-item :label="$i.warehouse[v.key]">
+                        <el-form-item :label="$i.warehouse[v.key]" :required="v._rules?v._rules.required:false">
                             <div v-if="v.type==='input'">
                                 <el-input
                                         class="speInput"
@@ -124,7 +124,6 @@
                     class="product-table"
                     v-loading="loadingProductInfoTable"
                     :data="productInfoData"
-                    height="250"
                     border
                     style="width: 100%">
                 <el-table-column
@@ -181,6 +180,9 @@
                         </div>
                         <div v-else-if="v.showType==='pic'">
                             <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload>
+                        </div>
+                        <div v-else-if="v.key==='deliveryDate'">
+                            {{$dateFormat(scope.row[v.key],'yyyy-mm-dd')}}
                         </div>
                         <div v-else>
                             {{scope.row[v.key]}}
@@ -361,8 +363,6 @@
                 qcStatusOption:[],
                 currencyOptions:[],
 
-
-
                 /**
                  * paymentTable data
                  * */
@@ -380,7 +380,6 @@
                 summaryData:{
                     skuQuantity:0
                 },
-
 
                 /**
                  * product info data
@@ -401,8 +400,6 @@
                 productInfoData:[],
                 selectList:[],
 
-
-
                 /**
                  * qcOrder Config
                  * */
@@ -416,7 +413,6 @@
                     serviceFee: 0,
                     surveyor: "",
                 },
-
             }
         },
         methods:{
@@ -450,8 +446,6 @@
                 });
             },
 
-
-
             /**
              * product info表格事件
              * */
@@ -471,6 +465,20 @@
             },
 
             submit(){
+                if(!this.qcDetail.qcMethodDictCode){
+                    return this.$message({
+                        message: this.$i.warehouse.pleaseChooseQcMethod,
+                        type: 'warning'
+                    });
+                }
+
+                _.map(this.productInfoData,v=>{
+                    if(this.$validateForm(v, this.$db.warehouse.qcDetailProductInfo)){
+                        return;
+                    }
+                })
+
+
                 this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
                 this.qcOrderConfig.qcMethodDictCode=this.qcDetail.qcMethodDictCode;
                 this.qcOrderConfig.qcOrderId=this.$route.query.id;
@@ -479,7 +487,7 @@
                 this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
                 this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
 
-                // console.log(this.productInfoData,'productInfoData')
+
                 let allow=true;
                 this.productInfoData.forEach((v,k)=>{
                     if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){

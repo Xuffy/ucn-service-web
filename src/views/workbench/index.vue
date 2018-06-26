@@ -16,13 +16,13 @@
           <el-button type="text">Go set>></el-button>
         </router-link>
       </li>
-      <li v-if="!settingState.categoryInfo && userInfo.userType === 0">
+      <!--<li v-if="!settingState.categoryInfo && userInfo.userType === 0">
         <el-checkbox disabled>{{$i.workbench.settingCategory}}</el-checkbox>
         <br>
         <router-link to="/settings/category">
           <el-button type="text">{{$i.workbench.goSet}}>></el-button>
         </router-link>
-      </li>
+      </li>-->
       <!--<li v-if="!settingState.personalInfo">
         <el-checkbox disabled>{{$i.workbench.settingPersonal}}</el-checkbox>
         <br>
@@ -61,7 +61,8 @@
         <v-table-data :type="4"></v-table-data>
       </el-col>
     </el-row>
-    <!--<v-upload></v-upload>-->
+    <!--<button @click="test">sadas</button>-->
+    <!--<v-upload ref="upload"></v-upload>-->
     <!--<v-import-template ref="importFile" code="PRODUCT_SUPPLIER" biz-code="PRODUCT_SUPPLIER"></v-import-template>-->
     <!--<v-message-board module="workbench" code="workbench" id="123"></v-message-board>-->
   </div>
@@ -115,7 +116,7 @@
         this.settingStateLoading = true;
         this.$ajax.post(this.$apis.USER_CUSTOMER_ISSETUSERINFO, {type: config.CLIENT_TYPE})
           .then(res => {
-            if (!res.categoryInfo || !res.companyInfo || !res.departmentInfo || !res.personalInfo) {
+            if (!res.companyInfo || !res.departmentInfo) {
               this.settingStateShow = true;
               this.layout.paddingRight = '240px'
               this.settingState = res;

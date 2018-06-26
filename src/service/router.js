@@ -42,109 +42,6 @@ export const routerMap = [
       ]
     },
     {
-      path: '/product',
-      component: Layout,
-      meta: {name: $i.router.product},
-      redirect: '/product/sourcing',
-      hidden:true,
-      children: [
-        {
-          path: 'sourcing',
-          name: 'productSourcingOverview',
-          meta: {
-            draft: false,
-            recycleBin: false,
-            log: true,
-            name: $i.router.productSourcingOverview
-          },
-          component: () => import('../views/product/sourcing/sourcing'),
-        },
-        {
-          path: 'sourcingDetail',
-          name: 'productSourcingDetail',
-          hidden: true,
-          meta: {
-            draft: false,
-            recycleBin: false,
-            log: true,
-            name: $i.router.productSourcingDetail
-          },
-          component: () => import('../views/product/sourcing/detail'),
-        },
-        {
-          path: 'bookmark',
-          name: 'productBookmarkOverview',
-          meta: {
-            draft: false,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productBookmarkOverview
-          },
-          component: () => import('../views/product/bookmark/bookmark'),
-        },
-        {
-          path: 'bookmarkDetail',
-          name: 'productBookmarkDetail',
-          hidden: true,
-          meta: {
-            draft: false,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productBookmarkDetail
-          },
-          component: () => import('../views/product/bookmark/detail'),
-        },
-        {
-          path: 'bookmarkManuallyAdd',
-          name: 'productBookmarkManuallyAdd',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productBookmarkManuallyAdd
-          },
-          component: () => import('../views/product/bookmark/manuallyAdd'),
-        },
-        {
-          path: 'recycleBin',
-          name: 'productBookmarkRecycleBin',
-          hidden: true,
-          meta: {
-            draft: false,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productBookmarkRecycleBin
-          },
-          component: () => import('../views/product/bookmark/recycleBin'),
-        },
-
-        {
-          path: 'compare',
-          name: 'productCompareOverview',
-          meta: {
-            draft: false,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productCompareOverview
-          },
-          component: () => import('../views/product/compare/overview'),
-        },
-        {
-          path: 'compareDetail/:type',
-          name: 'productCompareDetail',
-          hidden: true,
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-            name: $i.router.productCompareDetail
-          },
-          component: () => import('../views/product/compare/compare'),
-        },
-      ]
-    },
-    {
       path: '/payment',
       meta: {name: $i.router.payment},
       component: Layout,
@@ -248,11 +145,11 @@ export const routerMap = [
           path: 'department',
           name: 'settingsDepartment',
           meta: {
-          auth: [0],
+            auth: [0],
             draft: true,
             recycleBin: true,
             log: true,
-          auth: [0],
+            auth: [0],
             name: $i.router.settingsDepartment
           },
           component: () => import('../views/settings/departmentSetting.vue')
@@ -286,7 +183,7 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-          auth: [0],
+            auth: [0],
             name: $i.router.settingsCompany
           },
           component: () => import('../views/settings/companyInfo')
@@ -422,6 +319,7 @@ export const routerMap = [
         {
           path: 'qcOverview',
           name: 'qc Overview',
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -433,7 +331,7 @@ export const routerMap = [
         {
           path: 'editQc',
           name: 'edit qc',
-          hidden:true,
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -445,7 +343,7 @@ export const routerMap = [
         {
           path: 'qcDetail',
           name: 'qc detail',
-          hidden:true,
+          hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
@@ -486,7 +384,7 @@ export const routerMap = [
           },
           component: () => import('../views/customer/customerDetail.vue')
         },
-          {
+        {
           path: 'recycle',
           name: 'customerRecycleBinDetail',
           meta: {
