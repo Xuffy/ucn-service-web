@@ -11,7 +11,7 @@
             <el-form label-width="190px">
                 <el-row class="speZone">
                     <el-col v-for="v in $db.warehouse.qcOrderDetailBasicInfo" :key="v.key" class="speCol" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
-                        <el-form-item :label="$i.warehouse[v.key]">
+                        <el-form-item :label="$i.warehouse[v.key]" :required="v._rules?v._rules.required:false">
                             <div v-if="v.type==='input'">
                                 <el-input
                                         class="speInput"
@@ -124,7 +124,6 @@
                     class="product-table"
                     v-loading="loadingProductInfoTable"
                     :data="productInfoData"
-                    height="250"
                     border
                     style="width: 100%">
                 <el-table-column
@@ -361,8 +360,6 @@
                 qcStatusOption:[],
                 currencyOptions:[],
 
-
-
                 /**
                  * paymentTable data
                  * */
@@ -380,7 +377,6 @@
                 summaryData:{
                     skuQuantity:0
                 },
-
 
                 /**
                  * product info data
@@ -401,8 +397,6 @@
                 productInfoData:[],
                 selectList:[],
 
-
-
                 /**
                  * qcOrder Config
                  * */
@@ -416,7 +410,6 @@
                     serviceFee: 0,
                     surveyor: "",
                 },
-
             }
         },
         methods:{
@@ -450,8 +443,6 @@
                 });
             },
 
-
-
             /**
              * product info表格事件
              * */
@@ -471,85 +462,103 @@
             },
 
             submit(){
-                this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
-                this.qcOrderConfig.qcMethodDictCode=this.qcDetail.qcMethodDictCode;
-                this.qcOrderConfig.qcOrderId=this.$route.query.id;
-                this.qcOrderConfig.qcOrderNo=this.qcDetail.qcOrderNo;
-                this.qcOrderConfig.qcTypeDictCode=this.qcDetail.qcTypeDictCode;
-                this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
-                this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
-
-                // console.log(this.productInfoData,'productInfoData')
-                let allow=true;
-                this.productInfoData.forEach((v,k)=>{
-                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){
-                        if(!v.skuQcResultDictCode){
-                            allow=false;
-                        }
-                    }
-                });
-                if(!allow){
+                if(!this.qcDetail.qcMethodDictCode){
                     return this.$message({
-                        message: this.$i.warehouse.mustHaveQcResult,
+                        message: this.$i.warehouse.pleaseChooseQcMethod,
                         type: 'warning'
                     });
                 }
 
-                this.qcOrderConfig.qcResultDetailParams=[];
-                this.productInfoData.forEach(v=>{
-                    let skuQcResultDictCode;
-                    if(v.skuQcResultDictCode){
-                        skuQcResultDictCode=v.skuQcResultDictCode;
-                    }else{
-                        skuQcResultDictCode='WAIT_FOR_QC';
+                console.log(this.productInfoData,'productInfoData')
+                _.map(this.productInfoData,v=>{
+                    if(this.$validateForm(v, this.$db.warehouse.qcDetailProductInfo)){
+                        return;
                     }
+                })
 
-                    this.qcOrderConfig.qcResultDetailParams.push({
-                        actInnerCartonSkuQty: v.actInnerCartonSkuQty,
-                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
-                        actOuterCartonSkuQty: v.actOuterCartonSkuQty,
-                        checkOuterCartonQty: v.checkOuterCartonQty,
-                        innerCartonGrossWeight: v.innerCartonGrossWeight,
-                        innerCartonHeight: v.innerCartonHeight,
-                        innerCartonLength: v.innerCartonLength,
-                        innerCartonNetWeight: v.innerCartonNetWeight,
-                        innerCartonVolume: v.innerCartonVolume,
-                        innerCartonWidth: v.innerCartonWidth,
-                        innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode,
-                        outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode,
-                        outerCartonGrossWeight: v.outerCartonGrossWeight,
-                        outerCartonHeight: v.outerCartonHeight,
-                        outerCartonLength: v.outerCartonHeight,
-                        outerCartonNetWeight: v.outerCartonNetWeight,
-                        outerCartonWidth: v.outerCartonWidth,
-                        qcOrderDetailId: v.id,
-                        qcPic: v.qcPic,
-                        qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
-                        remark: v.remark,
-                        shippingMarkResultDictCode: v.shippingMarkResultDictCode,
-                        skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
-                        skuLabelResultDictCode: v.skuLabelResultDictCode,
-                        skuQcResultDictCode: skuQcResultDictCode,
-                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
-                        unqualifiedType: v.unqualifiedType
-                    });
-                });
 
-                _.map(this.qcOrderConfig.qcResultDetailParams,(v,k)=>{
-                    v.qcPics=this.$refs['picUpload'+k][0].getFiles();
-                });
 
-                this.disableClickSubmit=true;
-                this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                    this.disableClickSubmit=false;
-                    this.$message({
-                        message: this.$i.warehouse.submitSuccess,
-                        type: 'success'
-                    });
-                    this.$router.push('/warehouse/overview');
-                }).catch(err=>{
-                    this.disableClickSubmit=false;
-                });
+
+
+                // this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
+                // this.qcOrderConfig.qcMethodDictCode=this.qcDetail.qcMethodDictCode;
+                // this.qcOrderConfig.qcOrderId=this.$route.query.id;
+                // this.qcOrderConfig.qcOrderNo=this.qcDetail.qcOrderNo;
+                // this.qcOrderConfig.qcTypeDictCode=this.qcDetail.qcTypeDictCode;
+                // this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
+                // this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
+
+
+                // let allow=true;
+                // this.productInfoData.forEach((v,k)=>{
+                //     if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){
+                //         if(!v.skuQcResultDictCode){
+                //             allow=false;
+                //         }
+                //     }
+                // });
+                // if(!allow){
+                //     return this.$message({
+                //         message: this.$i.warehouse.mustHaveQcResult,
+                //         type: 'warning'
+                //     });
+                // }
+                //
+                // this.qcOrderConfig.qcResultDetailParams=[];
+                // this.productInfoData.forEach(v=>{
+                //     let skuQcResultDictCode;
+                //     if(v.skuQcResultDictCode){
+                //         skuQcResultDictCode=v.skuQcResultDictCode;
+                //     }else{
+                //         skuQcResultDictCode='WAIT_FOR_QC';
+                //     }
+                //
+                //     this.qcOrderConfig.qcResultDetailParams.push({
+                //         actInnerCartonSkuQty: v.actInnerCartonSkuQty,
+                //         actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
+                //         actOuterCartonSkuQty: v.actOuterCartonSkuQty,
+                //         checkOuterCartonQty: v.checkOuterCartonQty,
+                //         innerCartonGrossWeight: v.innerCartonGrossWeight,
+                //         innerCartonHeight: v.innerCartonHeight,
+                //         innerCartonLength: v.innerCartonLength,
+                //         innerCartonNetWeight: v.innerCartonNetWeight,
+                //         innerCartonVolume: v.innerCartonVolume,
+                //         innerCartonWidth: v.innerCartonWidth,
+                //         innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode,
+                //         outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode,
+                //         outerCartonGrossWeight: v.outerCartonGrossWeight,
+                //         outerCartonHeight: v.outerCartonHeight,
+                //         outerCartonLength: v.outerCartonHeight,
+                //         outerCartonNetWeight: v.outerCartonNetWeight,
+                //         outerCartonWidth: v.outerCartonWidth,
+                //         qcOrderDetailId: v.id,
+                //         qcPic: v.qcPic,
+                //         qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
+                //         remark: v.remark,
+                //         shippingMarkResultDictCode: v.shippingMarkResultDictCode,
+                //         skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
+                //         skuLabelResultDictCode: v.skuLabelResultDictCode,
+                //         skuQcResultDictCode: skuQcResultDictCode,
+                //         unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
+                //         unqualifiedType: v.unqualifiedType
+                //     });
+                // });
+                //
+                // _.map(this.qcOrderConfig.qcResultDetailParams,(v,k)=>{
+                //     v.qcPics=this.$refs['picUpload'+k][0].getFiles();
+                // });
+                //
+                // this.disableClickSubmit=true;
+                // this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
+                //     this.disableClickSubmit=false;
+                //     this.$message({
+                //         message: this.$i.warehouse.submitSuccess,
+                //         type: 'success'
+                //     });
+                //     this.$router.push('/warehouse/overview');
+                // }).catch(err=>{
+                //     this.disableClickSubmit=false;
+                // });
             },
 
             cancel(){
