@@ -45,19 +45,19 @@ export default {
   password:{
     _rules:{
       required:true,
-      min:6,
+      // minLength:6,
+      // length:20
     }
   },
   newPassword:{
     _rules:{
       required:true,
-      min:6,
+      minLength:6
     }
   },
   comfirmNewPassword:{
     _rules:{
       required:true,
-      min:6,
     }
   },
 

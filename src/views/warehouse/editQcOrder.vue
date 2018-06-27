@@ -181,6 +181,9 @@
                         <div v-else-if="v.showType==='pic'">
                             <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload>
                         </div>
+                        <div v-else-if="v.key==='deliveryDate'">
+                            {{$dateFormat(scope.row[v.key],'yyyy-mm-dd')}}
+                        </div>
                         <div v-else>
                             {{scope.row[v.key]}}
                         </div>
@@ -469,7 +472,6 @@
                     });
                 }
 
-                console.log(this.productInfoData,'productInfoData')
                 _.map(this.productInfoData,v=>{
                     if(this.$validateForm(v, this.$db.warehouse.qcDetailProductInfo)){
                         return;
@@ -477,88 +479,84 @@
                 })
 
 
+                this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
+                this.qcOrderConfig.qcMethodDictCode=this.qcDetail.qcMethodDictCode;
+                this.qcOrderConfig.qcOrderId=this.$route.query.id;
+                this.qcOrderConfig.qcOrderNo=this.qcDetail.qcOrderNo;
+                this.qcOrderConfig.qcTypeDictCode=this.qcDetail.qcTypeDictCode;
+                this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
+                this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
 
+                let allow=true;
+                this.productInfoData.forEach((v,k)=>{
+                    if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){
+                        if(!v.skuQcResultDictCode){
+                            allow=false;
+                        }
+                    }
+                });
+                if(!allow){
+                    return this.$message({
+                        message: this.$i.warehouse.mustHaveQcResult,
+                        type: 'warning'
+                    });
+                }
 
+                this.qcOrderConfig.qcResultDetailParams=[];
+                this.productInfoData.forEach(v=>{
+                    let skuQcResultDictCode;
+                    if(v.skuQcResultDictCode){
+                        skuQcResultDictCode=v.skuQcResultDictCode;
+                    }else{
+                        skuQcResultDictCode='WAIT_FOR_QC';
+                    }
 
-                // this.qcOrderConfig.qcDate=this.qcDetail.qcDate;
-                // this.qcOrderConfig.qcMethodDictCode=this.qcDetail.qcMethodDictCode;
-                // this.qcOrderConfig.qcOrderId=this.$route.query.id;
-                // this.qcOrderConfig.qcOrderNo=this.qcDetail.qcOrderNo;
-                // this.qcOrderConfig.qcTypeDictCode=this.qcDetail.qcTypeDictCode;
-                // this.qcOrderConfig.surveyor=this.qcDetail.surveyor;
-                // this.qcOrderConfig.serviceFee=this.qcDetail.serviceFee;
+                    this.qcOrderConfig.qcResultDetailParams.push({
+                        actInnerCartonSkuQty: v.actInnerCartonSkuQty,
+                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
+                        actOuterCartonSkuQty: v.actOuterCartonSkuQty,
+                        checkOuterCartonQty: v.checkOuterCartonQty,
+                        innerCartonGrossWeight: v.innerCartonGrossWeight,
+                        innerCartonHeight: v.innerCartonHeight,
+                        innerCartonLength: v.innerCartonLength,
+                        innerCartonNetWeight: v.innerCartonNetWeight,
+                        innerCartonVolume: v.innerCartonVolume,
+                        innerCartonWidth: v.innerCartonWidth,
+                        innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode,
+                        outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode,
+                        outerCartonGrossWeight: v.outerCartonGrossWeight,
+                        outerCartonHeight: v.outerCartonHeight,
+                        outerCartonLength: v.outerCartonHeight,
+                        outerCartonNetWeight: v.outerCartonNetWeight,
+                        outerCartonWidth: v.outerCartonWidth,
+                        qcOrderDetailId: v.id,
+                        qcPic: v.qcPic,
+                        qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
+                        remark: v.remark,
+                        shippingMarkResultDictCode: v.shippingMarkResultDictCode,
+                        skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
+                        skuLabelResultDictCode: v.skuLabelResultDictCode,
+                        skuQcResultDictCode: skuQcResultDictCode,
+                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
+                        unqualifiedType: v.unqualifiedType
+                    });
+                });
 
+                _.map(this.qcOrderConfig.qcResultDetailParams,(v,k)=>{
+                    v.qcPics=this.$refs['picUpload'+k][0].getFiles();
+                });
 
-                // let allow=true;
-                // this.productInfoData.forEach((v,k)=>{
-                //     if(v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs['picUpload'+k][0].getFiles().length>0){
-                //         if(!v.skuQcResultDictCode){
-                //             allow=false;
-                //         }
-                //     }
-                // });
-                // if(!allow){
-                //     return this.$message({
-                //         message: this.$i.warehouse.mustHaveQcResult,
-                //         type: 'warning'
-                //     });
-                // }
-                //
-                // this.qcOrderConfig.qcResultDetailParams=[];
-                // this.productInfoData.forEach(v=>{
-                //     let skuQcResultDictCode;
-                //     if(v.skuQcResultDictCode){
-                //         skuQcResultDictCode=v.skuQcResultDictCode;
-                //     }else{
-                //         skuQcResultDictCode='WAIT_FOR_QC';
-                //     }
-                //
-                //     this.qcOrderConfig.qcResultDetailParams.push({
-                //         actInnerCartonSkuQty: v.actInnerCartonSkuQty,
-                //         actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
-                //         actOuterCartonSkuQty: v.actOuterCartonSkuQty,
-                //         checkOuterCartonQty: v.checkOuterCartonQty,
-                //         innerCartonGrossWeight: v.innerCartonGrossWeight,
-                //         innerCartonHeight: v.innerCartonHeight,
-                //         innerCartonLength: v.innerCartonLength,
-                //         innerCartonNetWeight: v.innerCartonNetWeight,
-                //         innerCartonVolume: v.innerCartonVolume,
-                //         innerCartonWidth: v.innerCartonWidth,
-                //         innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode,
-                //         outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode,
-                //         outerCartonGrossWeight: v.outerCartonGrossWeight,
-                //         outerCartonHeight: v.outerCartonHeight,
-                //         outerCartonLength: v.outerCartonHeight,
-                //         outerCartonNetWeight: v.outerCartonNetWeight,
-                //         outerCartonWidth: v.outerCartonWidth,
-                //         qcOrderDetailId: v.id,
-                //         qcPic: v.qcPic,
-                //         qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
-                //         remark: v.remark,
-                //         shippingMarkResultDictCode: v.shippingMarkResultDictCode,
-                //         skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
-                //         skuLabelResultDictCode: v.skuLabelResultDictCode,
-                //         skuQcResultDictCode: skuQcResultDictCode,
-                //         unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
-                //         unqualifiedType: v.unqualifiedType
-                //     });
-                // });
-                //
-                // _.map(this.qcOrderConfig.qcResultDetailParams,(v,k)=>{
-                //     v.qcPics=this.$refs['picUpload'+k][0].getFiles();
-                // });
-                //
-                // this.disableClickSubmit=true;
-                // this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
-                //     this.disableClickSubmit=false;
-                //     this.$message({
-                //         message: this.$i.warehouse.submitSuccess,
-                //         type: 'success'
-                //     });
-                //     this.$router.push('/warehouse/overview');
-                // }).catch(err=>{
-                //     this.disableClickSubmit=false;
-                // });
+                this.disableClickSubmit=true;
+                this.$ajax.post(this.$apis.save_serviceQcOrder,this.qcOrderConfig).then(res=>{
+                    this.disableClickSubmit=false;
+                    this.$message({
+                        message: this.$i.warehouse.submitSuccess,
+                        type: 'success'
+                    });
+                    this.$router.push('/warehouse/overview');
+                }).catch(err=>{
+                    this.disableClickSubmit=false;
+                });
             },
 
             cancel(){

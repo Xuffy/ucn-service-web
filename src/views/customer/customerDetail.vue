@@ -7,19 +7,44 @@
             </div>
             <div class="detail">
                  <el-form  label-width="190px">
-                    <el-row>
-                        <el-row class="right">
-                            <el-col class="list" :xs="24" :sm="12" :md="8" :lg="8" :xl="8"
-                                   v-for='(item,index) in $db.supplier.detail'
-                                   :key='index'
-                                   >
-                                    <el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">
-                                       {{basicDate[item.key]}}
-                                    </el-form-item>
-                            </el-col>
-                        </el-row>
+                   <el-row>
+                     <el-col :span="6">
 
-                </el-row>
+                     </el-col>
+                     <el-col :span="18">
+                       <el-form>
+                         <el-row>
+                           <el-col
+                           v-for='(item,index) in $db.supplier.detail'
+                           :key='index'
+                           :xs="24" :sm="item.fullLine?24:12" :md="item.fullLine?24:12" :lg="item.fullLine?24:12" :xl="item.fullLine?24:12"
+                           >
+                           <el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">
+                           {{basicDate[item.key]}}
+                           </el-form-item>
+                           </el-col>
+                         </el-row>
+                       </el-form>
+                     </el-col>
+                   </el-row>
+                    <!--<el-row>-->
+                        <!--<el-col :span="6">-->
+                        <!--</el-col>-->
+                      <!--<el-col :span="18">-->
+                        <!--<el-form label-width="190px">-->
+                          <!--<el-row>-->
+                            <!--<el-col-->
+                                    <!--v-for='(item,index) in $db.supplier.detail'-->
+                                    <!--:key='index'-->
+                            <!--&gt;-->
+                              <!--<el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">-->
+                                <!--{{basicDate[item.key]}}-->
+                              <!--</el-form-item>-->
+                            <!--</el-col>-->
+                          <!--</el-row>-->
+                        <!--</el-form>-->
+                      <!--</el-col>-->
+                <!--</el-row>-->
                   </el-form>
                 <div class="btns">
                    <!--<el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>-->

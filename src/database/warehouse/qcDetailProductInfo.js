@@ -265,10 +265,6 @@ export default{
     qualifiedSkuQty:{              //计算？？？？
         key: 'qualifiedSkuQty',
         type: 'Number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
     },
     unqualifiedSkuQty:{              //计算？？？？
         key: 'unqualifiedSkuQty',
@@ -277,10 +273,6 @@ export default{
     qualifiedSkuNetWeight:{              //计算？？？？
         key: 'qualifiedSkuNetWeight',
         type: 'Number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
     },
     unqualifiedSkuNetWeight:{              //计算？？？？
         key: 'unqualifiedSkuNetWeight',
@@ -289,10 +281,6 @@ export default{
     qualifiedSkuVolume:{              //计算？？？？
         key: 'qualifiedSkuVolume',
         type: 'Number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
     },
     unqualifiedSkuVolume:{              //计算？？？？
         key: 'unqualifiedSkuVolume',
@@ -301,10 +289,6 @@ export default{
     qualifiedSkuGrossWeight:{              //计算？？？？
         key: 'qualifiedSkuGrossWeight',
         type: 'Number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
     },
     unqualifiedSkuGrossWeight:{              //计算？？？？
         key: 'unqualifiedSkuGrossWeight',
