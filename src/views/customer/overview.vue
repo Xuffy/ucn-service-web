@@ -219,8 +219,8 @@
                         this.tabData = this.$getDB(this.$db.supplier.overviewtable, res.datas, e=>{
                             let country,incoterm,type;
                             country = _.findWhere(this.options.country, {code: e.country.value}) || {};
-                            incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value}) || {};
-                            type = _.findWhere(this.options.type, {code: e.type.value}) || {};
+                            incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value+''}) || {};
+                            type = _.findWhere(this.options.type, {code: e.type.value+''}) || {};
                             e.country._value = country.name || '';
                             e.incoterm._value = incoterm.name || '';
                             e.type._value = type.name || '';

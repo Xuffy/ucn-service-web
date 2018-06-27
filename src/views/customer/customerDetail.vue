@@ -8,16 +8,16 @@
             <div class="detail">
                  <el-form  label-width="190px">
                    <el-row>
-                     <el-col :span="6">
-
+                     <el-col :span="4">
+                          <v-image :src="basicDate.logo"/>
                      </el-col>
-                     <el-col :span="18">
+                     <el-col :span="20">
                        <el-form>
                          <el-row>
                            <el-col
                            v-for='(item,index) in $db.supplier.detail'
                            :key='index'
-                           :xs="24" :sm="item.fullLine?24:12" :md="item.fullLine?24:12" :lg="item.fullLine?24:12" :xl="item.fullLine?24:12"
+                           :xs="24" :sm="item.fullLine?24:8" :md="item.fullLine?24:8" :lg="item.fullLine?24:8" :xl="item.fullLine?24:8"
                            >
                            <el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">
                            {{basicDate[item.key]}}
@@ -105,7 +105,7 @@
     import VRemark from './remark'
     import VAttachment from './attachment'
     import {
-        VTable
+        VTable, VImage
     } from '@/components/index';
 
     export default {
@@ -114,7 +114,8 @@
             VTable,
             VCompareList,
             VRemark,
-            VAttachment
+            VAttachment,
+            VImage
         },
         data() {
             return {
@@ -131,6 +132,12 @@
                 inquiry:[],
                 tradeHistory:[],
                 remarkData: [],
+                incoterm:[],
+                payment:[],
+                type:[],
+                country:[],
+                currency:[],
+                sex:[],
                 compareConfig: {
                     showCompareList: false, //是否显示比较列表
                 },
@@ -163,9 +170,18 @@
             getCountryAll(){
                 this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
                 this.country = res
+                console.log(this.country)
                 }).catch(err=>{
                 console.log(err)
                 });
+            },
+             //获取币种
+            getCurrency(){
+              this.$ajax.get(this.$apis.get_currency_all).then(res=>{
+                this.currency = res
+              }).catch(err=>{
+                console.log(err)
+              });
             },
              handleClick(tab, event) {
               switch(Number(tab.index)){
@@ -204,9 +220,6 @@
             },
             modifyRemark(e){
                var result = {}
-              // for(const i in e){
-              //   result[e[i].key]= e[i].value
-              // }
                result.remark = e.remark.value;
                result.version = e.version.value;
                result.id = e.id.value;
@@ -303,6 +316,17 @@
                         console.log(res)
                     });
             },
+            //获取字典
+            getCodePart(){
+              this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","CUSTOMER_TYPE","EL_IS","SEX"]).then(res=>{
+                this.payment = _.findWhere(res, {'code': 'PMT'}).codes;
+                this.incoterm = _.findWhere(res, {'code': 'ITM'}).codes;
+                this.type = _.findWhere(res, {'code': 'CUSTOMER_TYPE'}).codes;
+                this.sex = _.findWhere(res, {'code': 'SEX'}).codes;
+              }).catch(err=>{
+                console.log(err)
+              });
+            },
             //..................获取数据
             get_data() {
                 this.loading = true
@@ -312,15 +336,31 @@
                     .then(res => {
                 this.code = res.code
                 this.basicDate = res;
+                let country,type,payment,currency;
+                country = _.findWhere(this.country, {code: this.basicDate.country}) || {};
+                type = _.findWhere(this.type, {code: (this.basicDate.type)+''}) || {};
+                payment = _.findWhere(this.payment, {code: (this.basicDate.payment)+''}) || {};
+                currency = _.findWhere(this.currency, {code: this.basicDate.currency}) || {};
+                this.basicDate.type = type.name || '';
+                this.basicDate.country = country.name || '';
+                this.basicDate.payment = payment.name || '';
+                this.basicDate.currency = currency.name || '';
+            
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
                     let country,receiveCountry;
                     country = _.findWhere(this.country, {code: e.country.value}) || {};
                     receiveCountry = _.findWhere(this.country, {code: e.receiveCountry.value}) || {};
                     e.country._value = country.name || '';
                     e.receiveCountry._value = receiveCountry.name || '';
+                    console.log(this.country)
                     return e;
                 });
-                this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats);
+                this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats,e => {
+                    let gender;
+                    gender = _.findWhere(this.sex, {code: (e.gender.value)+''}) || {};
+                    e.gender._value = gender.name || '';
+                    return e;
+                });
                 this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);
                 this.loading = false
                     })
@@ -347,6 +387,8 @@
             this.get_data();
             this.getListRemark();
             this.getCountryAll();
+            this.getCodePart();
+            this.getCurrency();
             // this.setRecycleBin({
             //     name: 'customerRecycleBinDetail',
             //     show: true
