@@ -303,7 +303,7 @@ export const routerMap = [
       meta: {
         name: '仓库'
       },
-      noDropdown: false,
+      noDropdown: true,
       children: [
         {
           path: 'overview',
