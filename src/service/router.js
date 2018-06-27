@@ -145,7 +145,6 @@ export const routerMap = [
           path: 'department',
           name: 'settingsDepartment',
           meta: {
-            auth: [0],
             draft: true,
             recycleBin: true,
             log: true,
@@ -257,7 +256,7 @@ export const routerMap = [
     {
       path: '/draft',
       component: Layout,
-      meta: {name: 'Draft'},
+      meta: {name: $i.router.draft},
       redirect: '/draft/index',
       noDropdown: true,
       hidden: true,
@@ -278,7 +277,7 @@ export const routerMap = [
     {
       path: '/recycle',
       component: Layout,
-      meta: {name: 'Recycle Bin'},
+      meta: {name: $i.router.recycle},
       redirect: '/recycle/index',
       noDropdown: true,
       hidden: true,
@@ -300,9 +299,7 @@ export const routerMap = [
       component: Layout,
       redirect: '/warehouse/overview',
       name: 'warehouse',
-      meta: {
-        name: '仓库'
-      },
+      meta: {name: $i.router.warehouse},
       noDropdown: true,
       children: [
         {
@@ -312,19 +309,19 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-            name: '货单预览'
+            name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
         },
         {
           path: 'qcOverview',
-          name: 'qc Overview',
+          name: 'QC Overview',
           hidden: true,
           meta: {
             draft: true,
             recycleBin: true,
             log: true,
-            name: '货单预览'
+            name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
         },
@@ -336,7 +333,7 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-            name: '编辑'
+            name: $i.router.editQc
           },
           component: () => import('../views/warehouse/editQcOrder'),
         },
@@ -348,7 +345,7 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-            name: '详情'
+            name: $i.router.qcDetail
           },
           component: () => import('../views/warehouse/QCOrderDetail'),
         },
@@ -359,7 +356,7 @@ export const routerMap = [
 
       path: '/customer',
       component: Layout,
-      meta: {name: 'customer'},
+      meta: {name:$i.router.customer},
       redirect: '/customer/overview',
       noDropdown: true,
       hidden: false,

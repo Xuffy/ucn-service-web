@@ -1,100 +1,93 @@
 <template>
     <div class="select-wrap">
         <div class="select" v-if="selectHide">
-            <el-select v-model="keyType" placeholder="select" :clearable="false">
+            <el-select v-model="keyObject" value-key="id" placeholder="select" :clearable="false">
                 <el-option
                     v-for="item in options"
                     :key="item.id"
                     :label="item.label"
-                    :value="item.id" 
-                />
+                    :value="item"/>
             </el-select>
         </div>
         <div class="search">
-            <el-input 
-                v-model="keyWord" 
-                clearable 
-                placeholder="search" 
-                style="max-width:150px;" 
-                @keyup.enter.native="inputEnter" 
-            />
-            <el-button 
-                type="primary" 
-                slot="append" 
-                icon="el-icon-search" 
-                @click="inputEnter" 
-                :loading="searchLoad" 
-            />
+            <el-date-picker v-if="keyObject && keyObject.type === 'dateRange'"
+                v-model="keyObject.value"
+                type="daterange"
+                range-separator="-"
+                start-placeholder="Start date"
+                end-placeholder="End date">
+            </el-date-picker>
+            <el-input v-else
+                v-model="keyObject.value"
+                clearable
+                placeholder="search"
+                :style="{width:width+'px'}"
+                @keyup.enter.native="inputEnter"/>
+            <el-button
+                type="primary"
+                slot="append"
+                icon="el-icon-search"
+                @click="inputEnter"
+                :loading="searchLoad"/>
         </div>
     </div>
 </template>
 <script>
-    export default {
-        name:'selectSearch',
-        data() {
-            return {
-                keyWord:''
-            }
+export default {
+    name: 'selectSearch',
+    data() {
+        return {
+            keyObject: null
+        }
+    },
+    props: {
+        options: {
+            type: Array,
+            default: []
         },
-        props: {
-            options: {
-                type: Array,
-                default: () => {
-                    return [];
+        selectHide: {
+            type: Boolean,
+            default: true
+        },
+        searchLoad: {
+            type: Boolean,
+            default: false
+        },
+        value: {
+            type: [String, Number],
+            default: ''
+        },
+        width:{
+            type: Number,
+            default: 150
+        }
+    },
+    created () {
+        this.keyObject = this.options.filter(o => o.id === this.value)[0] || {};
+    },
+    methods: {
+        inputEnter() {
+            let operatorFilters = [];
+            if (this.keyObject.id && this.keyObject.value) {
+                let value;
+                if (this.keyObject.type === 'dateRange') {
+                    value = {start: this.keyObject.value[0].getTime(), end: this.keyObject.value[1].getTime()};
+                } else {
+                    value = this.keyObject.value;
                 }
-            },
-            selectHide: {
-                type: Boolean,
-                default: true
-            },
-            searchLoad: {
-                type: Boolean,
-                default: false
-            },
-            value: {
-                type: [String, Number],
-                default: ''
+                operatorFilters.push({property: this.keyObject.id, value, operator: this.keyObject.operator || '='});
             }
-        },
-        computed: {
-            keyType: {
-                get() {
-                    return this.value;
-                },
-                set(val) {
-                    this.$emit('input', val);
-                }
-            }
-        },
-        methods: {
-            inputEnter() {
-                this.$emit('inputEnter', {
-                    key: this.keyWord,
-                    keyType: this.keyType
-                });
-            }
+            this.$emit('inputEnter', this.keyObject, operatorFilters);
         }
     }
+}
 </script>
-<style scoped>
-    .select-wrap .search {
-        display:flex;
-    }
-    .select-wrap .search >>> input {
-        border-right:none;
-        border-radius:5px 0 0 5px;
-    }
-    .select-wrap .search >>> button {
-        border-radius:0 5px 5px 0;
-    }
-</style>
 
 <style lang="less" scoped>
     .select-wrap {
         display:flex;
         align-items:center;
         .select {
-            /*width: 110px;*/
             margin-right:5px;
         }
         .set {
