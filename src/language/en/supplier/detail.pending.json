@@ -45,7 +45,7 @@
   "totalNetWeight": "Total N.W.",
   "totalGrossWeight": "Total G.W.",
   "totalVolume": "Total Volume",
-  "inquiryNumber": "Inquiry number",
+  "inquiryNumber": "Quotation No",
   "inquiryDate": "Inquiry Date",
   "departurePort": "Departure Port",
   "destinationPort": "Destination Port",
@@ -109,5 +109,7 @@
   "beneficiaryAccount": "Beneficiary Account",
   "accountInfo": "Account Info",
   "tradeHistory": "Trade History",
-  "inquiryHistory": "Inquiry History"
+  "inquiryHistory": "Inquiry History",
+  "recentTransactionDate": "Recent transaction date",
+  "receiverAddress1": "receiver Address1"
 }

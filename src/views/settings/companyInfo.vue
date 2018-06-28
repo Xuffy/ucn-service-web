@@ -225,17 +225,25 @@
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-form-item :label="$i.setting.department +'：'">
-              <el-input size="mini" v-model="contactData.deptId" placeholder="请输入内容"></el-input>
+                <el-select  v-model="contactData.deptId" placeholder="请选择" style="width:100%" >
+                  <el-option
+                    v-for="item in department"
+                    :key="item.deptId"
+                    :label="item.deptName"
+                    :value="item.deptId"
+                    style="width:100%">
+                  </el-option>
+                </el-select>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-form-item  :label="$i.setting.gender +'：'">
               <el-select v-model="contactData.gender" placeholder="please input" style="width: 230px">
                 <el-option
-                  v-for="item in genderOptions"
-                  :key="item.key"
-                  :label="item.label"
-                  :value="item.key"
+                  v-for="item in sex"
+                  :key="item.code"
+                  :label="item.name"
+                  :value="item.code"
                   style="width: 230px">
                 </el-option>
               </el-select>
@@ -391,6 +399,7 @@
         isModifyAccount:false,
         isModifyContact:false,
         options:{},
+        sex:[],
         department:[],
         currencyList:[]
       }
@@ -408,11 +417,14 @@
               return e;
           });
           this.contactDatas = this.$getDB(this.$db.setting.servicerContact, res.concats, e => {
-            let gender;
-            gender = _.findWhere(this.genderOptions, {code: e.gender.value}) || {};
-            e.gender._value = gender.label || '';
+            let gender,deptId;
+            gender = _.findWhere(this.sex, {code: (e.gender.value)+''}) || {};
+            deptId = _.findWhere(this.department, {deptId: e.deptId.value}) || {};
+            e.gender._value = gender.name || '';
+            e.deptId._value = deptId.deptName || '';
             return e;
           });
+          
           this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address);
           res.exportLicense ? res.exportLicense = 'YES' : res.exportLicense = 'NO'
           this.companyInfo=res;
@@ -430,11 +442,12 @@
       },
       //获取字典
       getCodePart(){
-        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","CUSTOMER_TYPE","EL_IS"]).then(res=>{
+        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","CUSTOMER_TYPE","EL_IS","SEX"]).then(res=>{
           this.options.payment = _.findWhere(res, {'code': 'PMT'}).codes;
           this.options.incoterm = _.findWhere(res, {'code': 'ITM'}).codes;
           this.options.type = _.findWhere(res, {'code': 'CUSTOMER_TYPE'}).codes;
           this.options.exportLicense = _.findWhere(res, {'code': 'EL_IS'}).codes;
+          this.sex = _.findWhere(res, {'code': 'SEX'}).codes;
         }).catch(err=>{
           console.log(err)
         });
@@ -771,23 +784,31 @@
           type: "ATTACHMENT",
           urls: this.$refs.uploadAttachment.getFiles()
         };
-        if (this.$refs.uploadAttachment.getFiles().length === 1){
-          this.$ajax.post(this.$apis.post_servicer_purchase_upload,uploadParams).then(res=>{
-            this.getWholeData();
-            this.$message({
-              message: '上传成功',
-              type: 'success'
-            });
-          })
+        if (this.$refs.uploadAttachment.getFiles().length !== 0){
+          if (this.$refs.uploadAttachment.getFiles().length === 1){
+            this.$ajax.post(this.$apis.post_oss_company_upload,uploadParams).then(res=>{
+              this.$message({
+                message: '上传成功',
+                type: 'success'
+              });
+              this.getWholeData();
+            })
 
+          }else{
+            this.$ajax.post(this.$apis.post_oss_company_batchUpload,batchUploadParams).then(res=>{
+              this.$message({
+                message: '上传成功',
+                type: 'success'
+              });
+              this.getWholeData();
+            })
+          }
         }else{
-          this.$ajax.post(this.$apis.post_servicer_purchase_batchUpload,batchUploadParams).then(res=>{
-            this.getWholeData();
-            this.$message({
-              message: '上传成功',
-              type: 'success'
-            });
-          })
+          this.$message({
+            message: '请选择上传文件',
+            type: 'warning'
+          });
+          return false;
         }
       },
     },

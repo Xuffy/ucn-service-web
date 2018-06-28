@@ -170,7 +170,6 @@
             getCountryAll(){
                 this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
                 this.country = res
-                console.log(this.country)
                 }).catch(err=>{
                 console.log(err)
                 });
@@ -347,13 +346,20 @@
                 this.basicDate.currency = currency.name || '';
             
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
-                    let country,receiveCountry;
-                    country = _.findWhere(this.country, {code: e.country.value}) || {};
-                    receiveCountry = _.findWhere(this.country, {code: e.receiveCountry.value}) || {};
-                    e.country._value = country.name || '';
-                    e.receiveCountry._value = receiveCountry.name || '';
-                    console.log(this.country)
-                    return e;
+                  let country,receiveCountry;
+                  country = _.findWhere(this.country, {code: e.country.value}) || {};
+                  receiveCountry = _.findWhere(this.country, {code: e.receiveCountry.value}) || {};
+                  e.country._value = country.name || '';
+                  e.receiveCountry._value = receiveCountry.name || '';
+                  const province = e.province.value || '';
+                  const city = e.city.value || '';
+                  const address = e.address.value || ''
+                  const receiveProvince = e.receiveProvince.value || '';
+                  const receiveCity = e.receiveCity.value || '';
+                  const receiveAddress = e.receiveAddress.value || '';
+                  e.companyAddress.value = e.country._value +' '+province+' '+city+' '+address;
+                  e.receiverAddress.value = e.receiveCountry._value +' '+receiveProvince+' '+receiveCity+' '+receiveAddress
+                  return e;
                 });
                 this.concats = this.$getDB(this.$db.supplier.detailTable, res.concats,e => {
                     let gender;
