@@ -1,7 +1,7 @@
 export default {
    customerNO: {
      key: 'code',
-     fullLine:false,
+     fullLine:false,  //是否一行显示
     },
    customerName: {
      key: 'name',

@@ -300,7 +300,7 @@ export const routerMap = [
       redirect: '/warehouse/overview',
       name: 'warehouse',
       meta: {name: $i.router.warehouse},
-      noDropdown: false,
+      noDropdown: true,
       children: [
         {
           path: 'overview',
@@ -315,7 +315,7 @@ export const routerMap = [
         },
         {
           path: 'qcOverview',
-          name: 'qc Overview',
+          name: 'QC Overview',
           hidden: true,
           meta: {
             draft: true,
@@ -356,7 +356,7 @@ export const routerMap = [
 
       path: '/customer',
       component: Layout,
-      meta: {name:i.router.customer},
+      meta: {name:$i.router.customer},
       redirect: '/customer/overview',
       noDropdown: true,
       hidden: false,

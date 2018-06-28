@@ -120,6 +120,7 @@
                 selectedData: [],
                 selectNumber: [],
                 options:{},
+                currency:[],
                 //Category下拉组件数据
                 dropData: [],
                 defaultProps: {
@@ -156,6 +157,14 @@
               }).catch(err=>{
                 console.log(err)
               });
+            },
+                //获取币种
+            getCurrency(){
+                this.$ajax.get(this.$apis.get_currency_all).then(res=>{
+                    this.currency = res
+                }).catch(err=>{
+                console.log(err)
+                });
             },
           //切换body的收缩展开状态
             switchDisplay() {
@@ -217,14 +226,16 @@
                         this.pageData=res;
                         this.loading = false
                         this.tabData = this.$getDB(this.$db.supplier.overviewtable, res.datas, e=>{
-                            let country,incoterm,type;
+                            let country,incoterm,type,currency;
                             country = _.findWhere(this.options.country, {code: e.country.value}) || {};
-                            incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value}) || {};
-                            type = _.findWhere(this.options.type, {code: e.type.value}) || {};
+                            incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value+''}) || {};
+                            type = _.findWhere(this.options.type, {code: e.type.value+''}) || {};
+                            // currency = _.findWhere(this.currency, {code: e.currency.value}) || {};
                             e.country._value = country.name || '';
                             e.incoterm._value = incoterm.name || '';
                             e.type._value = type.name || '';
-                            // this.options.incoterm type
+                            // e.currency._value = currency.name || '';
+                            
                             return e;
                         });
                     })
@@ -262,6 +273,7 @@
             this.getData();
             this.getCodePart();
             this.getCountryAll();
+            this.getCurrency();
             // this.getCategoryId();
         },
         mounted(){
