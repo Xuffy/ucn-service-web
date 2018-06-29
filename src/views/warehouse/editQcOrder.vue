@@ -167,9 +167,17 @@
                             </div>
                         </div>
                         <div v-else-if="v.showType==='number'">
-                            <el-input-number
-                                    :controls="false"
-                                    v-model="scope.row[v.key]"></el-input-number>
+                            <div v-if="v.key==='outerCartonLength' || v.key==='outerCartonWidth' || v.key==='outerCartonHeight' || v.key==='qualifiedSkuCartonTotalQty' || v.key==='unqualifiedSkuCartonTotalQty' || v.key==='actOuterCartonSkuQty' || v.key==='outerCartonNetWeight' || v.key==='outerCartonGrossWeight'">
+                                <el-input-number
+                                        :controls="false"
+                                        @blur="handleInputNumberBlur(scope.row)"
+                                        v-model="scope.row[v.key]"></el-input-number>
+                            </div>
+                            <div v-else>
+                                <el-input-number
+                                        :controls="false"
+                                        v-model="scope.row[v.key]"></el-input-number>
+                            </div>
                         </div>
                         <div v-else-if="v.showType==='input'">
                             <el-input
@@ -463,7 +471,6 @@
                     }
                 })
             },
-
             submit(){
                 if(!this.qcDetail.qcMethodDictCode){
                     return this.$message({
@@ -558,9 +565,47 @@
                     this.disableClickSubmit=false;
                 });
             },
-
             cancel(){
                 window.close();
+            },
+
+
+            /**
+             * product info事件
+             * */
+            handleInputNumberBlur(e){
+                //计算外箱体积
+                e.outerCartonVolume=(e.outerCartonLength?e.outerCartonLength:0)*(e.outerCartonWidth?e.outerCartonWidth:0)*(e.outerCartonHeight?e.outerCartonHeight:0);
+
+                //计算实际产品总箱数
+                e.actSkuCartonTotalQty=(e.qualifiedSkuCartonTotalQty?e.qualifiedSkuCartonTotalQty:0)+(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0);
+
+                //计算合格产品数量
+                e.qualifiedSkuQty=(e.qualifiedSkuCartonTotalQty?e.qualifiedSkuCartonTotalQty:0)*(e.actOuterCartonSkuQty?e.actOuterCartonSkuQty:0);
+
+                //计算不合格产品数量
+                e.unqualifiedSkuQty=(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0)*(e.actOuterCartonSkuQty?e.actOuterCartonSkuQty:0);
+
+                //计算实际产品数量
+                e.actSkuQty=(e.unqualifiedSkuQty?e.unqualifiedSkuQty:0)+(e.qualifiedSkuQty?e.qualifiedSkuQty:0);
+
+                //计算合格产品总净重
+                e.qualifiedSkuNetWeight=(e.outerCartonNetWeight?e.outerCartonNetWeight:0)*(e.qualifiedSkuCartonTotalQty?e.qualifiedSkuCartonTotalQty:0);
+
+                //计算不合格总产品净重
+                e.unqualifiedSkuNetWeight=(e.outerCartonNetWeight?e.outerCartonNetWeight:0)*(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0);
+
+                //计算合格产品总体积
+                e.qualifiedSkuVolume=(e.outerCartonVolume?e.outerCartonVolume:0)*(e.qualifiedSkuCartonTotalQty?e.qualifiedSkuCartonTotalQty:0);
+
+                //计算不合格产总品体积
+                e.unqualifiedSkuVolume=(e.outerCartonVolume?e.outerCartonVolume:0)*(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0);
+
+                //计算合格产品总毛重
+                e.qualifiedSkuGrossWeight=(e.outerCartonGrossWeight?e.outerCartonGrossWeight:0)*(e.qualifiedSkuCartonTotalQty?e.qualifiedSkuCartonTotalQty:0);
+
+                //计算不合格总产品毛重
+                e.unqualifiedSkuGrossWeight=(e.outerCartonGrossWeight?e.outerCartonGrossWeight:0)*(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0);
             },
 
 

@@ -59,7 +59,6 @@
   "customerShortName": "customer short name",
   "customerType": "customer type",
   "customerCountry": "customer country",
-  "customer source": "customer source",
   "paymentItem": "payment item",
   "filingDate": "filing date",
   "TaxpayerQualification": "Taxpayer qualification",
@@ -110,6 +109,7 @@
   "accountInfo": "Account Info",
   "tradeHistory": "Trade History",
   "inquiryHistory": "Inquiry History",
+  "customerSource": "customer source",
   "recentTransactionDate": "Recent transaction date",
   "receiverAddress1": "receiver Address1"
 }
