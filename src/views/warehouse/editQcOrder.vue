@@ -158,7 +158,7 @@
                                             v-for="item in barCodeResult"
                                             :key="item.id"
                                             :label="item.name"
-                                            :value="item.value">
+                                            :value="item.code">
                                     </el-option>
                                 </el-select>
                             </div>
@@ -569,7 +569,6 @@
                 window.close();
             },
 
-
             /**
              * product info事件
              * */
@@ -608,7 +607,6 @@
                 e.unqualifiedSkuGrossWeight=(e.outerCartonGrossWeight?e.outerCartonGrossWeight:0)*(e.unqualifiedSkuCartonTotalQty?e.unqualifiedSkuCartonTotalQty:0);
             },
 
-
             /**
              * 获取字典
              * */
@@ -626,6 +624,7 @@
                             this.qcResultOption=v.codes;
                         }else if(v.code==='PB_CODE'){
                             this.barCodeResult=v.codes;
+                            console.log(this.barCodeResult,'this.barCodeResult')
                         }else if(v.code==='QC_STATUS'){
                             this.qcStatusOption=v.codes;
                         }

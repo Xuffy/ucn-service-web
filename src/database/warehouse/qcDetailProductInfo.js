@@ -349,7 +349,7 @@ export default{
         showType:'select',
         isBarCodeResult:true
     },
-    qcPic:{             //服务商上传
+    qcPics:{             //服务商上传
         key: 'qcPics',
         type: 'String',
         showType:'pic',

@@ -412,7 +412,8 @@
                 productInfoData:[],
                 selectList:[],
                 qcTypeOption:[],
-                qcMethodOption:[]
+                qcMethodOption:[],
+                pbCodeOption:[],
             }
         },
         methods:{
@@ -429,9 +430,16 @@
                 );
             },
             getProductInfo(){
+                console.log(this.pbCodeOption,'pbCodeOption')
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
-                    this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas);
+                    this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,e=>{
+                        e.skuBarCodeResultDictCode._value=e.skuBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuBarCodeResultDictCode.value}).name:'';
+                        e.skuLabelResultDictCode._value=e.skuLabelResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuLabelResultDictCode.value}).name:'';
+                        e.innerPackingBarCodeResultDictCode._value=e.innerPackingBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.innerPackingBarCodeResultDictCode.value}).name:'';
+                        e.outerCartonBarCodeResultDictCode._value=e.outerCartonBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.outerCartonBarCodeResultDictCode.value}).name:'';
+                        e.shippingMarkResultDictCode._value=e.shippingMarkResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.shippingMarkResultDictCode.value}).name:'';
+                    });
 
                     _.map(res.datas,v=>{
                         _.map(v,(val,key)=>{
@@ -443,7 +451,7 @@
                     });
 
                     this.totalRow = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,item=>{
-                        console.log(item,'item')
+
                     });
 
                     let diffData=[];
@@ -483,7 +491,6 @@
             changeChecked(e){
                 this.selectList=e;
             },
-
             edit(){
                 this.$router.push({
                     path:'/warehouse/editQc',
@@ -582,21 +589,21 @@
 
                 return sums;
             },
-
-
             cancel(){
                 window.close();
             },
         },
         created(){
             this.loadingData=true;
-            this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD'],{cache:true})
+            this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','PB_CODE'],{cache:true})
                 .then(res=>{
                     res.forEach(v=>{
                         if(v.code==='QC_TYPE'){
                             this.qcTypeOption=v.codes;
                         }else if(v.code==='QC_MD'){
                             this.qcMethodOption=v.codes;
+                        }else if(v.code==='PB_CODE'){
+                            this.pbCodeOption=v.codes;
                         }
                     });
                     this.getQcOrderDetail();
