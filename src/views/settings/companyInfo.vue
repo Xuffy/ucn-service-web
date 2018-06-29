@@ -468,7 +468,13 @@
           console.log(err)
         });
       },
-
+      postUpdateIsSetting(){
+        this.$ajax.post(this.$apis.post_purchase_customer_updateIsSetting,{id:this.companyInfo.id}).then(res=>{
+       console.log(res)
+        }).catch(err=>{
+          console.log(err)
+        });
+      },
       //修改顶部简介信息
       modifySummary(){
         this.summaryDisabled=false;
@@ -495,6 +501,9 @@
         };
         this.allowModifySummary=true;
         this.$ajax.post(`${this.$apis.post_servicer}/${this.companyInfo.id}`,params).then(res=>{
+          if (!this.companyInfo.setting){
+            this.postUpdateIsSetting();
+          }
           this.$message({
             message: '修改成功',
             type: 'success'
@@ -511,11 +520,10 @@
         this.logoParmas.id = this.companyInfo.id;
         this.logoParmas.url = this.$refs.uploadFile[0].getFiles()[0];
         this.$ajax.post(this.$apis.post_servicer_purchase_upload,this.logoParmas).then(res=>{
+          if (!this.companyInfo.setting){
+            this.postUpdateIsSetting();
+          }
           this.getWholeData();
-          this.$message({
-            message: '上传成功',
-            type: 'success'
-          })
         })
       },
       cancelModifySummary(){
@@ -564,6 +572,9 @@
           //表示是在新增地址
           this.$ajax.post(this.$apis.post_servicer_address,this.addressData).then(res=>{
             this.allowAddAddress=false;
+              if (!this.companyInfo.setting){
+                this.postUpdateIsSetting();
+              }
             this.$message({
               message: '添加成功',
               type: 'success'
@@ -647,6 +658,9 @@
           //表示是在新增account
           this.$ajax.post(this.$apis.post_servicer_account,this.accountData).then(res=>{
             this.allowAddContact=false;
+            if (!this.companyInfo.setting){
+              this.postUpdateIsSetting();
+            }
             this.$message({
               message: '添加成功',
               type: 'success'
@@ -669,7 +683,6 @@
         this.accountDialogVisible=true;
       },
       deleteAccount(e){
-        console.log(e)
         this.$confirm('确定删除该账户信息?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -729,6 +742,9 @@
           //表示是在新增account
           this.$ajax.post(this.$apis.post_servicer_concat,this.contactData).then(res=>{
             this.allowAddContact=false;
+            if (!this.companyInfo.setting){
+              this.postUpdateIsSetting();
+            }
             this.$message({
               message: '添加成功',
               type: 'success'
@@ -787,6 +803,9 @@
         if (this.$refs.uploadAttachment.getFiles().length !== 0){
           if (this.$refs.uploadAttachment.getFiles().length === 1){
             this.$ajax.post(this.$apis.post_oss_company_upload,uploadParams).then(res=>{
+              if (!this.companyInfo.setting){
+                this.postUpdateIsSetting();
+              }
               this.$message({
                 message: '上传成功',
                 type: 'success'
@@ -796,6 +815,9 @@
 
           }else{
             this.$ajax.post(this.$apis.post_oss_company_batchUpload,batchUploadParams).then(res=>{
+              if (!this.companyInfo.setting){
+                this.postUpdateIsSetting();
+              }
               this.$message({
                 message: '上传成功',
                 type: 'success'
