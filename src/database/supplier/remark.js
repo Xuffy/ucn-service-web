@@ -1,9 +1,9 @@
 export default {
-    remark: {
-        key: 'remark'
-    },
     date: {
         key: 'updateDt'
+    },
+    remark: {
+        key: 'remark'
     },
     operater: {
         key: 'updateName'

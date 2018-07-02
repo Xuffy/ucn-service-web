@@ -106,31 +106,7 @@ export default {
     orderPrice: {
       key: '',
       belong: "order"
-    },
-   // remark
-  time: {
-    key: 'updateDt',
-    belong: "remark",
-    type:"textDate"
-  },
-  remark: {
-    key: 'remark',
-    belong: "remark"
-  },
-  operater: {
-    key: 'entryName',
-    belong: "remark"
-  },
-  version: {
-    key: 'version',
-    belong: "remark",
-    _hide: true,
-  },
-  id: {
-    key: 'id',
-    belong: "remark",
-    _hide: true,
-  },
+    }
     // documentRequired:{
     //     key:"document"
     // },
