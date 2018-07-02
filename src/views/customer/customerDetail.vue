@@ -145,7 +145,7 @@
                     showCompareList: false, //是否显示比较列表
                 },
                 params:{
-                  customerId:'',
+                  customerCompanyId:'',
                   pn:'1',
                   ps:'50'
                 },
@@ -379,7 +379,7 @@
           //history
           getQcHistory(){
             this.loading = true
-            this.params.customerId = Number(this.$route.query.customerId)
+            this.params.customerCompanyId = this.basicDate.customerCompanyId
             this.$ajax.post(this.$apis.post_servicer_customer_history,this.params)
               .then(res => {
                 this.orderList = this.$getDB(this.$db.supplier.detailTable, res.documents);

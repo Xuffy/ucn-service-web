@@ -94,7 +94,7 @@
         multipleSelection:[],
         tableData:[],
         params: {
-          mark: 0,
+          title: '',
           content: '',
           ps:50,
           pn:1
@@ -115,7 +115,9 @@
     },
     methods:{
       handleClick(tab, event) {
+        console.log(1)
         console.log(tab, event);
+        // this.getMessageQuery()
       },
       handleSelectionChange(val) {
         this.multipleSelection = val;
@@ -130,7 +132,7 @@
       },
       changeChecked(item) { //tab 勾选
         if (item.length != 0){
-         this.isResd = false;
+          this.isResd = false;
         }else{
           this.isResd = true;
         }
@@ -169,7 +171,7 @@
           url: '/message/messageManagement',
         });
       },
-       inputEnter(val) {
+      inputEnter(val) {
         if (!val.id) return this.$message({
           message: 'please choose a type',
           type: 'warning'
@@ -183,9 +185,9 @@
         let url;
         this.tabLoad = true;
         if(this.viewByStatus + '' === '1') {
-          url = this.$apis.post_systemmessage_query;
+          url = this.$apis.post_usermessage_querySystem;
         } else {
-          url = this.$apis.post_companymessage_query;
+          url = this.$apis.post_usermessage_queryCompany;
         };
         this.$ajax.post(url, this.params)
           .then(res => {
@@ -199,7 +201,7 @@
                 }else{
                   e.read.value = '未读'
                 }
-
+                return e
               });
             this.pageData=res;
             this.tabLoad = false;
@@ -213,13 +215,14 @@
       postRead(){
         let url;
         if(this.viewByStatus + '' === '1'){
-          url = this.$apis.post_sys_updateread;
+          url = this.$apis.post_usermessage_readSystem;
         } else {
-          url = this.$apis.post_company_updateread;
+          url = this.$apis.post_usermessage_readCompany;
         };
         let arr = [];
         _.map(this.checkedData, item => {
-          if(!_.isUndefined(item)) arr.push(_.findWhere(item, {'key': 'subscribeId'}).value);
+          console.log(this.checkedData)
+          if(!_.isUndefined(item)) arr.push(_.findWhere(item, {'key': 'id'}).value);
         });
         this.$ajax.post(url, arr)
           .then(res => {
@@ -235,7 +238,6 @@
       },
       getMessageQuery(){
         let url = this.$apis.get_messagesetting_query
-
         this.$ajax.get(`${url}?type=${3}`)
           .then(res => {
             res = _.map(res,val=>{
@@ -287,19 +289,10 @@
       }
     },
     created(){
-       this.message = '1';
-      this.getDataInfo()
-      this.getMessageQuery()
+      this.message = '1';
+      this.getDataInfo();
+      this.getMessageQuery();
     },
-    computed: {
-      computeStyle() {
-        this.tabData.forEach((v, k) => {
-          if (v.read.value = '未读'){
-            return { fontWeight:200 }
-          }
-        });
-      }
-    }
   }
 </script>
 
