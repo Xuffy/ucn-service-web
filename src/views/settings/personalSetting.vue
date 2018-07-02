@@ -253,6 +253,7 @@
               message: '修改成功!'
             });
             this.isModifyPass = false;
+            this.isModify = true;
             this.summaryDisabled=true;
             this.allowModifySummary=false;
           }).catch(err=>{

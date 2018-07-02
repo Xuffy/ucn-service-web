@@ -197,12 +197,13 @@
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-form-item  :label="$i.setting.currency +'：'">
-              <el-select  v-model="accountData.currency" placeholder="请选择"  style="width: 230px;">
+              <el-select  v-model="accountData.currency" placeholder="请选择"  style="width: 100%;">
                 <el-option
                   v-for="item in options.currency"
                   :key="item.code"
                   :label="item.name"
-                  :value="item.code">
+                  :value="item.code"
+                  style="width: 100%">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -238,13 +239,13 @@
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-form-item  :label="$i.setting.gender +'：'">
-              <el-select v-model="contactData.gender" placeholder="please input" style="width: 230px">
+              <el-select v-model="contactData.gender" placeholder="please input" style="width: 100%">
                 <el-option
                   v-for="item in sex"
                   :key="item.code"
                   :label="item.name"
-                  :value="item.code"
-                  style="width: 230px">
+                  :value="Number(item.code)"
+                  style="width: 100%">
                 </el-option>
               </el-select>
             </el-form-item>

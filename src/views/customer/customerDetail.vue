@@ -382,7 +382,7 @@
             this.params.customerCompanyId = this.basicDate.customerCompanyId
             this.$ajax.post(this.$apis.post_servicer_customer_history,this.params)
               .then(res => {
-                this.orderList = this.$getDB(this.$db.supplier.detailTable, res.documents);
+                this.orderList = this.$getDB(this.$db.supplier.qcHistory, res.datas);
                 this.loading = false
               })
               .catch((res) => {

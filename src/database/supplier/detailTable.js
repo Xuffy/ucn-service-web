@@ -99,14 +99,7 @@ export default {
       belong: "concats"
     },
     //       order
-    orderNo: {
-      key: 'qcOrderNo',
-      belong: "order"
-    },
-    orderPrice: {
-      key: '',
-      belong: "order"
-    }
+   
     // documentRequired:{
     //     key:"document"
     // },
