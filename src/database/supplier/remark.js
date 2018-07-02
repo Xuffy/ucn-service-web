@@ -7,5 +7,15 @@ export default {
     },
     operater: {
         key: 'updateName'
-    }
+    },
+    version: {
+    key: 'version',
+    belong: "remark",
+    _hide: true,
+    },
+    id: {
+    key: 'id',
+    belong: "remark",
+    _hide: true,
+    },
 }
