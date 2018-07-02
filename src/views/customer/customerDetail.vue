@@ -64,6 +64,9 @@
                 <el-tab-pane :label="$i.supplier.orderHistory" name="order">
                     <v-table  :data="orderList"   :selection="false" style='marginTop:10px'/>
                 </el-tab-pane>
+                <el-tab-pane :label="$i.supplier.attachment" name="attchment">
+                     <v-upload ref="uploadAttachment" :limit="20"  :list="basicDate.attachments" readonly/>
+                </el-tab-pane>
               <el-tab-pane :label="$i.supplier.remark" name="remark">
                 <div class="section-btn">
                   <el-button  @click="createRemark" type="primary">{{$i.button.add}}</el-button>
@@ -104,7 +107,7 @@
     import VRemark from './remark'
     import VAttachment from './attachment'
     import {
-        VTable, VImage
+        VTable, VImage,VUpload
     } from '@/components/index';
 
     export default {
@@ -114,7 +117,8 @@
             VCompareList,
             VRemark,
             VAttachment,
-            VImage
+            VImage,
+            VUpload
         },
         data() {
             return {
@@ -236,7 +240,6 @@
             this.addRemarkData.servicerCustomerId = Number(this.$route.query.id);
             this.addRemarkData.customerId = Number(this.$route.query.customerId);
             if (this.isModifyAddress){
-
               this.$ajax.post(`${this.$apis.post_customerUpdataRmark}/${this.addRemarkData.id}`,this.addRemarkData)
                 .then(res => {
                   this.$message({
