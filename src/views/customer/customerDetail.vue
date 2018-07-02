@@ -64,6 +64,9 @@
                 <el-tab-pane :label="$i.supplier.orderHistory" name="order">
                     <v-table  :data="orderList"   :selection="false" style='marginTop:10px'/>
                 </el-tab-pane>
+                <el-tab-pane :label="$i.supplier.attachment" name="attchment">
+                     <v-upload ref="uploadAttachment" :limit="20"  :list="basicDate.attachments" readonly/>
+                </el-tab-pane>
               <el-tab-pane :label="$i.supplier.remark" name="remark">
                 <div class="section-btn">
                   <el-button  @click="createRemark" type="primary">{{$i.button.add}}</el-button>
@@ -104,7 +107,7 @@
     import VRemark from './remark'
     import VAttachment from './attachment'
     import {
-        VTable, VImage
+        VTable, VImage,VUpload
     } from '@/components/index';
 
     export default {
@@ -114,7 +117,8 @@
             VCompareList,
             VRemark,
             VAttachment,
-            VImage
+            VImage,
+            VUpload
         },
         data() {
             return {
@@ -141,7 +145,7 @@
                     showCompareList: false, //是否显示比较列表
                 },
                 params:{
-                  customerId:'',
+                  customerCompanyId:'',
                   pn:'1',
                   ps:'50'
                 },
@@ -205,7 +209,7 @@
                 }
               this.$ajax.post(`${this.$apis.post_getCustomerListRemark}/${id}`,remark)
               .then(res => {
-                this.remarkData = this.$getDB(this.$db.supplier.detailTable, res.datas, item => {
+                this.remarkData = this.$getDB(this.$db.supplier.remark, res.datas, item => {
                   _.mapObject(item, val => {
                     val.type === 'textDate' && val.value && (val.value = this.$dateFormat(val.value, 'yyyy-mm-dd'))
                     return val
@@ -236,7 +240,6 @@
             this.addRemarkData.servicerCustomerId = Number(this.$route.query.id);
             this.addRemarkData.customerId = Number(this.$route.query.customerId);
             if (this.isModifyAddress){
-
               this.$ajax.post(`${this.$apis.post_customerUpdataRmark}/${this.addRemarkData.id}`,this.addRemarkData)
                 .then(res => {
                   this.$message({
@@ -376,7 +379,7 @@
           //history
           getQcHistory(){
             this.loading = true
-            this.params.customerId = Number(this.$route.query.customerId)
+            this.params.customerCompanyId = this.basicDate.customerCompanyId
             this.$ajax.post(this.$apis.post_servicer_customer_history,this.params)
               .then(res => {
                 this.orderList = this.$getDB(this.$db.supplier.detailTable, res.documents);
