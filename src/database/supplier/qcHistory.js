@@ -4,7 +4,7 @@ export default{
         belong: "order"
       },
       orderPrice: {
-        key: '',
+        key: 'serviceFee',
         belong: "order"
       }
 }

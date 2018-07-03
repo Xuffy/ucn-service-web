@@ -3,12 +3,10 @@ export default {
       key: 'operatorName'
     },
     operationDate: {
-        key: 'operationDt'
-    },
+        key: 'operationDt',
+        type: 'textDate'
+     },
     operater: {
         key: 'operationContent'
     },
-    operationType: {
-        key: 'operationType'
-    }
 }
