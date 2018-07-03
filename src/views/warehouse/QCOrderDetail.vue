@@ -414,6 +414,10 @@
                 qcTypeOption:[],
                 qcMethodOption:[],
                 pbCodeOption:[],
+                skuUnitOption:[],       //计量单位
+                lengthOption:[],
+                volumeOption:[],
+                weightOption:[],
             }
         },
         methods:{
@@ -434,6 +438,14 @@
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,e=>{
+                        console.log(e,'e')
+                        e.deliveryDate.value=this.$dateFormat(e.deliveryDate.value,'yyyy-mm-dd');
+                        e.skuUnitDictCode._value=e.skuUnitDictCode.value?_.findWhere(this.skuUnitOption,{code:e.skuUnitDictCode.value}).name:'';
+                        e.volumeUnitDictCode._value=e.volumeUnitDictCode.value?_.findWhere(this.volumeOption,{code:e.volumeUnitDictCode.value}).name:'';
+                        e.weightUnitDictCode._value=e.weightUnitDictCode.value?_.findWhere(this.weightOption,{code:e.weightUnitDictCode.value}).name:'';
+                        e.lengthUnitDictCode._value=e.lengthUnitDictCode.value?_.findWhere(this.lengthOption,{code:e.lengthUnitDictCode.value}).name:'';
+
+
                         e.skuBarCodeResultDictCode._value=e.skuBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuBarCodeResultDictCode.value}).name:'';
                         e.skuLabelResultDictCode._value=e.skuLabelResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuLabelResultDictCode.value}).name:'';
                         e.innerPackingBarCodeResultDictCode._value=e.innerPackingBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.innerPackingBarCodeResultDictCode.value}).name:'';
@@ -595,7 +607,7 @@
         },
         created(){
             this.loadingData=true;
-            this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','PB_CODE'],{cache:true})
+            this.$ajax.post(this.$apis.get_partUnit,['QC_TYPE','QC_MD','PB_CODE','SKU_UNIT','LH_UNIT','VE_UNIT','WT_UNIT'],{cache:true})
                 .then(res=>{
                     res.forEach(v=>{
                         if(v.code==='QC_TYPE'){
@@ -604,6 +616,14 @@
                             this.qcMethodOption=v.codes;
                         }else if(v.code==='PB_CODE'){
                             this.pbCodeOption=v.codes;
+                        }else if(v.code==='SKU_UNIT'){
+                            this.skuUnitOption=v.codes;
+                        }else if(v.code==='LH_UNIT'){
+                            this.lengthOption=v.codes;
+                        }else if(v.code==='VE_UNIT'){
+                            this.volumeOption=v.codes;
+                        }else if(v.code==='WT_UNIT'){
+                            this.weightOption=v.codes;
                         }
                     });
                     this.getQcOrderDetail();
