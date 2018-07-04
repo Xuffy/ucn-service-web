@@ -115,8 +115,6 @@
     },
     methods:{
       handleClick(tab, event) {
-        console.log(1)
-        console.log(tab, event);
         // this.getMessageQuery()
       },
       handleSelectionChange(val) {
@@ -176,8 +174,13 @@
           message: 'please choose a type',
           type: 'warning'
         });
-        this.params.mark = val.id;
-        this.params.content = val.value;
+        if (val.id === '1'){
+          this.params.title = val.value;
+          this.params.content = '';
+        }else{
+          this.params.content = val.value;
+          this.params.title = '';
+        }
         this.searchLoad = true;
         this.getDataInfo();
       },
