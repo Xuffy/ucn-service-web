@@ -1,12 +1,12 @@
 export default {
     description: {
-      key: 'operatorName'
+      key: 'operationContent'
     },
     operationDate: {
         key: 'operationDt',
         type: 'textDate'
      },
     operater: {
-        key: 'operationContent'
+        key: 'operatorName'
     },
 }
