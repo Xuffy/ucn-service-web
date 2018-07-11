@@ -224,6 +224,7 @@
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
                     @action="btnClick"
+                    :totalRow="totalRow"
                     @change-checked="changeChecked">
                 <template slot="header">
                     <div class="second-title">
@@ -353,8 +354,6 @@
             </el-form>
         </div>
 
-
-
         <div class="footBtn">
             <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
             <el-button @click="cancel"  v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" >{{$i.warehouse.cancel}}</el-button>
@@ -408,7 +407,6 @@
                     //     }
                     // ],
                 },
-                totalRow:[],
                 productInfoData:[],
                 selectList:[],
                 qcTypeOption:[],
@@ -418,6 +416,28 @@
                 lengthOption:[],
                 volumeOption:[],
                 weightOption:[],
+            }
+        },
+        computed:{
+            totalRow(){
+                let obj={};
+                if(this.productInfoData.length<=0){
+                    return;
+                }
+                _.map(this.productInfoData,v=>{
+                    _.mapObject(v,(item,key)=>{
+                        if(item._calculate){
+                            obj[key]={
+                                value: Number(item.value)  + (Number(obj[key] ? obj[key].value : 0) || 0),
+                            };
+                        }else{
+                            obj[key] = {
+                                value: ''
+                            };
+                        }
+                    })
+                });
+                return [obj];
             }
         },
         methods:{
@@ -460,10 +480,6 @@
                                 v[key]=null;
                             }
                         })
-                    });
-
-                    this.totalRow = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,item=>{
-
                     });
 
                     let diffData=[];
