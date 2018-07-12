@@ -225,6 +225,12 @@ export const routerMap = [
             log: true,
           },
           component: () => import('../views/logs/logs.vue')
+        },
+        {
+          path: 'task',
+          name: 'logsTask',
+          meta: {},
+          component: () => import('../views/logs/task.vue')
         }
       ]
     },
@@ -356,7 +362,7 @@ export const routerMap = [
 
       path: '/customer',
       component: Layout,
-      meta: {name:$i.router.customer},
+      meta: {name: $i.router.customer},
       redirect: '/customer/overview',
       noDropdown: true,
       hidden: false,
