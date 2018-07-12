@@ -31,25 +31,21 @@ const initialState = {
 
 const actions = {
   /**
-   * 设置menu 链接
+   * 璁剧疆menu 閾炬帴
    * @param commit
-   * @param params  数据：{path:'',query:'',label:'',type:1}
+   * @param params  鏁版嵁锛歿path:'',query:'',label:'',type:1}
    */
   setMenuLink({commit}, params) {
-    console.log(params)
     commit(type.SETMENULINK, params);
   },
   setDraft({commit}, params) {
-    console.error('setDraft 函数已更改为：setMenuLink');
-    // commit(type.SETDRAFT, params);
+    console.error('setDraft 鍑芥暟宸叉洿鏀逛负锛歴etMenuLink');
   },
   setRecycleBin({commit}, params) {
-    console.error('setRecycleBin 函数已更改为：setMenuLink');
-    // commit(type.SETRECYCLEBIN, params);
+    console.error('setRecycleBin 鍑芥暟宸叉洿鏀逛负锛歴etMenuLink');
   },
   setLog({commit}, params) {
-    console.error('setLog 函数已更改为：setMenuLink');
-    // commit(type.SETLOG, params);
+    console.error('setLog 鍑芥暟宸叉洿鏀逛负锛歴etMenuLink');
   },
   setDic({commit, state}, params) {
     let dic = state.dic && Array.isArray(state.dic) ? state.dic : [];
@@ -71,27 +67,14 @@ const actions = {
 
 const mutations = {
   [type.SETMENULINK](state, params) {
-    params = _.isObject(params) ? [params] : params;
+    params = !_.isArray(params) ? [params] : params;
     state.menuLink.list = _.sortBy(state.menuLink.list.concat(params), val => {
-      if (val.type === 100) {// log 设置
+      if (val.type === 100) {// log 璁剧疆
         val.path = val.path || '/logs/index';
       }
       return val.type
     });
   },
-  /*[type.SETRECYCLEBIN](state, params) {
-    params.show = true;
-    state.quickLink.recycleBin = params;
-  },*/
-  /*[type.SETDRAFT](state, params) {
-    params.show = true;
-    state.quickLink.draft = params;
-  },
-  [type.SETLOG](state, params) {
-    params.show = true;
-    params.path = params.path || '/logs/index';
-    state.quickLink.log = params;
-  },*/
   [type.DIC](state, params) {
     state.dic = params;
   }
