@@ -16,6 +16,7 @@
         :data="dataList"
         max-height="400px"
         style="display:flex;flex-direction:column;"
+        :cell-style="setCellStyle"
         :span-method="objectSpanMethod"
         border>
         <el-table-column v-for="item in dataColumn" :key="item.id"
@@ -23,7 +24,6 @@
                          min-width="200px"
                          :prop="item.key"
                          :label="item.label">
-
           <template slot-scope="{ row }" v-if="row[item.key] && !row[item.key]._hide">
             <div v-if="!row[item.key]._edit || row[item.key]._title">
               {{row[item.key]._value || row[item.key].value}}
@@ -72,7 +72,7 @@
                           v-model="row[item.key].value" size="mini"></el-input>
 
                 <!--数字输入-->
-                <el-input-number
+                <v-input-number
                   v-else-if="row[item.key].type === 'Number'"
                   v-model="row[item.key].value"
                   @change="() => row[item.key]._isModified = true"
@@ -81,7 +81,7 @@
                   controls-position="right"
                   size="mini"
                   :controls="false"
-                  style="width:100%;"></el-input-number>
+                  style="width:100%;"></v-input-number>
 
                 <!--下拉选项-->
                 <el-select
@@ -115,11 +115,12 @@
 <script>
   import VUpload from '../upload/index';
   import VImage from '../image/index';
-  import VFilterColumn from '../table/filterColumn'
+  import VFilterColumn from '../table/filterColumn';
+  import VInputNumber from '../inputNumber/index';
 
   export default {
     name: 'VHistoryModify',
-    components: {VUpload, VImage, VFilterColumn},
+    components: {VUpload, VImage, VFilterColumn, VInputNumber},
     props: {
       visible: {
         type: Boolean,
@@ -279,6 +280,12 @@
               colspan: 0
             };
           }
+        }
+      },
+      setCellStyle({column, row}) {
+        let item = row[column.property];
+        if (!_.isEmpty(item) && !_.isEmpty(item._style)) {
+          return item._style;
         }
       }
     },
