@@ -26,28 +26,14 @@
                        </el-form>
                      </el-col>
                    </el-row>
-                    <!--<el-row>-->
-                        <!--<el-col :span="6">-->
-                        <!--</el-col>-->
-                      <!--<el-col :span="18">-->
-                        <!--<el-form label-width="190px">-->
-                          <!--<el-row>-->
-                            <!--<el-col-->
-                                    <!--v-for='(item,index) in $db.supplier.detail'-->
-                                    <!--:key='index'-->
-                            <!--&gt;-->
-                              <!--<el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">-->
-                                <!--{{basicDate[item.key]}}-->
-                              <!--</el-form-item>-->
-                            <!--</el-col>-->
-                          <!--</el-row>-->
-                        <!--</el-form>-->
-                      <!--</el-col>-->
-                <!--</el-row>-->
                   </el-form>
                 <div class="btns">
-                   <!--<el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>-->
-                   <!--<el-button @click='$router.go(-1)'>{{$i.button.cancel}}</el-button>-->
+                  <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'">
+                    {{$i.button.delete}}
+                  </el-button>
+                  <el-button @click="downloadCustomer" type="primary" >
+                    {{$i.button.download}}
+                  </el-button>
                 </div>
             </div>
         </div>
@@ -351,7 +337,7 @@
                 this.basicDate.country = country.name || '';
                 this.basicDate.payment = payment.name || '';
                 this.basicDate.currency = currency.name || '';
-            
+
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
                   let country,receiveCountry;
                   country = _.findWhere(this.country, {code: e.country.value}) || {};
@@ -393,6 +379,33 @@
               .catch((res) => {
                 this.loading = false
               });
+          },
+          //删除
+          deleteCustomer(){
+            this.$confirm(this.$i.common.sureDelete, this.$i.common.prompt, {
+              confirmButtonText: this.$i.common.sure,
+              cancelButtonText: this.$i.common.cancel,
+              type: 'warning'
+            }).then(() => {
+              this.disableClickDeleteBtn = true;
+              const params = []
+              params.push(this.basicDate.id)
+              this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber).then(res => {
+                this.disableClickDeleteBtn = false;
+                this.getData();
+                this.$message({
+                  type: 'success',
+                  message: this.$i.common.deleteTheSuccess
+                });
+              }).finally(() => {
+                this.disableClickDeleteBtn = false;
+              });
+            })
+          },
+          //下载
+          downloadCustomer(){
+            this.$fetch.export_task('UDATA_SERVICER_EXPORT_CUSTOMER_IDS',{ids:this.basicDate.id});
+
           },
 
         },

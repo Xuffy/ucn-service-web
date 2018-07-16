@@ -388,14 +388,14 @@ export const routerMap = [
           component: () => import('../views/customer/customerDetail.vue')
         },
         {
-          path: 'recycle',
-          name: 'customerRecycleBinDetail',
+          path: 'customerArchive',
+          name: 'customerArchive',
           meta: {
             draft: false,
             recycleBin: true,
             log: false,
           },
-          component: () => import('../views/customer/recycleBin.vue')
+          component: () => import('../views/customer/archive.vue')
         }
       ]
     }
