@@ -109,13 +109,13 @@
                 });
             },
             searchInbound(e){
-                if(!e.keyType){
+                if(!e.id){
                     return this.$message({
                         message: '请选择搜索类别',
                         type: 'warning'
                     });
                 }else{
-                    this.qcOrderConfig.qcOrderNo=e.key;
+                    this.qcOrderConfig.qcOrderNo=e.value;
                     this.getQcData();
                 }
             },
