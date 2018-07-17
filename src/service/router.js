@@ -267,8 +267,6 @@ export const routerMap = [
 
       ],
     },
-    // todo 供应商路由
-    //draft  草稿箱路由
     {
       path: '/draft',
       component: Layout,
@@ -289,7 +287,6 @@ export const routerMap = [
         }
       ]
     },
-    //recycleBin  回收站路由
     {
       path: '/recycle',
       component: Layout,
@@ -315,16 +312,17 @@ export const routerMap = [
       component: Layout,
       redirect: '/warehouse/overview',
       name: 'warehouse',
-      meta: {name: $i.router.warehouse},
+      meta: {
+          auth:'QC',
+          name: $i.router.warehouse
+      },
       noDropdown: true,
       children: [
         {
           path: 'overview',
           name: 'qc Overview',
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_OVERVIEW',
             name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
@@ -334,9 +332,7 @@ export const routerMap = [
           name: 'QC Overview',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_OVERVIEW',
             name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
@@ -346,9 +342,7 @@ export const routerMap = [
           name: 'edit qc',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_DETAIL',
             name: $i.router.editQc
           },
           component: () => import('../views/warehouse/editQcOrder'),
@@ -358,9 +352,7 @@ export const routerMap = [
           name: 'qc detail',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_DETAIL',
             name: $i.router.qcDetail
           },
           component: () => import('../views/warehouse/QCOrderDetail'),
@@ -369,7 +361,6 @@ export const routerMap = [
       ]
     },
     {
-
       path: '/customer',
       component: Layout,
       meta: {
