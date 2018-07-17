@@ -660,6 +660,7 @@
                 path: '/logs/index',
                 query: {code: 'WAREHOUSE'},
                 type: 10,
+                auth:'QC:LOG',
                 label: this.$i.common.log
             });
         },
