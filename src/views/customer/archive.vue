@@ -49,18 +49,23 @@
       </div>
     </div>
     <!--        表格-->
-    <div style="margin-top: 20px;">
-      <el-button @click="postBatchRecover" type="danger" :disabled='!selectNumber.length>0'>
-        {{$i.button.delete}}({{selectNumber.length}})</el-button>
-    </div>
     <v-table
-      :height=360
+      code="udata_servicer_customer_overview"
+      @change-sort="sort"
+      :height=500
       :loading='loading'
       :data="tabData"
       :buttons="[{label: 'Detail', type: 1}]"
       @action="detail"
       @change-checked='checked'
-      style='marginTop:10px'/>
+      style='marginTop:10px'>
+      <template slot="header">
+        <div style="margin-top: 20px;">
+          <el-button @click="postBatchRecover" type="danger" :disabled='!selectNumber.length>0'>
+            {{$i.button.delete}}({{selectNumber.length}})</el-button>
+        </div>
+      </template>
+    </v-table>
     <page
       :page-data="pageData"
       @change="handleSizeChange"
@@ -133,7 +138,7 @@
     },
     methods: {
       ...mapActions([
-        'setLog'
+        'setMenuLink'
       ]),
       handleSizeChange(val) {
         this.params.pn = val;
@@ -295,7 +300,11 @@
               this.getData();
             })
         })
-      }
+      },
+      sort(item){
+        this.params.sorts = item.sorts;
+        this.getData();
+      },
     },
     created() {
       this.getData();
@@ -384,12 +393,6 @@
   .btnline {
     margin-top: 20px;
     width: 100%;
-    border-top: 1px solid black;
-  }
-
-  .btnline .el-button {
-    margin-right: 8px;
-    margin-top: 20px;
   }
 
   .el-select {

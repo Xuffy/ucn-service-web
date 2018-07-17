@@ -43,7 +43,10 @@ export const routerMap = [
     },
     {
       path: '/payment',
-      meta: {name: $i.router.payment},
+      meta: {
+        name: $i.router.payment,
+        auth: ['PAYMENT']
+      },
       component: Layout,
       redirect: '/payment/index',
       noDropdown: true,
@@ -139,7 +142,10 @@ export const routerMap = [
       path: '/settings',
       component: Layout,
       redirect: '/settings/department',
-      meta: {name: $i.router.settings},
+      meta: {
+        name: $i.router.settings,
+        auth: ['SETTING']
+      },
       children: [
         {
           path: 'department',
@@ -171,7 +177,8 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-            name: $i.router.settingsPersonal
+            name: $i.router.settingsPersonal,
+            auth: ['SETTING:PERSONAL']
           },
           component: () => import('../views/settings/personalSetting')
         },
@@ -238,7 +245,10 @@ export const routerMap = [
       path: '/message',
       component: Layout,
       redirect: '/message/index',
-      meta: {name: $i.router.message},
+      meta: {
+        name: $i.router.message,
+        auth: ['MESSAGE']
+      },
       hidden: true,
       children: [
         {
@@ -362,7 +372,10 @@ export const routerMap = [
 
       path: '/customer',
       component: Layout,
-      meta: {name: $i.router.customer},
+      meta: {
+        name: $i.router.customer,
+        auth: ['CUSTOMER']
+      },
       redirect: '/customer/overview',
       noDropdown: true,
       hidden: false,
@@ -374,6 +387,7 @@ export const routerMap = [
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:OVERVIEW']
           },
           component: () => import('../views/customer/overview.vue')
         },
@@ -384,6 +398,7 @@ export const routerMap = [
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:DETAIL']
           },
           component: () => import('../views/customer/customerDetail.vue')
         },
@@ -394,6 +409,7 @@ export const routerMap = [
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:ARCHIVE']
           },
           component: () => import('../views/customer/archive.vue')
         }
