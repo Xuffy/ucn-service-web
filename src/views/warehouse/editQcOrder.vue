@@ -121,7 +121,6 @@
             <div class="second-title">
                 {{$i.warehouse.productInfo}}
             </div>
-
             <el-table
                     class="product-table"
                     v-loading="loadingProductInfoTable"
