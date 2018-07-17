@@ -28,7 +28,7 @@
   "inboundSkuTotalNetWeight": "Total N.W. of Inbound",
   "inboundSkuTotalGrossWeight": "Total G.W. of Inbound",
   "outerCartonSkuQty": "SKU Qty of outer carton",
-  "outerCartonVolume": "Total volume of ourter carton",
+  "outerCartonVolume": "Volume of Outer Carton",
   "outerCartonGrossWeight": "G.W. of ourter carton",
   "outerCartonNetWeight": "N.W. of ourter carton",
   "unqualifiedType": "Unqualified Type",
