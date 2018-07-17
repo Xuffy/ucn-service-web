@@ -13,44 +13,53 @@
             <el-radio-button label="0" >{{$i.payment.future}}</el-radio-button>
           </el-radio-group>
         </div>
-        <div class="spe-div">
-          <div class="search">
-            <select-search
-              v-model="searchId"
-              class="search"
-              :options=options
-              @inputEnter="inputEnter"
-              :searchLoad="searchLoad">
-            </select-search>
-          </div>
-          <div class="Date">
-            <span class="text" style="width:145px">{{$i.payment.orderCreateDate}} : </span>
-            <el-date-picker
-              v-model="date"
-              type="daterange"
-              align="right"
-              unlink-panels
-              :range-separator="$i.element.to"
-              :start-placeholder="$i.element.startDate"
-              :end-placeholder="$i.element.endDate"
-              value-format="timestamp"
-              :picker-options="dateOptions">
-            </el-date-picker>
-          </div>
-        </div>
       </div>
       <br>
       <!-- ref="tab" @action="action"  @page-change="pageChange" -->
       <div class="main">
-        <v-table :data="tableDataList"
-                 :totalRow="totalRow"
-                 :loading="tabLoad"
-                 :buttons="setButtons"
-                 @action="action"
-                 :rowspan="1"
-                 :height="500"
-                 @filter-value="onFilterValue"
-        ></v-table>
+        <v-table
+            code="ledger"
+            @change-sort="sort"
+            :data="tableDataList"
+           :totalRow="totalRow"
+           :loading="tabLoad"
+           :buttons="setButtons"
+           @action="action"
+           :rowspan="1"
+           :height="500"
+           @filter-value="onFilterValue"
+        >
+          <template slot="header">
+            <div style="overflow: hidden">
+              <el-button style="float: left" @click="downloadPayment" v-authorize="'PAYMENT:DOWNLOAD'">
+                {{$i.common.download}}
+              </el-button>
+              <div class="Date">
+                <span class="text1" >{{$i.payment.orderCreateDate}} : </span>
+                <el-date-picker
+                  v-model="date"
+                  type="daterange"
+                  align="right"
+                  unlink-panels
+                  :range-separator="$i.element.to"
+                  :start-placeholder="$i.element.startDate"
+                  :end-placeholder="$i.element.endDate"
+                  value-format="timestamp"
+                  :picker-options="dateOptions">
+                </el-date-picker>
+              </div>
+              <div class="search">
+                <select-search
+                  v-model="searchId"
+                  class="search"
+                  :options=options
+                  @inputEnter="inputEnter"
+                  :searchLoad="searchLoad">
+                </select-search>
+              </div>
+            </div>
+          </template>
+        </v-table>
         <page
           :page-data="pageData"
           @change="handleSizeChange"
@@ -94,7 +103,8 @@
             overdue: -1
           },
           pn: 1,
-          ps: 50
+          ps: 50,
+          sorts:[]
         },
         dateOptions:{
           shortcuts: [{
@@ -290,8 +300,14 @@
         if(_.findWhere(item, {'key': 'type'}).value === 10 && _.findWhere(item, {'key': 'planReceiveAmount'}).value !== _.findWhere(item, {'key': 'actualReceiveAmount'}).value) return [{label: this.$i.payment.urgingPayment, type: '1'},{label: this.$i.payment.detail, type: '2'}];
         return [{label: this.$i.payment.detail, type: '2'}];
       },
-      handleSizeChange(val) {
-        this.params.ps = val;
+      //...............sort
+      sort(item){
+        this.params.sorts =  item.sorts;
+        this.getList();
+      },
+      downloadPayment(){
+        let params=this.$depthClone(this.params);
+        this.$fetch.export_task('EXPORT_LEDGER',params);
       },
     },
     created(){
@@ -328,12 +344,14 @@
   .spe-div .View{
     float: left;
   }
-  .spe-div .search{
-    float: right;
-    margin-left: 10px;
+  .Date{
+    float: left;
+    margin-left: 20%;
   }
-  .spe-div .Date{
+
+  .search{
     float: right;
+    margin-right: 10px;
   }
 
 </style>

@@ -61,8 +61,11 @@
       style='marginTop:10px'>
       <template slot="header">
         <div style="margin-top: 20px;">
-          <el-button @click="postBatchRecover" type="danger" :disabled='!selectNumber.length>0'>
-            {{$i.button.delete}}({{selectNumber.length}})</el-button>
+          <el-button @click="postBatchRecover" type="primary" :disabled='!selectNumber.length>0'
+                     v-authorize="'CUSTOMER:ARCHIVE:RECOVER'">
+            {{$i.common.recover}}({{selectNumber.length}})</el-button>
+          <el-button @click="downloadCustomer" type="primary" v-authorize="'CUSTOMER:ARCHIVE:DOWNLOAD'">{{$i.button.download}}
+            ({{selectNumber.length===0?$i.common.all:selectNumber.length}})</el-button>
         </div>
       </template>
     </v-table>
@@ -285,9 +288,9 @@
         }
       },
       postBatchRecover(){
-        this.$confirm('确定恢复?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
+        this.$confirm(this.$i.common.sureRecover,this.$i.common.prompt, {
+          confirmButtonText: this.$i.common.confirm,
+          cancelButtonText: this.$i.common.cancel,
           type: 'warning'
         }).then(() => {
           this.$ajax.post(this.$apis.post_batchRecover, this.selectNumber)
@@ -295,7 +298,7 @@
               this.selectNumber = [];
               this.$message({
                 type: 'success',
-                message: '恢复成功!'
+                message: this.$i.common.recoverSuccess
               });
               this.getData();
             })
@@ -317,12 +320,14 @@
         path: '',
         query: {code: 'SUPPLIER_CUSTOMER_REMARK'},
         type: 100,
-        label: this.$i.common.log
+        label: this.$i.common.log,
+        auth: 'CUSTOMER:LOG'
       },
         {
           path: 'customerArchive',
           type: 10,
-          label: this.$i.common.archive
+          label: this.$i.common.archive,
+          auth:'CUSTOMER:ARCHIVE'
         },
       ]);
     },

@@ -61,9 +61,10 @@
                     style='marginTop:10px'>
                     <template slot="header">
                       <div style="margin-top: 20px;">
-                        <el-button @click="deleteCustomer" type="danger" :disabled='!selectNumber.length>0'>
-                          {{$i.button.delete}}({{selectNumber.length}})</el-button>
-                        <el-button @click="downloadCustomer" type="primary">{{$i.button.download}}
+                        <el-button @click="deleteCustomer" type="danger" :disabled='!selectNumber.length>0'
+                                   v-authorize="'CUSTOMER:OVERVIEW:ARCHIVE'">
+                          {{$i.button.remove}}({{selectNumber.length}})</el-button>
+                        <el-button @click="downloadCustomer" type="primary" v-authorize="'CUSTOMER:OVERVIEW:DOWNLOAD'">{{$i.button.download}}
                           ({{selectNumber.length===0?$i.common.all:selectNumber.length}})</el-button>
                       </div>
                     </template>
@@ -303,12 +304,14 @@
             path: '',
             query: {code: 'SUPPLIER_CUSTOMER_REMARK'},
             type: 100,
-            label: this.$i.common.log
+            label: this.$i.common.log,
+            auth:'CUSTOMER:LOG'
           },
             {
               path: 'customerArchive',
               type: 10,
-              label: this.$i.common.archive
+              label: this.$i.common.archive,
+              auth:'CUSTOMER:ARCHIVE'
             },
           ]);
         },

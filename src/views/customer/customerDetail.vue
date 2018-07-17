@@ -28,10 +28,11 @@
                    </el-row>
                   </el-form>
                 <div class="btns">
-                  <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'">
-                    {{$i.button.delete}}
+                  <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'"
+                             v-authorize="'SUPPLIER:DETAIL:ARCHIVE'">
+                    {{$i.button.remove}}
                   </el-button>
-                  <el-button @click="downloadCustomer" type="primary" >
+                  <el-button @click="downloadCustomer"  v-authorize="'SUPPLIER:DETAIL:DOWNLOAD'">
                     {{$i.button.download}}
                   </el-button>
                 </div>
