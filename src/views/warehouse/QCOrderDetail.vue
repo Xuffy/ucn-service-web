@@ -650,10 +650,6 @@
                 .catch(err=>{
                     this.loadingData=false;
                 });
-
-
-
-
         },
         mounted(){
             this.setMenuLink({
