@@ -21,6 +21,7 @@ import VAddQuickLink from './common/addQuickLink/index';
 import paymentTable from '@/views/warehouse/paymentTable';
 import VHistory from '@/views/negotiation/children/history';
 import addNewInqury from '@/views/negotiation/children/addNewInqury';
+import VInputNumber from './common/inputNumber/index';
 
 export {
   VImage,
@@ -43,5 +44,6 @@ export {
   dropDownSingle,
   paymentTable,
   VHistory,
-  addNewInqury
+  addNewInqury,
+    VInputNumber
 }
