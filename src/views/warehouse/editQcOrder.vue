@@ -90,11 +90,11 @@
                                 </el-date-picker>
                             </div>
                             <div v-else-if="v.type==='number'">
-                                <el-input-number
+                                <v-input-number
                                         class="speInput speNumber"
                                         :controls="false"
                                         v-model="qcDetail[v.key]"
-                                        :disabled="v.disabled"></el-input-number>
+                                        :disabled="v.disabled"></v-input-number>
                             </div>
                             <div v-else-if="v.type==='attachment'">
                                 <v-upload readonly :list="qcDetail[v.key]" :limit="20"
@@ -173,15 +173,15 @@
                         </div>
                         <div v-else-if="v.showType==='number'">
                             <div v-if="v.key==='outerCartonLength' || v.key==='outerCartonWidth' || v.key==='outerCartonHeight' || v.key==='qualifiedSkuCartonTotalQty' || v.key==='unqualifiedSkuCartonTotalQty' || v.key==='actOuterCartonSkuQty' || v.key==='outerCartonNetWeight' || v.key==='outerCartonGrossWeight'">
-                                <el-input-number
+                                <v-input-number
                                         :controls="false"
                                         @blur="handleInputNumberBlur(scope.row)"
-                                        v-model="scope.row[v.key]"></el-input-number>
+                                        v-model="scope.row[v.key]"></v-input-number>
                             </div>
                             <div v-else>
-                                <el-input-number
+                                <v-input-number
                                         :controls="false"
-                                        v-model="scope.row[v.key]"></el-input-number>
+                                        v-model="scope.row[v.key]"></v-input-number>
                             </div>
                         </div>
                         <div v-else-if="v.showType==='input'">
@@ -346,7 +346,7 @@
 </template>
 <script>
 
-    import { VTable, VUpload, VMessageBoard } from "@/components/index";
+    import { VTable, VUpload, VMessageBoard, VInputNumber } from "@/components/index";
     import { mapActions } from "vuex";
 
     export default {
@@ -354,7 +354,8 @@
         components: {
             VTable,
             VUpload,
-            VMessageBoard
+            VMessageBoard,
+            VInputNumber
         },
         data() {
             return {
@@ -378,16 +379,11 @@
                 qcStatusOption: [],
                 currencyOptions: [],
 
-                /**
-                 * paymentTable data
-                 * */
-                tableData: [
-                    {
-                        date: "2016-05-02",
-                        name: "王小虎",
-                        address: "上海市普陀区金沙江路 1518 弄"
-                    }
-                ],
+                skuUnitOption: [],       //计量单位
+                lengthOption: [],
+                volumeOption: [],
+                weightOption: [],
+
 
                 /**
                  * summary Data
@@ -431,7 +427,7 @@
             };
         },
         methods: {
-            ...mapActions(["setLog"]),
+            ...mapActions(["setMenuLink"]),
             getQcOrderDetail() {
                 this.loadingData = true;
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
@@ -447,8 +443,17 @@
                 this.loadingProductInfoTable = true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct, this.productInfoConfig).then(res => {
                     this.productInfoData = res.datas;
+
+                    console.log(this.productInfoData, "this.productInfoData");
+                    console.log(this.lengthOption,'lengthOption')
+
                     this.productInfoData.forEach(v => {
                         v.skuQcResultDictCode = "";
+                        v.skuUnitDictCode=(_.findWhere(this.skuUnitOption,{code:v.skuUnitDictCode}) || {}).name;
+                        v.volumeUnitDictCode=(_.findWhere(this.volumeOption,{code:v.volumeUnitDictCode}) || {}).name;
+                        v.weightUnitDictCode=(_.findWhere(this.weightOption,{code:v.weightUnitDictCode}) || {}).name;
+                        v.lengthUnitDictCode=(_.findWhere(this.lengthOption,{code:v.lengthUnitDictCode}) || {}).name;
+
                     });
                     let diffData = [];
                     _.map(this.productInfoData, v => {
@@ -486,12 +491,11 @@
                     });
                 }
 
-                _.map(this.productInfoData, v => {
-                    if (this.$validateForm(v, this.$db.warehouse.qcDetailProductInfo)) {
+                for (let v in this.productInfoData) {
+                    if (this.$validateForm(this.productInfoData[v], this.$db.warehouse.qcDetailProductInfo)) {
                         return;
                     }
-                });
-
+                }
 
                 this.qcOrderConfig.qcDate = this.qcDetail.qcDate;
                 this.qcOrderConfig.qcMethodDictCode = this.qcDetail.qcMethodDictCode;
@@ -559,7 +563,6 @@
                 _.map(this.qcOrderConfig.qcResultDetailParams, (v, k) => {
                     v.qcPics = this.$refs["picUpload" + k][0].getFiles();
                 });
-
                 this.disableClickSubmit = true;
                 this.$ajax.post(this.$apis.save_serviceQcOrder, this.qcOrderConfig).then(res => {
                     this.disableClickSubmit = false;
@@ -620,7 +623,7 @@
                     if (index === 0) {
                         sums[index] = this.$i.warehouse.total;
                         return;
-                    }else if(index===17 || index===18 || index===41 || index===42 || index===43 || index===44 || index===45 || index===46 || index===47 || index===48 || index===49 || index===50 || index===51 || index===52 || index===65){
+                    } else if (index === 17 || index === 18 || index === 41 || index === 42 || index === 43 || index === 44 || index === 45 || index === 46 || index === 47 || index === 48 || index === 49 || index === 50 || index === 51 || index === 52 || index === 65) {
                         const values = data.map(item => Number(item[column.property]));
                         if (!values.every(value => isNaN(value))) {
                             sums[index] = values.reduce((prev, curr) => {
@@ -631,8 +634,8 @@
                                     return prev;
                                 }
                             }, 0);
-                        }else{
-                            sums[index]='-';
+                        } else {
+                            sums[index] = "-";
                         }
                     }
                 });
@@ -644,8 +647,11 @@
              * 获取字典
              * */
             getUnit() {
-                this.$ajax.post(this.$apis.get_partUnit, ["QC_TYPE", "QC_MD", "SKU_QC_RS", "PB_CODE", "QC_STATUS"], { _cache: true }).then(res => {
-                    res.forEach(v => {
+                const partUnit=this.$ajax.post(this.$apis.get_partUnit, ["QC_TYPE", "QC_MD", "SKU_QC_RS", "PB_CODE", "QC_STATUS", "SKU_UNIT", "LH_UNIT", "VE_UNIT", "WT_UNIT"], { _cache: true });
+                const currency=this.$ajax.get(this.$apis.get_currencyUnit, {}, { cache: true });
+
+                this.$ajax.all([partUnit,currency]).then(res=>{
+                    res[0].forEach(v => {
                         if (v.code === "QC_TYPE") {
                             this.qcTypeOption = v.codes;
                         } else if (v.code === "QC_MD") {
@@ -657,29 +663,28 @@
                             this.qcResultOption = v.codes;
                         } else if (v.code === "PB_CODE") {
                             this.barCodeResult = v.codes;
-                            console.log(this.barCodeResult, "this.barCodeResult");
                         } else if (v.code === "QC_STATUS") {
                             this.qcStatusOption = v.codes;
+                        } else if (v.code === "SKU_UNIT") {
+                            this.skuUnitOption = v.codes;
+                        } else if (v.code === "LH_UNIT") {
+                            this.lengthOption = v.codes;
+                        } else if (v.code === "VE_UNIT") {
+                            this.volumeOption = v.codes;
+                        } else if (v.code === "WT_UNIT") {
+                            this.weightOption = v.codes;
                         }
                     });
-                });
+                    this.currencyOptions = res[1];
+                    this.getProductInfo();
+                })
 
-                this.$ajax.get(this.$apis.get_currencyUnit, {}, { cache: true }).then(res => {
-                    this.currencyOptions = res;
-                }).catch(err => {
-
-                });
 
                 //获取验货员
                 // this.$ajax.get(this.$apis.get_serviceQcSurveyor).then(res=>{
                 //     // console.log(res)
                 // }).catch(err=>{
                 //
-                // });
-
-
-                // this.$ajax.post(this.$apis.get_partUnit,[]).then(res=>{
-                //     console.log(res)
                 // });
             },
 
@@ -710,12 +715,17 @@
         },
         created() {
             this.getQcOrderDetail();
-            this.getProductInfo();
             this.getUnit();
             this.getService();
         },
         mounted() {
-            this.setLog({ query: { code: "WAREHOUSE" } });
+            this.setMenuLink({
+                path: "/logs/index",
+                query: { code: "WAREHOUSE" },
+                type: 10,
+                auth: "QC:LOG",
+                label: this.$i.common.log
+            });
         }
     };
 </script>
