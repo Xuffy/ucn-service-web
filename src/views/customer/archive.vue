@@ -64,7 +64,8 @@
           <el-button @click="postBatchRecover" type="primary" :disabled='!selectNumber.length>0'
                      v-authorize="'CUSTOMER:ARCHIVE:RECOVER'">
             {{$i.common.recover}}({{selectNumber.length}})</el-button>
-          <el-button @click="downloadCustomer" type="primary" v-authorize="'CUSTOMER:ARCHIVE:DOWNLOAD'">{{$i.button.download}}
+          <el-button @click="downloadCustomer" type="primary" v-authorize="'CUSTOMER:ARCHIVE:DOWNLOAD'"
+                     :disabled='!tabData.length>0'>{{$i.button.download}}
             ({{selectNumber.length===0?$i.common.all:selectNumber.length}})</el-button>
         </div>
       </template>
