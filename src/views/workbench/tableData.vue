@@ -39,6 +39,7 @@
                  :buttons="['detail']"
                  hideFilterColumn
                  hideFilterValue
+                 disabled-sort
                  @action="goDetail"
                  :height="250">
         </v-table>
@@ -146,6 +147,7 @@
       this.dataList[2] = null;
       this.dataList = _.compact(this.dataList);
       this.getData();
+      // this.getDataNumber();
     },
     watch: {
       'search.type'() {
@@ -192,6 +194,11 @@
             return item;
           });
         }).finally(() => item.loading = false);
+      },
+      getDataNumber() {
+        this.$ajax.get(this.$apis.UTASK_COUNTBYTYPEANDMODULE).then(res => {
+          console.log(res,1)
+        });
       },
       goDetail(item) {
         let tab = this.dataList[this.tabIndex]
