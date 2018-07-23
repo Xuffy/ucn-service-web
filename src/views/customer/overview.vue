@@ -49,17 +49,27 @@
               </div>
         </div>
 <!--        表格-->
-          <div style="margin-top: 20px;">
-              <!--<el-button @click="deleteCustomer" type="primary">{{$i.button.delete}}</el-button>-->
-          </div>
              <v-table
-                    :height=360
+                    code="udata_servicer_customer_overview"
+                    @change-sort="sort"
+                    :height=500
                     :loading='loading'
                     :data="tabData"
                     :buttons="[{label: 'Detail', type: 1}]"
                     @action="detail"
                     @change-checked='checked'
-                    style='marginTop:10px'/>
+                    style='marginTop:10px'>
+                    <template slot="header">
+                      <div style="margin-top: 20px;">
+                        <el-button @click="deleteCustomer" type="danger" :disabled='!selectNumber.length>0'
+                                   v-authorize="'CUSTOMER:OVERVIEW:ARCHIVE'">
+                          {{$i.button.remove}}({{selectNumber.length}})</el-button>
+                        <el-button @click="downloadCustomer" type="primary" v-authorize="'CUSTOMER:OVERVIEW:DOWNLOAD'"
+                                   :disabled='!tabData.length>0'>{{$i.button.download}}
+                          ({{selectNumber.length===0?$i.common.all:selectNumber.length}})</el-button>
+                      </div>
+                    </template>
+             </v-table>
               <page
                 :page-data="pageData"
                 @change="handleSizeChange"
@@ -103,6 +113,7 @@
                 hideBody: true, //是否显示body
                 btnInfo: 'Show the Advance',
                 loading: false,
+                disableClickDeleteBtn:false,
                 pageData: {},
                 endpn: "",
                 params: {
@@ -114,7 +125,8 @@
                     type:"",
                     pn: 1,
                     ps: 50,
-                    recycle:false
+                    recycle:false,
+                    sorts:[]
                 },
                 tabData: [],
                 selectedData: [],
@@ -131,7 +143,7 @@
         },
         methods: {
                ...mapActions([
-                 'setLog'
+                 'setMenuLink'
             ]),
             handleSizeChange(val) {
               this.params.pn = val;
@@ -188,6 +200,7 @@
                 this.$windowOpen({
                     url: '/customer/detail',
                     params: {
+                        type:'read',
                         id: item.id.value,
                         customerId:item.customerId.value
                     }
@@ -195,17 +208,24 @@
                 });
             },
             deleteCustomer(){
-                 this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber)
-                    .then(res => {
-                        this.$message({
-                          message: '删除成功',
-                          type: 'success'
-                        });
-                        this.getData()
-                    })
-                    .catch((res) => {
-                        console.log(res)
-                    });
+              this.$confirm(this.$i.common.sureDelete, this.$i.common.prompt, {
+                confirmButtonText: this.$i.common.sure,
+                cancelButtonText: this.$i.common.cancel,
+                type: 'warning'
+              }).then(() => {
+                this.disableClickDeleteBtn = true;
+                this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber).then(res => {
+                  this.disableClickDeleteBtn = false;
+                  this.selectNumber =[];
+                  this.getData();
+                  this.$message({
+                    type: 'success',
+                    message: this.$i.common.deleteTheSuccess
+                  });
+                }).finally(() => {
+                  this.disableClickDeleteBtn = false;
+                });
+              })
             },
             //.........checked
             checked(item) {
@@ -235,7 +255,7 @@
                             e.incoterm._value = incoterm.name || '';
                             e.type._value = type.name || '';
                             // e.currency._value = currency.name || '';
-                            
+
                             return e;
                         });
                     })
@@ -260,13 +280,18 @@
                     console.log(err)
                 });
             },
-            handleSizeChange(val) {
-                this.params.pn = val;
-                this.getData()
+            downloadCustomer(){
+              let ids=_.pluck(_.pluck(this.selectedData,"id"),'value');
+              if(ids.length>0){
+                this.$fetch.export_task('UDATA_SERVICER_EXPORT_CUSTOMER_IDS',{ids:ids});
+              }else{
+                let params=this.$depthClone(this.params);
+                this.$fetch.export_task('UDATA_SERVICER_EXPORT_CUSTOMER_PARAMS',params);
+              }
             },
-            pageSizeChange(val) {
-                this.params.ps = val;
-                this.getData()
+            sort(item){
+              this.params.sorts = item.sorts;
+              this.getData();
             },
         },
         created() {
@@ -274,10 +299,22 @@
             this.getCodePart();
             this.getCountryAll();
             this.getCurrency();
-            // this.getCategoryId();
         },
         mounted(){
-          this.setLog({query:{code:'SUPPLIER_CUSTOMER_REMARK'}});
+          this.setMenuLink([{
+            path: '',
+            query: {code: 'SUPPLIER_CUSTOMER_REMARK'},
+            type: 100,
+            label: this.$i.common.log,
+            auth:'CUSTOMER:LOG'
+          },
+            {
+              path: 'customerArchive',
+              type: 10,
+              label: this.$i.common.archive,
+              auth:'CUSTOMER:ARCHIVE'
+            },
+          ]);
         },
         watch: {}
     }
@@ -346,12 +383,6 @@
     .btnline {
         margin-top: 20px;
         width: 100%;
-        border-top: 1px solid black;
-    }
-
-    .btnline .el-button {
-        margin-right: 8px;
-        margin-top: 20px;
     }
 
     .el-select {

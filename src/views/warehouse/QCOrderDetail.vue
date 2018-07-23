@@ -224,6 +224,7 @@
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
                     @action="btnClick"
+                    :totalRow="totalRow"
                     @change-checked="changeChecked">
                 <template slot="header">
                     <div class="second-title">
@@ -353,12 +354,11 @@
             </el-form>
         </div>
 
-
-
         <div class="footBtn">
             <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
-            <el-button @click="cancel"  v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" >{{$i.warehouse.cancel}}</el-button>
-            <el-button @click="cancel"  v-if="qcDetail.qcStatusDictCode!=='WAITING_QC'" >{{$i.warehouse.exit}}</el-button>
+            <el-button type="danger" @click="cancel"  v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" >{{$i.warehouse.exit}}</el-button>
+            <el-button type="danger" @click="cancel"  v-if="qcDetail.qcStatusDictCode!=='WAITING_QC'" >{{$i.warehouse.exit}}</el-button>
+            <el-button @click="download" type="primary">{{$i.warehouse.download}}</el-button>
         </div>
         <v-message-board module="warehouse" code="qcDetail" :id="$route.query.id"></v-message-board>
     </div>
@@ -408,7 +408,6 @@
                     //     }
                     // ],
                 },
-                totalRow:[],
                 productInfoData:[],
                 selectList:[],
                 qcTypeOption:[],
@@ -420,8 +419,30 @@
                 weightOption:[],
             }
         },
+        computed:{
+            totalRow(){
+                let obj={};
+                if(this.productInfoData.length<=0){
+                    return;
+                }
+                _.map(this.productInfoData,v=>{
+                    _.mapObject(v,(item,key)=>{
+                        if(item._calculate){
+                            obj[key]={
+                                value: Number(item.value)  + (Number(obj[key] ? obj[key].value : 0) || 0),
+                            };
+                        }else{
+                            obj[key] = {
+                                value: ''
+                            };
+                        }
+                    })
+                });
+                return [obj];
+            }
+        },
         methods:{
-            ...mapActions(['setLog']),
+            ...mapActions(['setMenuLink']),
             getQcOrderDetail(){
                 this.loadingData=true;
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
@@ -434,18 +455,14 @@
                 );
             },
             getProductInfo(){
-                console.log(this.pbCodeOption,'pbCodeOption')
                 this.loadingProductInfoTable=true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,e=>{
-                        console.log(e,'e')
                         e.deliveryDate.value=this.$dateFormat(e.deliveryDate.value,'yyyy-mm-dd');
                         e.skuUnitDictCode._value=e.skuUnitDictCode.value?_.findWhere(this.skuUnitOption,{code:e.skuUnitDictCode.value}).name:'';
                         e.volumeUnitDictCode._value=e.volumeUnitDictCode.value?_.findWhere(this.volumeOption,{code:e.volumeUnitDictCode.value}).name:'';
                         e.weightUnitDictCode._value=e.weightUnitDictCode.value?_.findWhere(this.weightOption,{code:e.weightUnitDictCode.value}).name:'';
                         e.lengthUnitDictCode._value=e.lengthUnitDictCode.value?_.findWhere(this.lengthOption,{code:e.lengthUnitDictCode.value}).name:'';
-
-
                         e.skuBarCodeResultDictCode._value=e.skuBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuBarCodeResultDictCode.value}).name:'';
                         e.skuLabelResultDictCode._value=e.skuLabelResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.skuLabelResultDictCode.value}).name:'';
                         e.innerPackingBarCodeResultDictCode._value=e.innerPackingBarCodeResultDictCode.value?_.findWhere(this.pbCodeOption,{code:e.innerPackingBarCodeResultDictCode.value}).name:'';
@@ -460,10 +477,6 @@
                                 v[key]=null;
                             }
                         })
-                    });
-
-                    this.totalRow = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,item=>{
-
                     });
 
                     let diffData=[];
@@ -604,6 +617,9 @@
             cancel(){
                 window.close();
             },
+            download(){
+                this.$fetch.export_task('QC_ORDER',{qcOrderNos:[this.qcDetail.qcOrderNo]});
+            },
         },
         created(){
             this.loadingData=true;
@@ -632,13 +648,15 @@
                 .catch(err=>{
                     this.loadingData=false;
                 });
-
-
-
-
         },
         mounted(){
-            this.setLog({query: {code: 'WAREHOUSE'}});
+            this.setMenuLink({
+                path: '/logs/index',
+                query: {code: 'WAREHOUSE'},
+                type: 10,
+                auth:'QC:LOG',
+                label: this.$i.common.log
+            });
         },
     }
 </script>

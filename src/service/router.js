@@ -43,7 +43,10 @@ export const routerMap = [
     },
     {
       path: '/payment',
-      meta: {name: $i.router.payment},
+      meta: {
+        name: $i.router.payment,
+        auth: ['PAYMENT']
+      },
       component: Layout,
       redirect: '/payment/index',
       noDropdown: true,
@@ -139,7 +142,10 @@ export const routerMap = [
       path: '/settings',
       component: Layout,
       redirect: '/settings/department',
-      meta: {name: $i.router.settings},
+      meta: {
+        name: $i.router.settings,
+        auth: ['SETTING']
+      },
       children: [
         {
           path: 'department',
@@ -171,7 +177,8 @@ export const routerMap = [
             draft: true,
             recycleBin: true,
             log: true,
-            name: $i.router.settingsPersonal
+            name: $i.router.settingsPersonal,
+            auth: ['SETTING:PERSONAL']
           },
           component: () => import('../views/settings/personalSetting')
         },
@@ -225,6 +232,12 @@ export const routerMap = [
             log: true,
           },
           component: () => import('../views/logs/logs.vue')
+        },
+        {
+          path: 'task',
+          name: 'logsTask',
+          meta: {},
+          component: () => import('../views/logs/task.vue')
         }
       ]
     },
@@ -232,7 +245,10 @@ export const routerMap = [
       path: '/message',
       component: Layout,
       redirect: '/message/index',
-      meta: {name: $i.router.message},
+      meta: {
+        name: $i.router.message,
+        auth: ['MESSAGE']
+      },
       hidden: true,
       children: [
         {
@@ -251,8 +267,6 @@ export const routerMap = [
 
       ],
     },
-    // todo 供应商路由
-    //draft  草稿箱路由
     {
       path: '/draft',
       component: Layout,
@@ -273,7 +287,6 @@ export const routerMap = [
         }
       ]
     },
-    //recycleBin  回收站路由
     {
       path: '/recycle',
       component: Layout,
@@ -299,16 +312,17 @@ export const routerMap = [
       component: Layout,
       redirect: '/warehouse/overview',
       name: 'warehouse',
-      meta: {name: $i.router.warehouse},
+      meta: {
+          auth:'QC',
+          name: $i.router.warehouse
+      },
       noDropdown: true,
       children: [
         {
           path: 'overview',
           name: 'qc Overview',
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_OVERVIEW',
             name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
@@ -318,9 +332,7 @@ export const routerMap = [
           name: 'QC Overview',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_OVERVIEW',
             name: $i.router.warehouseQcOverview
           },
           component: () => import('../views/warehouse/qcOverview'),
@@ -330,9 +342,7 @@ export const routerMap = [
           name: 'edit qc',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_DETAIL',
             name: $i.router.editQc
           },
           component: () => import('../views/warehouse/editQcOrder'),
@@ -342,9 +352,7 @@ export const routerMap = [
           name: 'qc detail',
           hidden: true,
           meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
+              auth:'QC:ORDER_DETAIL',
             name: $i.router.qcDetail
           },
           component: () => import('../views/warehouse/QCOrderDetail'),
@@ -353,10 +361,12 @@ export const routerMap = [
       ]
     },
     {
-
       path: '/customer',
       component: Layout,
-      meta: {name:$i.router.customer},
+      meta: {
+        name: $i.router.customer,
+        auth: ['CUSTOMER']
+      },
       redirect: '/customer/overview',
       noDropdown: true,
       hidden: false,
@@ -368,6 +378,7 @@ export const routerMap = [
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:OVERVIEW']
           },
           component: () => import('../views/customer/overview.vue')
         },
@@ -378,18 +389,20 @@ export const routerMap = [
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:DETAIL']
           },
           component: () => import('../views/customer/customerDetail.vue')
         },
         {
-          path: 'recycle',
-          name: 'customerRecycleBinDetail',
+          path: 'customerArchive',
+          name: 'customerArchive',
           meta: {
             draft: false,
             recycleBin: true,
             log: false,
+            auth: ['CUSTOMER:ARCHIVE']
           },
-          component: () => import('../views/customer/recycleBin.vue')
+          component: () => import('../views/customer/archive.vue')
         }
       ]
     }
@@ -398,6 +411,7 @@ export const routerMap = [
 
 
 let router = new Router({
+  mode: 'history',
   routes: routerMap
 });
 

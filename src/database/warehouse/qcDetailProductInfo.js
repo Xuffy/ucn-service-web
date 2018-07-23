@@ -76,11 +76,13 @@ export default{
     },
     orderSkuQty: {
         key: 'orderSkuQty',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     expectQcQty: {
         key: 'expectQcQty',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     samplingRate: {
         key: 'samplingRate',
@@ -242,7 +244,8 @@ export default{
     },
     actSkuCartonTotalQty:{              //计算？？？？
         key: 'actSkuCartonTotalQty',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     qualifiedSkuCartonTotalQty:{
         key: 'qualifiedSkuCartonTotalQty',
@@ -251,48 +254,59 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        _calculate:true
     },
     unqualifiedSkuCartonTotalQty:{
         key: 'unqualifiedSkuCartonTotalQty',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        _calculate:true
     },
     actSkuQty:{              //计算？？？？
         key: 'actSkuQty',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     qualifiedSkuQty:{              //计算？？？？
         key: 'qualifiedSkuQty',
         type: 'Number',
+        _calculate:true
     },
     unqualifiedSkuQty:{              //计算？？？？
         key: 'unqualifiedSkuQty',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     qualifiedSkuNetWeight:{              //计算？？？？
         key: 'qualifiedSkuNetWeight',
         type: 'Number',
+        _calculate:true
     },
     unqualifiedSkuNetWeight:{              //计算？？？？
         key: 'unqualifiedSkuNetWeight',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     qualifiedSkuVolume:{              //计算？？？？
         key: 'qualifiedSkuVolume',
         type: 'Number',
+        _calculate:true
     },
     unqualifiedSkuVolume:{              //计算？？？？
         key: 'unqualifiedSkuVolume',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     qualifiedSkuGrossWeight:{              //计算？？？？
         key: 'qualifiedSkuGrossWeight',
         type: 'Number',
+        _calculate:true
     },
     unqualifiedSkuGrossWeight:{              //计算？？？？
         key: 'unqualifiedSkuGrossWeight',
-        type: 'Number'
+        type: 'Number',
+        _calculate:true
     },
     unqualifiedType:{
         key: 'unqualifiedType',
@@ -358,11 +372,12 @@ export default{
     checkOuterCartonQty:{
         key: 'checkOuterCartonQty',
         type: 'Number',
-        showType:'input',
+        showType:'number',
         _rules:{
             required:true,
             type:'Number'
         },
+        _calculate:true
     },
     remark:{
         key: 'remark',

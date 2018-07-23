@@ -26,28 +26,15 @@
                        </el-form>
                      </el-col>
                    </el-row>
-                    <!--<el-row>-->
-                        <!--<el-col :span="6">-->
-                        <!--</el-col>-->
-                      <!--<el-col :span="18">-->
-                        <!--<el-form label-width="190px">-->
-                          <!--<el-row>-->
-                            <!--<el-col-->
-                                    <!--v-for='(item,index) in $db.supplier.detail'-->
-                                    <!--:key='index'-->
-                            <!--&gt;-->
-                              <!--<el-form-item label-width="260px" :prop="item.key" :label="item.label+' :'">-->
-                                <!--{{basicDate[item.key]}}-->
-                              <!--</el-form-item>-->
-                            <!--</el-col>-->
-                          <!--</el-row>-->
-                        <!--</el-form>-->
-                      <!--</el-col>-->
-                <!--</el-row>-->
                   </el-form>
                 <div class="btns">
-                   <!--<el-button @click='deleteCustomer' type='danger'>{{$i.common.delete}}</el-button>-->
-                   <!--<el-button @click='$router.go(-1)'>{{$i.button.cancel}}</el-button>-->
+                  <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'"
+                             v-authorize="'SUPPLIER:DETAIL:ARCHIVE'">
+                    {{$i.button.remove}}
+                  </el-button>
+                  <el-button @click="downloadCustomer"  v-authorize="'SUPPLIER:DETAIL:DOWNLOAD'">
+                    {{$i.button.download}}
+                  </el-button>
                 </div>
             </div>
         </div>
@@ -248,7 +235,7 @@
               this.$ajax.post(`${this.$apis.post_customerUpdataRmark}/${this.addRemarkData.id}`,this.addRemarkData)
                 .then(res => {
                   this.$message({
-                    message: '修改成功',
+                    message: this.$i.common.modifySuccess,
                     type: 'success'
                   });
                   this.getListRemark();
@@ -263,7 +250,7 @@
               this.$ajax.post(this.$apis.post_addCustomerListRemark,this.addRemarkData)
                   .then(res => {
                     this.$message({
-                      message: '添加成功',
+                      message: this.$i.common.addSuccess,
                       type: 'success'
                     });
                     this.getListRemark();
@@ -277,15 +264,15 @@
               }
             },
             deleteRemark(e){
-              this.$confirm('确定删除该备注?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+              this.$confirm(this.$i.common.sureToDeleteRemark, this.$i.common.prompt, {
+                confirmButtonText: this.$i.common.confirm,
+                cancelButtonText: this.$i.common.cancel,
                 type: 'warning'
               }).then(() => {
                 this.$ajax.post(this.$apis.post_deleteCustomerRemark,{id:e.id.value}).then(res=>{
                   this.$message({
                     type: 'success',
-                    message: '删除成功!'
+                    message: this.$i.common.deleteTheSuccess
                   });
                   this.getListRemark();
                 }).catch(err=>{
@@ -351,7 +338,7 @@
                 this.basicDate.country = country.name || '';
                 this.basicDate.payment = payment.name || '';
                 this.basicDate.currency = currency.name || '';
-            
+
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
                   let country,receiveCountry;
                   country = _.findWhere(this.country, {code: e.country.value}) || {};
@@ -393,6 +380,33 @@
               .catch((res) => {
                 this.loading = false
               });
+          },
+          //删除
+          deleteCustomer(){
+            this.$confirm(this.$i.common.sureDelete, this.$i.common.prompt, {
+              confirmButtonText: this.$i.common.sure,
+              cancelButtonText: this.$i.common.cancel,
+              type: 'warning'
+            }).then(() => {
+              this.disableClickDeleteBtn = true;
+              const params = []
+              params.push(this.basicDate.id)
+              this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber).then(res => {
+                this.disableClickDeleteBtn = false;
+                this.getData();
+                this.$message({
+                  type: 'success',
+                  message: this.$i.common.deleteTheSuccess
+                });
+              }).finally(() => {
+                this.disableClickDeleteBtn = false;
+              });
+            })
+          },
+          //下载
+          downloadCustomer(){
+            this.$fetch.export_task('UDATA_SERVICER_EXPORT_CUSTOMER_IDS',{ids:this.basicDate.id});
+
           },
 
         },
