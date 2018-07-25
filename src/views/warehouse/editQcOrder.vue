@@ -121,6 +121,13 @@
             <div class="second-title">
                 {{$i.warehouse.productInfo}}
             </div>
+            <div class="gear">
+                <v-filter-column
+                    ref="filterColumn"
+                    code="uwarehouse_qc_order_detail"
+                    @change="changeColumn">
+                </v-filter-column>
+            </div>
             <el-table
                     class="product-table"
                     v-loading="loadingProductInfoTable"
@@ -136,17 +143,20 @@
                         width="55">
                 </el-table-column>
                 <el-table-column
-                        v-for="v in $db.warehouse.qcDetailProductInfo"
-                        v-if="!v._hide"
+                        v-for="v in columnConfig"
+                        v-if="!v._hidden && !v._hide"
                         :prop="v.key"
                         align="center"
-                        :key="v.value"
+                        :key="v.key"
                         :label="$i.warehouse[v.key]"
                         width="180">
-                    <template slot-scope="scope">
-                        <div v-if="v.showType==='select'">
+                    <template slot-scope="scope" v-if="scope.row[v.key]">
+                        <div v-if="v.key === 'deliveryDate'">
+                            {{$dateFormat(scope.row[v.key].value,"yyyy-mm-dd")}}
+                        </div>
+                        <div v-else-if="v.showType==='select'">
                             <div v-if="v.isQcResult">
-                                <el-select clearable v-model="scope.row[v.key]"
+                                <el-select clearable v-model="scope.row[v.key].value"
                                            :placeholder="$i.warehouse.pleaseChoose">
                                     <el-option
                                             v-for="item in qcResultOption"
@@ -157,7 +167,7 @@
                                 </el-select>
                             </div>
                             <div v-else-if="v.isBarCodeResult">
-                                <el-select clearable v-model="scope.row[v.key]"
+                                <el-select clearable v-model="scope.row[v.key].value"
                                            :placeholder="$i.warehouse.pleaseChoose">
                                     <el-option
                                             v-for="item in barCodeResult"
@@ -168,7 +178,6 @@
                                 </el-select>
                             </div>
                             <div v-else>
-
                             </div>
                         </div>
                         <div v-else-if="v.showType==='number'">
@@ -176,29 +185,26 @@
                                 <v-input-number
                                         :controls="false"
                                         @blur="handleInputNumberBlur(scope.row)"
-                                        v-model="scope.row[v.key]"></v-input-number>
+                                        v-model="scope.row[v.key].value"></v-input-number>
                             </div>
                             <div v-else>
                                 <v-input-number
                                         :controls="false"
-                                        v-model="scope.row[v.key]"></v-input-number>
+                                        v-model="scope.row[v.key].value"></v-input-number>
                             </div>
                         </div>
                         <div v-else-if="v.showType==='input'">
                             <el-input
                                     :placeholder="$i.warehouse.pleaseInput"
-                                    v-model="scope.row[v.key]"
+                                    v-model="scope.row[v.key].value"
                                     clearable>
                             </el-input>
                         </div>
                         <div v-else-if="v.showType==='pic'">
                             <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload>
                         </div>
-                        <div v-else-if="v.key==='deliveryDate'">
-                            {{$dateFormat(scope.row[v.key],"yyyy-mm-dd")}}
-                        </div>
                         <div v-else>
-                            {{scope.row[v.key]}}
+                            {{scope.row[v.key].value}}
                         </div>
                     </template>
                 </el-table-column>
@@ -346,7 +352,7 @@
 </template>
 <script>
 
-    import { VTable, VUpload, VMessageBoard, VInputNumber } from "@/components/index";
+    import { VTable, VUpload, VMessageBoard, VInputNumber, VFilterColumn } from "@/components/index";
     import { mapActions } from "vuex";
 
     export default {
@@ -355,7 +361,8 @@
             VTable,
             VUpload,
             VMessageBoard,
-            VInputNumber
+            VInputNumber,
+            VFilterColumn
         },
         data() {
             return {
@@ -384,7 +391,7 @@
                 volumeOption: [],
                 weightOption: [],
 
-
+                columnConfig: '',
                 /**
                  * summary Data
                  * */
@@ -428,6 +435,10 @@
         },
         methods: {
             ...mapActions(["setMenuLink"]),
+            changeColumn(val) {
+                this.productInfoData = this.$refs.filterColumn.getFilterData(this.productInfoData, val);
+                this.columnConfig = this.productInfoData[0];
+            },
             getQcOrderDetail() {
                 this.loadingData = true;
                 this.$ajax.get(`${this.$apis.get_serviceOrderDetail}?id=${this.$route.query.id}`)
@@ -443,9 +454,8 @@
                 this.loadingProductInfoTable = true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct, this.productInfoConfig).then(res => {
                     this.productInfoData = res.datas;
-
                     console.log(this.productInfoData, "this.productInfoData");
-                    console.log(this.lengthOption,'lengthOption')
+                    // console.log(this.lengthOption,'lengthOption')
 
                     this.productInfoData.forEach(v => {
                         v.skuQcResultDictCode = "";
@@ -461,6 +471,13 @@
                     });
                     this.summaryData.skuQuantity = _.uniq(diffData).length;
                     this.loadingProductInfoTable = false;
+                    let arr = this.$copyArr(this.productInfoData)
+                    arr = this.$getDB(this.$db.warehouse.qcDetailProductInfo, arr);
+                    this.$refs.filterColumn.update(false, arr).then(data => {
+                        console.log(data)
+                        this.productInfoData = this.$refs.filterColumn.getFilterData(arr, data);
+                        this.columnConfig = this.productInfoData[0];
+                    });
                 }).catch(err => {
                     this.loadingProductInfoTable = false;
                 });
@@ -726,6 +743,7 @@
                 auth: "QC:LOG",
                 label: this.$i.common.log
             });
+            this.columnConfig = this.$db.warehouse.qcDetailProductInfo;
         }
     };
 </script>
@@ -774,5 +792,10 @@
         bottom: 0;
         width: 100%;
         z-index: 1000;
+    }
+    .gear{
+        float: right;
+        margin-right: 5px;
+        margin-bottom: 5px;
     }
 </style>
