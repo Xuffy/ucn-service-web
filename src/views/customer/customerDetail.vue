@@ -30,7 +30,7 @@
                 <div class="btns">
                   <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'"
                              v-authorize="'SUPPLIER:DETAIL:ARCHIVE'">
-                    {{$i.button.remove}}
+                    {{$i.common.archive}}
                   </el-button>
                   <el-button @click="downloadCustomer"  v-authorize="'SUPPLIER:DETAIL:DOWNLOAD'">
                     {{$i.button.download}}
