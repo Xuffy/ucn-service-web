@@ -197,25 +197,6 @@ export const routerMap = [
       ]
     },
     {
-      path: '/track',
-      component: Layout,
-      redirect: '/track/index',
-      meta: {name: $i.router.track},
-      noDropdown: true,
-      children: [
-        {
-          path: 'index',
-          name: 'track',
-          meta: {
-            draft: true,
-            recycleBin: true,
-            log: true,
-          },
-          component: () => import('../views/track/trackBySKU.vue'),
-        }
-      ]
-    },
-    {
       path: '/logs',
       component: Layout,
       redirect: '/logs/index',
