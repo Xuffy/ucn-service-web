@@ -27,7 +27,13 @@
         <el-col :span="12">
           <el-form-item :label="$i.setting.birthday+':'"  v-if="isVisible" >
             <div style="display:flex;max-width:200px;">
-              <el-date-picker type="date" placeholder="选择日期" value-format="timestamp" v-model="form.birthday"  style="max-width:300px;" :disabled="isModify"></el-date-picker>
+              <el-date-picker
+                type="date"
+                placeholder="选择日期"
+                v-model="form.birthday"
+                style="max-width:300px;"
+                @change="val => {form.birthday = $dateFormat(form.birthday,'yyyy-mm-dd')}"
+                :disabled="isModify"></el-date-picker>
             </div>
           </el-form-item>
         </el-col>
