@@ -40,10 +40,10 @@ export default {
       belong: "address",
       _hide:true
     },
-    notify: {
-        key: "notify",
-        belong: "address"
-    },
+    // notify: {
+    //     key: "notify",
+    //     belong: "address"
+    // },
     id: {
         _hide: true,
         key: "id",
@@ -58,48 +58,9 @@ export default {
     },
 
     //.............concats
-    contactName: {
-      key: 'name',
-      belong: "concats"
-    },
-    department: {
-      key: 'deptName',
-      belong: "concats"
-    },
-    gender: {
-      key: 'gender',
-      belong: "concats"
-    },
-    position: {
-      key: 'position',
-      belong: "concats"
-    },
-   mobileNo: {
-      key: 'cellphone',
-     belong: "concats"
-    },
-    tel: {
-      key: 'telphone',
-      belong: "concats"
-    },
-   faxNumber: {
-      key: 'fax',
-     belong: "concats"
-    },
-    email: {
-      key: 'email',
-      belong: "concats"
-    },
-    skype: {
-      key: 'skype',
-      belong: "concats"
-    },
-    qq: {
-      key: 'qq',
-      belong: "concats"
-    },
+
     //       order
-   
+
     // documentRequired:{
     //     key:"document"
     // },
