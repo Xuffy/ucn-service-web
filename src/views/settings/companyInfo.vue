@@ -165,6 +165,13 @@
               <el-input size="mini" v-model="addressData.contactPhone2"  :placeholder="$i.common.inputkeyWordToSearch"></el-input>
             </el-form-item>
           </el-col>
+          <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+            <el-form-item>
+              <el-checkbox-group v-model="addressData.def">
+                <el-checkbox :label="$i.setting.setDefaultAddress" @change="setAddress" ></el-checkbox>
+              </el-checkbox-group>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -302,7 +309,8 @@
 </template>
 
 <script>
-  import { VTable,VUpload} from '@/components/index'
+  import { VTable,VUpload} from '@/components/index';
+  import { mapActions } from 'vuex';
   export default {
     name: "companyInfo",
     components:{
@@ -353,6 +361,7 @@
           status: "",
           servicerId: "",
           version: "",
+          def: false
         },
         contactData:{
           cellphone: "",
@@ -404,6 +413,7 @@
       }
     },
     methods:{
+      ...mapActions(['setMenuLink']),
        //获取币种
       getCurrency(){
         this.$ajax.get(this.$apis.get_currency_all).then(res=>{
@@ -455,7 +465,10 @@
             return e;
           });
 
-          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address);
+          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address,res.address, e=>{
+            e.def.value ? e.def._value = '是' : e.def._value = '';
+            return e
+          });
           res.exportLicense ? res.exportLicense = 'YES' : res.exportLicense = 'NO'
           this.companyInfo=res;
         }).catch(err=>{
@@ -608,6 +621,50 @@
         }).catch(() => {
 
         });
+      },
+      //更改默认地址
+      setAddress(){
+        let def;
+        this.addressDatas.forEach(v=>{
+          def = _.findWhere(v,{key:'def'}).value;
+        })
+        if (def){
+          this.$confirm(this.$i.setting.isReplace, this.$i.common.prompt, {
+            confirmButtonText: this.$i.common.confirm,
+            cancelButtonText: this.$i.common.cancel,
+            type: 'warning'
+          }).then(() => {
+            console.log(this.addressData.def)
+            if (this.addressData.def){
+              this.addressData.def = true;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.replaceSuccess
+              });
+            }else{
+              this.addressData.def = false;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.cancelReplace
+              });
+            }
+          }).catch(() => {
+            console.log(this.addressData.def)
+            if (this.addressData.def){
+              this.addressData.def = false;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.cancelReplace
+              });
+            }else{
+              this.addressData.def = true;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.replaceSuccess
+              });
+            }
+          });
+        }
       },
 
       /**
@@ -834,6 +891,14 @@
       this.getCountryAll();
       this.getDepartment();
       this.getWholeData();
+    },
+    mounted(){
+      this.setMenuLink({
+        path: '/logs',
+        query: {code: 'SERVICER_SETTING',bizCode: 'BIZ_SERVICER_SETTING'},
+        type: 100,
+        label: this.$i.common.log,
+      });
     },
     watch:{
       addressDialogVisible(n){
