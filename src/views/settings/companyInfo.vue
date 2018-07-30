@@ -465,7 +465,7 @@
             return e;
           });
 
-          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address,res.address, e=>{
+          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address, e=>{
             e.def.value ? e.def._value = '是' : e.def._value = '';
             return e
           });
