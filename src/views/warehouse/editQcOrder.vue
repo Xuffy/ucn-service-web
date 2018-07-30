@@ -667,6 +667,28 @@
                             sums[index] = values.reduce((prev, curr) => {
                                 const value = Number(curr);
                                 if (!isNaN(value)) {
+                                    let num = ((prev * 100) + (curr * 100)) / 100;
+                                    if (column.property === 'qualifiedSkuCartonTotalQty') {
+                                        this.qcDetail.qualifiedSkuCartonTotalQty = num;
+                                    } else if (column.property === 'unqualifiedSkuCartonTotalQty') {
+                                        this.qcDetail.unqualifiedSkuCartonTotalQty = num;
+                                    } else if (column.property === 'qualifiedSkuQty') {
+                                        this.qcDetail.qualifiedSkuQty = num;
+                                    } else if (column.property === 'unqualifiedSkuQty') {
+                                        this.qcDetail.unqualifiedSkuQty = num;
+                                    } else if (column.property === 'qualifiedSkuVolume') {
+                                        this.qcDetail.qualifiedSkuVolume = num;
+                                    } else if (column.property === 'unqualifiedSkuVolume') {
+                                        this.qcDetail.unqualifiedSkuVolume = num;
+                                    } else if (column.property === 'qualifiedSkuNetWeight') {
+                                        this.qcDetail.qualifiedSkuNetWeight = num;
+                                    } else if (column.property === 'unqualifiedSkuNetWeight') {
+                                        this.qcDetail.unqualifiedSkuNetWeight = num;
+                                    } else if (column.property === 'qualifiedSkuGrossWeight') {
+                                        this.qcDetail.qualifiedSkuGrossWeight = num;
+                                    } else if (column.property === 'unqualifiedSkuGrossWeight') {
+                                        this.qcDetail.unqualifiedSkuGrossWeight = num;
+                                    }
                                     return ((prev * 100) + (curr * 100)) / 100;
                                 } else {
                                     return prev;
