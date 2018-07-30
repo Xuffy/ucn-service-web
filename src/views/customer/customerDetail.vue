@@ -96,7 +96,6 @@
 <script>
     import { mapActions } from 'vuex'
     import VCompareList from '../product/compareList'
-    import VRemark from './remark'
     import VAttachment from './attachment'
     import {
         VTable, VImage,VUpload
@@ -107,7 +106,6 @@
         components: {
             VTable,
             VCompareList,
-            VRemark,
             VAttachment,
             VImage,
             VUpload
@@ -159,7 +157,7 @@
         },
         methods: {
               ...mapActions([
-                // 'setRecycleBin','setDraft'
+              'setMenuLink'
             ]),
             //获取国家
             getCountryAll(){
@@ -183,15 +181,6 @@
                   this.getQcHistory();
                   break;
               }
-            },
-             deleteCustomer(){
-                 this.$ajax.post(this.$apis.post_deleteCustomer, [this.id])
-                    .then(res => {
-                       this.$router.push('/customer/recycle')
-                    })
-                    .catch((res) => {
-                        console.log(res)
-                    });
             },
             getListRemark(){
                 const id = Number(this.$route.query.id);
@@ -391,12 +380,16 @@
               this.disableClickDeleteBtn = true;
               const params = []
               params.push(this.basicDate.id)
-              this.$ajax.post(this.$apis.post_deleteCustomer, this.selectNumber).then(res => {
+              this.$ajax.post(this.$apis.post_deleteCustomer, params).then(res => {
                 this.disableClickDeleteBtn = false;
-                this.getData();
                 this.$message({
                   type: 'success',
-                  message: this.$i.common.deleteTheSuccess
+                  message: this.$i.common.deleteTheSuccess,
+                  onClose: (() => {
+                    this.$router.push({
+                      path: '/customer/overview',
+                    })
+                  })
                 });
               }).finally(() => {
                 this.disableClickDeleteBtn = false;
@@ -418,10 +411,14 @@
             this.getCountryAll();
             this.getCodePart();
             this.getCurrency();
-            // this.setRecycleBin({
-            //     name: 'customerRecycleBinDetail',
-            //     show: true
-            // });
+        },
+        mounted(){
+          this.setMenuLink({
+            path: 'customerArchive',
+            type: 10,
+            label: this.$i.common.archive,
+            auth:''
+          });
         },
       watch:{
         addRemarkFormVisible(n){
