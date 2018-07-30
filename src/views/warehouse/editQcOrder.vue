@@ -183,11 +183,19 @@
                         </div>
                         <div v-else-if="v.showType==='number'">
                             <div v-if="v.key==='outerCartonLength' || v.key==='outerCartonWidth' || v.key==='outerCartonHeight' || v.key==='qualifiedSkuCartonTotalQty' || v.key==='unqualifiedSkuCartonTotalQty' || v.key==='actOuterCartonSkuQty' || v.key==='outerCartonNetWeight' || v.key==='outerCartonGrossWeight'">
-                                <v-input-number
+                                <div v-if="v.key === 'actOuterCartonSkuQty' || v.key === 'qualifiedSkuCartonTotalQty' || v.key === 'unqualifiedSkuCartonTotalQty'">
+                                    <v-input-number
                                         :controls="false"
                                         @blur="handleInputNumberBlur(scope.row)"
                                         v-model="scope.row[v.key].value"
                                         :precision="0"></v-input-number>
+                                </div>
+                                <div v-else>
+                                    <v-input-number
+                                        :controls="false"
+                                        @blur="handleInputNumberBlur(scope.row)"
+                                        v-model="scope.row[v.key].value"></v-input-number>
+                                </div>
                             </div>
                             <div v-else>
                                 <v-input-number
@@ -636,44 +644,71 @@
             cancel() {
                 window.close();
             },
-
+            mul(a, b) { // 乘
+                var c = 0,
+                    d = a.toString(),
+                    e = b.toString();
+                try {
+                    c += d.split(".")[1].length;
+                } catch (f) {}
+                try {
+                    c += e.split(".")[1].length;
+                } catch (f) {}
+                return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
+            },
             /**
              * product info事件
              * */
             handleInputNumberBlur(e) {
                 //计算外箱体积
-                e.outerCartonVolume.value = (e.outerCartonLength.value ? e.outerCartonLength.value : 0) * (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0) * (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0);
-                // this.$set(e.outerCartonVolume,'value', (e.outerCartonLength.value ? e.outerCartonLength.value : 0) * (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0) * (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0));
+                let outerCartonLength = (e.outerCartonLength.value ? e.outerCartonLength.value : 0);
+                let outerCartonWidth = (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0);
+                let outerCartonHeight = (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0);
+                e.outerCartonVolume.value = this.mul(this.mul(outerCartonLength,outerCartonWidth),outerCartonHeight);
 
                 //计算实际产品总箱数
-                e.actSkuCartonTotalQty.value = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0) + (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+                let qualifiedSkuCartonTotalQty = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
+                let unqualifiedSkuCartonTotalQty = (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+                e.actSkuCartonTotalQty.value = qualifiedSkuCartonTotalQty + unqualifiedSkuCartonTotalQty;
 
                 //计算合格产品数量
-                e.qualifiedSkuQty.value = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
+                let actOuterCartonSkuQty = (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
+                e.qualifiedSkuQty.value = this.mul(qualifiedSkuCartonTotalQty,actOuterCartonSkuQty)
+                // (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
 
                 //计算不合格产品数量
-                e.unqualifiedSkuQty.value = (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
+                e.unqualifiedSkuQty.value = this.mul(unqualifiedSkuCartonTotalQty,actOuterCartonSkuQty)
+                // (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
 
                 //计算实际产品数量
                 e.actSkuQty.value = (e.unqualifiedSkuQty.value ? e.unqualifiedSkuQty.value : 0) + (e.qualifiedSkuQty.value ? e.qualifiedSkuQty.value : 0);
 
                 //计算合格产品总净重
-                e.qualifiedSkuNetWeight.value = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
+                let outerCartonNetWeight = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0);
+                e.qualifiedSkuNetWeight.value = this.mul(qualifiedSkuCartonTotalQty,outerCartonNetWeight);
+                // (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格总产品净重
-                e.unqualifiedSkuNetWeight.value = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+                e.unqualifiedSkuNetWeight.value = this.mul(outerCartonNetWeight,unqualifiedSkuCartonTotalQty);
+                // (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
 
                 //计算合格产品总体积
-                e.qualifiedSkuVolume.value = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
+                let outerCartonVolume = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0)
+                e.qualifiedSkuVolume.value = this.mul(outerCartonVolume,qualifiedSkuCartonTotalQty);
+                // (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格产总品体积
-                e.unqualifiedSkuVolume.value = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+                e.unqualifiedSkuVolume.value = this.mul(outerCartonVolume,unqualifiedSkuCartonTotalQty);
+                // (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
 
                 //计算合格产品总毛重
-                e.qualifiedSkuGrossWeight.value = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
+                let outerCartonGrossWeight = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0);
+                e.qualifiedSkuGrossWeight.value = this.mul(outerCartonGrossWeight,qualifiedSkuCartonTotalQty);
+                // (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格总产品毛重
-                e.unqualifiedSkuGrossWeight.value = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+                e.unqualifiedSkuGrossWeight.value = this.mul(outerCartonGrossWeight,unqualifiedSkuCartonTotalQty);
+                // (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
             },
             getSummaries(param) {
                 const { columns, data } = param;
