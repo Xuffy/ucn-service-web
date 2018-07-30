@@ -133,8 +133,8 @@
                     v-loading="loadingProductInfoTable"
                     :data="productInfoData"
                     border
-                    :summary-method="getSummaries"
                     show-summary
+                    :summary-method="getSummaries"
                     style="width: 100%">
                 <el-table-column
                         align="center"
@@ -185,7 +185,8 @@
                                 <v-input-number
                                         :controls="false"
                                         @blur="handleInputNumberBlur(scope.row)"
-                                        v-model="scope.row[v.key].value"></v-input-number>
+                                        v-model="scope.row[v.key].value"
+                                        :precision="0"></v-input-number>
                             </div>
                             <div v-else>
                                 <v-input-number
@@ -454,7 +455,7 @@
                 this.loadingProductInfoTable = true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct, this.productInfoConfig).then(res => {
                     this.productInfoData = res.datas;
-                    console.log(this.productInfoData, "this.productInfoData");
+                    // console.log(this.productInfoData, "this.productInfoData");
                     // console.log(this.lengthOption,'lengthOption')
 
                     this.productInfoData.forEach(v => {
@@ -474,7 +475,7 @@
                     let arr = this.$copyArr(this.productInfoData)
                     arr = this.$getDB(this.$db.warehouse.qcDetailProductInfo, arr);
                     this.$refs.filterColumn.update(false, arr).then(data => {
-                        console.log(data)
+                        // console.log(data)
                         this.productInfoData = this.$refs.filterColumn.getFilterData(arr, data);
                         this.columnConfig = this.productInfoData[0];
                     });
@@ -487,7 +488,7 @@
              * product info表格事件
              * */
             btnClick(e) {
-                console.log(e);
+                // console.log(e);
             },
             changeChecked(e) {
                 this.selectList = e;
@@ -509,11 +510,10 @@
                 }
 
                 for (let v in this.productInfoData) {
-                    if (this.$validateForm(this.productInfoData[v], this.$db.warehouse.qcDetailProductInfo)) {
+                    if (this.$validateForm(this.productInfoData[v].value, this.$db.warehouse.qcDetailProductInfo)) {
                         return;
                     }
                 }
-
                 this.qcOrderConfig.qcDate = this.qcDetail.qcDate;
                 this.qcOrderConfig.qcMethodDictCode = this.qcDetail.qcMethodDictCode;
                 this.qcOrderConfig.qcOrderId = this.$route.query.id;
@@ -541,42 +541,40 @@
                 this.productInfoData.forEach(v => {
                     let skuQcResultDictCode;
                     if (v.skuQcResultDictCode) {
-                        skuQcResultDictCode = v.skuQcResultDictCode;
+                        skuQcResultDictCode = v.skuQcResultDictCode.value;
                     } else {
                         skuQcResultDictCode = "WAIT_FOR_QC";
                     }
-
                     this.qcOrderConfig.qcResultDetailParams.push({
-                        actInnerCartonSkuQty: v.actInnerCartonSkuQty,
-                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty,
-                        actOuterCartonSkuQty: v.actOuterCartonSkuQty,
-                        checkOuterCartonQty: v.checkOuterCartonQty,
-                        innerCartonGrossWeight: v.innerCartonGrossWeight,
-                        innerCartonHeight: v.innerCartonHeight,
-                        innerCartonLength: v.innerCartonLength,
-                        innerCartonNetWeight: v.innerCartonNetWeight,
-                        innerCartonVolume: v.innerCartonVolume,
-                        innerCartonWidth: v.innerCartonWidth,
-                        innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode,
-                        outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode,
-                        outerCartonGrossWeight: v.outerCartonGrossWeight,
-                        outerCartonHeight: v.outerCartonHeight,
-                        outerCartonLength: v.outerCartonHeight,
-                        outerCartonNetWeight: v.outerCartonNetWeight,
-                        outerCartonWidth: v.outerCartonWidth,
-                        qcOrderDetailId: v.id,
-                        qcPic: v.qcPic,
-                        qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty,
-                        remark: v.remark,
-                        shippingMarkResultDictCode: v.shippingMarkResultDictCode,
-                        skuBarCodeResultDictCode: v.skuBarCodeResultDictCode,
-                        skuLabelResultDictCode: v.skuLabelResultDictCode,
+                        actInnerCartonSkuQty: v.actInnerCartonSkuQty.value,
+                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty.value,
+                        actOuterCartonSkuQty: v.actOuterCartonSkuQty.value,
+                        checkOuterCartonQty: v.checkOuterCartonQty.value,
+                        innerCartonGrossWeight: v.innerCartonGrossWeight.value,
+                        innerCartonHeight: v.innerCartonHeight.value,
+                        innerCartonLength: v.innerCartonLength.value,
+                        innerCartonNetWeight: v.innerCartonNetWeight.value,
+                        innerCartonVolume: v.innerCartonVolume.value,
+                        innerCartonWidth: v.innerCartonWidth.value,
+                        innerPackingBarCodeResultDictCode: v.innerPackingBarCodeResultDictCode.value,
+                        outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode.value,
+                        outerCartonGrossWeight: v.outerCartonGrossWeight.value,
+                        outerCartonHeight: v.outerCartonHeight.value,
+                        outerCartonLength: v.outerCartonHeight.value,
+                        outerCartonNetWeight: v.outerCartonNetWeight.value,
+                        outerCartonWidth: v.outerCartonWidth.value,
+                        qcOrderDetailId: v.id.value,
+                        qcPics: v.qcPics.value,
+                        qualifiedSkuCartonTotalQty: v.qualifiedSkuCartonTotalQty.value,
+                        remark: v.remark.value,
+                        shippingMarkResultDictCode: v.shippingMarkResultDictCode.value,
+                        skuBarCodeResultDictCode: v.skuBarCodeResultDictCode.value,
+                        skuLabelResultDictCode: v.skuLabelResultDictCode.value,
                         skuQcResultDictCode: skuQcResultDictCode,
-                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty,
-                        unqualifiedType: v.unqualifiedType
+                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty.value,
+                        unqualifiedType: v.unqualifiedType.value
                     });
                 });
-
                 _.map(this.qcOrderConfig.qcResultDetailParams, (v, k) => {
                     v.qcPics = this.$refs["picUpload" + k][0].getFiles();
                 });
@@ -601,37 +599,38 @@
              * */
             handleInputNumberBlur(e) {
                 //计算外箱体积
-                e.outerCartonVolume = (e.outerCartonLength ? e.outerCartonLength : 0) * (e.outerCartonWidth ? e.outerCartonWidth : 0) * (e.outerCartonHeight ? e.outerCartonHeight : 0);
+                e.outerCartonVolume.value = (e.outerCartonLength.value ? e.outerCartonLength.value : 0) * (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0) * (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0);
+                // this.$set(e.outerCartonVolume,'value', (e.outerCartonLength.value ? e.outerCartonLength.value : 0) * (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0) * (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0));
 
                 //计算实际产品总箱数
-                e.actSkuCartonTotalQty = (e.qualifiedSkuCartonTotalQty ? e.qualifiedSkuCartonTotalQty : 0) + (e.unqualifiedSkuCartonTotalQty ? e.unqualifiedSkuCartonTotalQty : 0);
+                e.actSkuCartonTotalQty.value = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0) + (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
 
                 //计算合格产品数量
-                e.qualifiedSkuQty = (e.qualifiedSkuCartonTotalQty ? e.qualifiedSkuCartonTotalQty : 0) * (e.actOuterCartonSkuQty ? e.actOuterCartonSkuQty : 0);
+                e.qualifiedSkuQty.value = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
 
                 //计算不合格产品数量
-                e.unqualifiedSkuQty = (e.unqualifiedSkuCartonTotalQty ? e.unqualifiedSkuCartonTotalQty : 0) * (e.actOuterCartonSkuQty ? e.actOuterCartonSkuQty : 0);
+                e.unqualifiedSkuQty.value = (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
 
                 //计算实际产品数量
-                e.actSkuQty = (e.unqualifiedSkuQty ? e.unqualifiedSkuQty : 0) + (e.qualifiedSkuQty ? e.qualifiedSkuQty : 0);
+                e.actSkuQty.value = (e.unqualifiedSkuQty.value ? e.unqualifiedSkuQty.value : 0) + (e.qualifiedSkuQty.value ? e.qualifiedSkuQty.value : 0);
 
                 //计算合格产品总净重
-                e.qualifiedSkuNetWeight = (e.outerCartonNetWeight ? e.outerCartonNetWeight : 0) * (e.qualifiedSkuCartonTotalQty ? e.qualifiedSkuCartonTotalQty : 0);
+                e.qualifiedSkuNetWeight.value = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格总产品净重
-                e.unqualifiedSkuNetWeight = (e.outerCartonNetWeight ? e.outerCartonNetWeight : 0) * (e.unqualifiedSkuCartonTotalQty ? e.unqualifiedSkuCartonTotalQty : 0);
+                e.unqualifiedSkuNetWeight.value = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
 
                 //计算合格产品总体积
-                e.qualifiedSkuVolume = (e.outerCartonVolume ? e.outerCartonVolume : 0) * (e.qualifiedSkuCartonTotalQty ? e.qualifiedSkuCartonTotalQty : 0);
+                e.qualifiedSkuVolume.value = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格产总品体积
-                e.unqualifiedSkuVolume = (e.outerCartonVolume ? e.outerCartonVolume : 0) * (e.unqualifiedSkuCartonTotalQty ? e.unqualifiedSkuCartonTotalQty : 0);
+                e.unqualifiedSkuVolume.value = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
 
                 //计算合格产品总毛重
-                e.qualifiedSkuGrossWeight = (e.outerCartonGrossWeight ? e.outerCartonGrossWeight : 0) * (e.qualifiedSkuCartonTotalQty ? e.qualifiedSkuCartonTotalQty : 0);
+                e.qualifiedSkuGrossWeight.value = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
 
                 //计算不合格总产品毛重
-                e.unqualifiedSkuGrossWeight = (e.outerCartonGrossWeight ? e.outerCartonGrossWeight : 0) * (e.unqualifiedSkuCartonTotalQty ? e.unqualifiedSkuCartonTotalQty : 0);
+                e.unqualifiedSkuGrossWeight.value = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
             },
             getSummaries(param) {
                 const { columns, data } = param;
@@ -640,13 +639,35 @@
                     if (index === 0) {
                         sums[index] = this.$i.warehouse.total;
                         return;
-                    } else if (index === 17 || index === 18 || index === 41 || index === 42 || index === 43 || index === 44 || index === 45 || index === 46 || index === 47 || index === 48 || index === 49 || index === 50 || index === 51 || index === 52 || index === 65) {
-                        const values = data.map(item => Number(item[column.property]));
+                    } else if (
+                        column.property === 'expectQcQty'
+                        || column.property === 'orderSkuQty'
+                        || column.property === 'outerCartonTotalQty'
+                        || column.property === 'actSkuCartonTotalQty'
+                        || column.property === 'qualifiedSkuCartonTotalQty'
+                        || column.property === 'unqualifiedSkuCartonTotalQty'
+                        || column.property === 'actSkuQty'
+                        || column.property === 'qualifiedSkuQty'
+                        || column.property === 'unqualifiedSkuQty'
+                        || column.property === 'qualifiedSkuNetWeight'
+                        || column.property === 'unqualifiedSkuNetWeight'
+                        || column.property === 'qualifiedSkuVolume'
+                        || column.property === 'unqualifiedSkuVolume'
+                        || column.property === 'qualifiedSkuGrossWeight'
+                        || column.property === 'unqualifiedSkuGrossWeight'
+                        || column.property === 'checkOuterCartonQty'
+                        || column.property === 'actOuterCartonSkuQty'
+                    ) {
+                         const values = data.map(item => {
+                             if (item[column.property] !== null) {
+                                 return Number(item[column.property].value)
+                             }
+                         })
                         if (!values.every(value => isNaN(value))) {
                             sums[index] = values.reduce((prev, curr) => {
                                 const value = Number(curr);
                                 if (!isNaN(value)) {
-                                    return prev + curr;
+                                    return ((prev * 100) + (curr * 100)) / 100;
                                 } else {
                                     return prev;
                                 }
