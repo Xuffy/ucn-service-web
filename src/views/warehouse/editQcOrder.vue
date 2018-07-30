@@ -149,6 +149,7 @@
                         align="center"
                         :key="v.key"
                         :label="$i.warehouse[v.key]"
+                        :class-name="tableRequired[v.key]? 'ucn-table-required' : ''"
                         width="180">
                     <template slot-scope="scope" v-if="scope.row[v.key]">
                         <div v-if="v.key === 'deliveryDate'">
@@ -198,6 +199,7 @@
                             <el-input
                                     :placeholder="$i.warehouse.pleaseInput"
                                     v-model="scope.row[v.key].value"
+                                    :precision="0"
                                     clearable>
                             </el-input>
                         </div>
@@ -431,7 +433,28 @@
                     qcTypeDictCode: "",
                     serviceFee: 0,
                     surveyor: ""
-                }
+                },
+                tableRequired: {
+                'skuQcResultDictCode': this.$i.warehouse.skuQcResultDictCode,
+                'expectQcQty': this.$i.warehouse.expectQcQty,
+                'innerCartonLength': this.$i.warehouse.innerCartonLength,
+                'innerCartonWidth': this.$i.warehouse.innerCartonWidth,
+                'innerCartonHeight': this.$i.warehouse.innerCartonHeight,
+                'innerCartonNetWeight': this.$i.warehouse.innerCartonNetWeight,
+                'innerCartonGrossWeight': this.$i.warehouse.innerCartonGrossWeight,
+                'innerCartonVolume': this.$i.warehouse.innerCartonVolume,
+                'outerCartonLength': this.$i.warehouse.outerCartonLength,
+                'outerCartonWidth': this.$i.warehouse.outerCartonWidth,
+                'outerCartonHeight': this.$i.warehouse.outerCartonHeight,
+                'outerCartonNetWeight': this.$i.warehouse.outerCartonNetWeight,
+                'outerCartonGrossWeight': this.$i.warehouse.outerCartonGrossWeight,
+                'qualifiedSkuCartonTotalQty': this.$i.warehouse.qualifiedSkuCartonTotalQty,
+                'qualifiedSkuQty': this.$i.warehouse.qualifiedSkuQty,
+                'qualifiedSkuNetWeight': this.$i.warehouse.qualifiedSkuNetWeight,
+                'qualifiedSkuVolume':this.$i.warehouse.qualifiedSkuVolume,
+                'qualifiedSkuGrossWeight':this.$i.warehouse.qualifiedSkuGrossWeight,
+                'qcPics':this.$i.warehouse.qcPic,
+                'checkOuterCartonQty':this.$i.warehouse.checkOuterCartonQty}
             };
         },
         methods: {
@@ -508,12 +531,16 @@
                         type: "warning"
                     });
                 }
-
-                for (let v in this.productInfoData) {
-                    if (this.$validateForm(this.productInfoData[v].value, this.$db.warehouse.qcDetailProductInfo)) {
-                        return;
-                    }
-                }
+                // for (let i = 0; i < this.productInfoData.length; i++) {
+                //     let obj = {}
+                //     _.mapObject(this.productInfoData[i], e => {
+                //         obj[e.key] = e.value
+                //     })
+                //     if (this.$validateForm(obj, this.$db.warehouse.qcDetailProductInfo)) {
+                //         console.log(obj)
+                //         return;
+                //     }
+                // }
                 this.qcOrderConfig.qcDate = this.qcDetail.qcDate;
                 this.qcOrderConfig.qcMethodDictCode = this.qcDetail.qcMethodDictCode;
                 this.qcOrderConfig.qcOrderId = this.$route.query.id;
@@ -525,7 +552,7 @@
                 let allow = true;
                 this.productInfoData.forEach((v, k) => {
                     if (v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs["picUpload" + k][0].getFiles().length > 0) {
-                        if (!v.skuQcResultDictCode) {
+                        if (!v.skuQcResultDictCode.value) {
                             allow = false;
                         }
                     }
@@ -546,9 +573,9 @@
                         skuQcResultDictCode = "WAIT_FOR_QC";
                     }
                     this.qcOrderConfig.qcResultDetailParams.push({
-                        actInnerCartonSkuQty: v.actInnerCartonSkuQty.value,
-                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty.value,
-                        actOuterCartonSkuQty: v.actOuterCartonSkuQty.value,
+                        actInnerCartonSkuQty: v.actInnerCartonSkuQty.value ? v.actInnerCartonSkuQty.value : 0,
+                        actOuterCartonInnerBoxQty: v.actOuterCartonInnerBoxQty.value ? v.actOuterCartonInnerBoxQty.value : 0,
+                        actOuterCartonSkuQty: v.actOuterCartonSkuQty.value ? v.actOuterCartonSkuQty.value : 0,
                         checkOuterCartonQty: v.checkOuterCartonQty.value,
                         innerCartonGrossWeight: v.innerCartonGrossWeight.value,
                         innerCartonHeight: v.innerCartonHeight.value,
@@ -560,7 +587,7 @@
                         outerCartonBarCodeResultDictCode: v.outerCartonBarCodeResultDictCode.value,
                         outerCartonGrossWeight: v.outerCartonGrossWeight.value,
                         outerCartonHeight: v.outerCartonHeight.value,
-                        outerCartonLength: v.outerCartonHeight.value,
+                        outerCartonLength: v.outerCartonLength.value,
                         outerCartonNetWeight: v.outerCartonNetWeight.value,
                         outerCartonWidth: v.outerCartonWidth.value,
                         qcOrderDetailId: v.id.value,
@@ -571,14 +598,30 @@
                         skuBarCodeResultDictCode: v.skuBarCodeResultDictCode.value,
                         skuLabelResultDictCode: v.skuLabelResultDictCode.value,
                         skuQcResultDictCode: skuQcResultDictCode,
-                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty.value,
+                        unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty.value ? v.unqualifiedSkuCartonTotalQty.value : 0,
                         unqualifiedType: v.unqualifiedType.value
                     });
                 });
+                let flag = true
                 _.map(this.qcOrderConfig.qcResultDetailParams, (v, k) => {
                     v.qcPics = this.$refs["picUpload" + k][0].getFiles();
+                    if (v.qcPics.length < 1) {
+                        flag = false
+                        return this.$message({
+                            message: this.$i.warehouse.qcPics,
+                            type: "warning"
+                        });
+                    }
                 });
-                this.disableClickSubmit = true;
+                if (!flag) {
+                    return;
+                }
+                for (let i = 0; i < this.qcOrderConfig.qcResultDetailParams.length; i++) {
+                    if (this.$validateForm(this.qcOrderConfig.qcResultDetailParams[i], this.$db.warehouse.qcDetailProductInfo)) {
+                        return;
+                    }
+                }
+                this.disableClickSubmit = false;
                 this.$ajax.post(this.$apis.save_serviceQcOrder, this.qcOrderConfig).then(res => {
                     this.disableClickSubmit = false;
                     this.$message({

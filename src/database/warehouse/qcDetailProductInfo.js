@@ -367,6 +367,9 @@ export default{
         key: 'qcPics',
         type: 'String',
         showType:'pic',
+        _rules:{
+            required:true
+        },
         _image:true
     },
     checkOuterCartonQty:{
