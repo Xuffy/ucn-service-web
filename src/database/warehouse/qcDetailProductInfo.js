@@ -14,6 +14,195 @@ export default{
         showType:'select',
         isQcResult:true
     },
+    innerCartonLength:{
+        key: 'innerCartonLength',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    innerCartonWidth:{
+        key: 'innerCartonWidth',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    innerCartonHeight:{
+        key: 'innerCartonHeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    innerCartonNetWeight:{
+        key: 'innerCartonNetWeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    innerCartonGrossWeight:{
+        key: 'innerCartonGrossWeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    innerCartonVolume:{
+        key: 'innerCartonVolume',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    outerCartonLength:{
+        key: 'outerCartonLength',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    outerCartonWidth:{
+        key: 'outerCartonWidth',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    outerCartonHeight:{
+        key: 'outerCartonHeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    outerCartonNetWeight:{
+        key: 'outerCartonNetWeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    outerCartonGrossWeight:{
+        key: 'outerCartonGrossWeight',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        }
+    },
+    qualifiedSkuCartonTotalQty:{
+        key: 'qualifiedSkuCartonTotalQty',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        },
+        _calculate:true
+    },
+    checkOuterCartonQty:{
+        key: 'checkOuterCartonQty',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        },
+        _calculate:true
+    },
+    actOuterCartonSkuQty:{
+        key: 'actOuterCartonSkuQty',
+        type: 'Number',
+        showType:'number'
+    },
+    actOuterCartonInnerBoxQty:{
+        key: 'actOuterCartonInnerBoxQty',
+        type: 'Number',
+        showType:'number'
+    },
+    actInnerCartonSkuQty:{
+        key: 'actInnerCartonSkuQty',
+        type: 'Number',
+        showType:'number'
+    },
+    unqualifiedSkuCartonTotalQty:{
+        key: 'unqualifiedSkuCartonTotalQty',
+        type: 'Number',
+        showType:'number',
+        _calculate:true
+    },
+    unqualifiedType:{
+        key: 'unqualifiedType',
+        type: 'String',
+        showType:'input'
+    },
+    skuBarCodeResultDictCode:{
+        key: 'skuBarCodeResultDictCode',
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
+    skuLabelResultDictCode:{
+        key: 'skuLabelResultDictCode',
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
+    innerPackingBarCodeResultDictCode:{
+        key: 'innerPackingBarCodeResultDictCode',
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
+    outerCartonBarCodeResultDictCode:{
+        key: 'outerCartonBarCodeResultDictCode',
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
+    shippingMarkResultDictCode:{
+        key: 'shippingMarkResultDictCode',
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
+    qcPics:{             //服务商上传
+        key: 'qcPics',
+        type: 'String',
+        showType:'pic',
+        _rules:{
+            // required:true
+        },
+        _image:true
+    },
+    remark:{
+        key: 'remark',
+        type: 'String',
+        showType:'input'
+    },
     skuInventoryStatusDictCode:{
         key: 'skuInventoryStatusDictCode',
         type: 'String'
@@ -116,153 +305,30 @@ export default{
         key: 'outerCartonSkuQty',
         type: 'Number'
     },
-    actOuterCartonSkuQty:{
-        key: 'actOuterCartonSkuQty',
-        type: 'Number',
-        showType:'number'
-    },
+    
     outerCartonInnerBoxQty:{
         key: 'outerCartonInnerBoxQty',
         type: 'Number'
     },
-    actOuterCartonInnerBoxQty:{
-        key: 'actOuterCartonInnerBoxQty',
-        type: 'Number',
-        showType:'number'
-    },
+    
     innerCartonSkuQty:{
         key: 'innerCartonSkuQty',
         type: 'Number'
     },
-    actInnerCartonSkuQty:{
-        key: 'actInnerCartonSkuQty',
-        type: 'Number',
-        showType:'number'
-    },
-    innerCartonLength:{
-        key: 'innerCartonLength',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    innerCartonWidth:{
-        key: 'innerCartonWidth',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    innerCartonHeight:{
-        key: 'innerCartonHeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    innerCartonNetWeight:{
-        key: 'innerCartonNetWeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    innerCartonGrossWeight:{
-        key: 'innerCartonGrossWeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    innerCartonVolume:{
-        key: 'innerCartonVolume',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    outerCartonLength:{
-        key: 'outerCartonLength',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    outerCartonWidth:{
-        key: 'outerCartonWidth',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    outerCartonHeight:{
-        key: 'outerCartonHeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
-    outerCartonNetWeight:{
-        key: 'outerCartonNetWeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
+    
+    
     outerCartonVolume:{
         key: 'outerCartonVolume',       //计算？？？？
         type: 'Number',
     },
-    outerCartonGrossWeight:{
-        key: 'outerCartonGrossWeight',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        }
-    },
+    
     actSkuCartonTotalQty:{              //计算？？？？
         key: 'actSkuCartonTotalQty',
         type: 'Number',
         _calculate:true
     },
-    qualifiedSkuCartonTotalQty:{
-        key: 'qualifiedSkuCartonTotalQty',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        },
-        _calculate:true
-    },
-    unqualifiedSkuCartonTotalQty:{
-        key: 'unqualifiedSkuCartonTotalQty',
-        type: 'Number',
-        showType:'number',
-        _calculate:true
-    },
+    
+    
     actSkuQty:{              //计算？？？？
         key: 'actSkuQty',
         type: 'Number',
@@ -308,83 +374,31 @@ export default{
         type: 'Number',
         _calculate:true
     },
-    unqualifiedType:{
-        key: 'unqualifiedType',
-        type: 'String',
-        showType:'input'
-    },
+    
     skuBarCode:{
         key: 'skuBarCode',
         type: 'String'
     },
-    skuBarCodeResultDictCode:{
-        key: 'skuBarCodeResultDictCode',
-        type: 'String',
-        showType:'select',
-        isBarCodeResult:true
-    },
+    
     skuLabel:{
         key: 'skuLabel',
         type: 'String'
     },
-    skuLabelResultDictCode:{
-        key: 'skuLabelResultDictCode',
-        type: 'String',
-        showType:'select',
-        isBarCodeResult:true
-    },
+    
     innerPackingBarCode:{
         key: 'innerPackingBarCode',
         type: 'String'
     },
-    innerPackingBarCodeResultDictCode:{
-        key: 'innerPackingBarCodeResultDictCode',
-        type: 'String',
-        showType:'select',
-        isBarCodeResult:true
-    },
+    
     outerCartonBarCode:{
         key: 'outerCartonBarCode',
         type: 'String'
     },
-    outerCartonBarCodeResultDictCode:{
-        key: 'outerCartonBarCodeResultDictCode',
-        type: 'String',
-        showType:'select',
-        isBarCodeResult:true
-    },
+    
     shippingMark:{
         key: 'shippingMark',
         type: 'String'
     },
-    shippingMarkResultDictCode:{
-        key: 'shippingMarkResultDictCode',
-        type: 'String',
-        showType:'select',
-        isBarCodeResult:true
-    },
-    qcPics:{             //服务商上传
-        key: 'qcPics',
-        type: 'String',
-        showType:'pic',
-        _rules:{
-            required:true
-        },
-        _image:true
-    },
-    checkOuterCartonQty:{
-        key: 'checkOuterCartonQty',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        },
-        _calculate:true
-    },
-    remark:{
-        key: 'remark',
-        type: 'String',
-        showType:'input'
-    },
+    
+    
 }

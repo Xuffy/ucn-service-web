@@ -444,7 +444,7 @@
                 },
                 tableRequired: {
                 'skuQcResultDictCode': this.$i.warehouse.skuQcResultDictCode,
-                'expectQcQty': this.$i.warehouse.expectQcQty,
+                // 'expectQcQty': this.$i.warehouse.expectQcQty,
                 'innerCartonLength': this.$i.warehouse.innerCartonLength,
                 'innerCartonWidth': this.$i.warehouse.innerCartonWidth,
                 'innerCartonHeight': this.$i.warehouse.innerCartonHeight,
@@ -457,11 +457,11 @@
                 'outerCartonNetWeight': this.$i.warehouse.outerCartonNetWeight,
                 'outerCartonGrossWeight': this.$i.warehouse.outerCartonGrossWeight,
                 'qualifiedSkuCartonTotalQty': this.$i.warehouse.qualifiedSkuCartonTotalQty,
-                'qualifiedSkuQty': this.$i.warehouse.qualifiedSkuQty,
-                'qualifiedSkuNetWeight': this.$i.warehouse.qualifiedSkuNetWeight,
-                'qualifiedSkuVolume':this.$i.warehouse.qualifiedSkuVolume,
-                'qualifiedSkuGrossWeight':this.$i.warehouse.qualifiedSkuGrossWeight,
-                'qcPics':this.$i.warehouse.qcPic,
+                // 'qualifiedSkuQty': this.$i.warehouse.qualifiedSkuQty,
+                // 'qualifiedSkuNetWeight': this.$i.warehouse.qualifiedSkuNetWeight,
+                // 'qualifiedSkuVolume':this.$i.warehouse.qualifiedSkuVolume,
+                // 'qualifiedSkuGrossWeight':this.$i.warehouse.qualifiedSkuGrossWeight,
+                // 'qcPics':this.$i.warehouse.qcPic,
                 'checkOuterCartonQty':this.$i.warehouse.checkOuterCartonQty}
             };
         },
@@ -556,7 +556,6 @@
                 this.qcOrderConfig.qcTypeDictCode = this.qcDetail.qcTypeDictCode;
                 this.qcOrderConfig.surveyor = this.qcDetail.surveyor;
                 this.qcOrderConfig.serviceFee = this.qcDetail.serviceFee;
-
                 let allow = true;
                 this.productInfoData.forEach((v, k) => {
                     if (v.actOuterCartonSkuQty || v.actOuterCartonInnerBoxQty || v.actInnerCartonSkuQty || v.innerCartonLength || v.innerCartonWidth || v.innerCartonHeight || v.innerCartonNetWeight || v.innerCartonGrossWeight || v.innerCartonVolume || v.outerCartonLength || v.outerCartonWidth || v.outerCartonHeight || v.outerCartonNetWeight || v.outerCartonGrossWeight || v.qualifiedSkuCartonTotalQty || v.unqualifiedSkuCartonTotalQty || v.unqualifiedType || v.skuBarCodeResultDictCode || v.skuLabelResultDictCode || v.innerPackingBarCodeResultDictCode || v.outerCartonBarCodeResultDictCode || v.shippingMarkResultDictCode || v.remark || this.$refs["picUpload" + k][0].getFiles().length > 0) {
@@ -613,17 +612,18 @@
                 let flag = true
                 _.map(this.qcOrderConfig.qcResultDetailParams, (v, k) => {
                     v.qcPics = this.$refs["picUpload" + k][0].getFiles();
-                    if (v.qcPics.length < 1) {
-                        flag = false
-                        return this.$message({
-                            message: this.$i.warehouse.qcPics,
-                            type: "warning"
-                        });
-                    }
+                    // console.log(v.qcPics)
+                    // if (v.qcPics.length < 1) {
+                    //     flag = false
+                    //     return this.$message({
+                    //         message: this.$i.warehouse.qcPics,
+                    //         type: "warning"
+                    //     });
+                    // }
                 });
-                if (!flag) {
-                    return;
-                }
+                // if (!flag) {
+                //     return;
+                // }
                 for (let i = 0; i < this.qcOrderConfig.qcResultDetailParams.length; i++) {
                     if (this.$validateForm(this.qcOrderConfig.qcResultDetailParams[i], this.$db.warehouse.qcDetailProductInfo)) {
                         return;
