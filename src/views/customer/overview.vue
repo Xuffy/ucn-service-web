@@ -14,13 +14,13 @@
                               <div v-if="v.type==='input'">
                                 <el-input
                                   size="mini"
-                                  placeholder="请输入内容"
+                                  :placeholder="$i.common.inputkeyWordToSearch"
                                   v-model="params[v.key]">
                                 </el-input>
                               </div>
                               <div v-if="v.type==='select'">
                                 {{params[v.country]}}
-                                <el-select class="speWidth" v-model="params[v.key]" placeholder="请选择">
+                                <el-select class="speWidth" v-model="params[v.key]" :placeholder="$i.common.inputSearch">
                                   <el-option
                                     size="mini"
                                     v-for="item in options[v.key]"
@@ -55,7 +55,7 @@
                     :height=500
                     :loading='loading'
                     :data="tabData"
-                    :buttons="[{label: 'Detail', type: 1}]"
+                    :buttons="[{label:$i.common.detail, type: 1}]"
                     @action="detail"
                     @change-checked='checked'
                     style='marginTop:10px'>
@@ -86,8 +86,8 @@
 
 <script>
 
-    import { mapActions} from 'vuex'
-    import {dropDownSingle,VPagination,VTable} from '@/components/index'
+    import { mapActions} from 'vuex';
+    import {dropDownSingle,VPagination,VTable} from '@/components/index';
     export default {
         name: "SupplierSourcing",
         components: {
@@ -155,9 +155,10 @@
             },
             //获取字典
             getCodePart(){
-              this.$ajax.post(this.$apis.POST_CODE_PART,["PMT","CUSTOMER_TYPE",]).then(res=>{
-                this.options.incoterm = _.findWhere(res, {'code': 'PMT'}).codes;
-                this.options.type = _.findWhere(res, {'code': 'CUSTOMER_TYPE'}).codes;
+              this.$ajax.post(this.$apis.POST_CODE_PART,["PMT","ITM","SR_TYPE"],{cache:true}).then(res=>{
+                this.options.payment = _.findWhere(res, {'code': 'PMT'}).codes;
+                this.options.incoterm = _.findWhere(res, {'code': 'ITM'}).codes;
+                this.options.type = _.findWhere(res, {'code': 'SR_TYPE'}).codes;
               }).catch(err=>{
                 console.log(err)
               });
@@ -246,15 +247,15 @@
                         this.pageData=res;
                         this.loading = false
                         this.tabData = this.$getDB(this.$db.supplier.overviewtable, res.datas, e=>{
-                            let country,incoterm,type,currency;
+                            let country,incoterm,type,payment;
                             country = _.findWhere(this.options.country, {code: e.country.value}) || {};
+                            payment = _.findWhere(this.options.payment, {code:(e.payment.value)+''}) || {};
                             incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value+''}) || {};
                             type = _.findWhere(this.options.type, {code: e.type.value+''}) || {};
-                            // currency = _.findWhere(this.currency, {code: e.currency.value}) || {};
                             e.country._value = country.name || '';
                             e.incoterm._value = incoterm.name || '';
                             e.type._value = type.name || '';
-                            // e.currency._value = currency.name || '';
+                            e.payment._value = payment.name || '';
 
                             return e;
                         });
