@@ -26,5 +26,6 @@
   "pleaseChooseAType": "请选择类型",
   "pleaseChooseService": "请选择服务",
   "deleteSuccess":"删除成功！",
-  "pleaseChooseQcMethod":"Please Choose QC Method"
+  "pleaseChooseQcMethod":"请选择验货方式",
+  "qcPics": "请添加验货照片"
 }
