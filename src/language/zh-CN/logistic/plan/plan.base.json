@@ -229,5 +229,11 @@
   "operationSuccess" : "操作成功！",
   "operationFailed" : "操作失败！",
   "jumping" : "正在跳转...",
-  "reportElement" : "Declare elements"
+  "reportElement" : "Declare elements",
+  "skuQty" : "订单数量",
+  "skuCartonQty" : "订单外箱数",
+  "Negociate" : "修改",
+  "Copy" : "复制",
+  "Detail" : "详细",
+  "History" : "历史"
 }
