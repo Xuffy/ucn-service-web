@@ -64,6 +64,81 @@ export const routerMap = [
       ]
     },
     {
+      path: '/logistic',
+      name: 'logistic',
+      meta: {name: $i.router.logistic},
+      component: Layout,
+      redirect: '/logistic/plan',
+      children: [
+        {
+          path: 'plan',
+          name: 'overviewPlan',
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+            name: $i.router.logisticPlanOverview
+          },
+          component: () => import('../views/logistic/logisticPlanOverview')
+        },
+        {
+          path: 'loadingList',
+          name: 'overviewLoadingList',
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+            name: $i.router.logisticLoadingList
+          },
+          component: () => import('../views/logistic/logisticPlanOverview')
+        },
+        {
+          path: 'draft',
+          name: 'overviewDraft',
+          hidden: true,
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+            name: $i.router.logisticLoadingDraft
+          },
+          component: () => import('../views/logistic/logisticPlanOverview')
+        },
+        {
+          path: 'archive',
+          name: 'overviewArchive',
+          hidden: true,
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+            name: $i.router.logisticLoadingArchive
+          },
+          component: () => import('../views/logistic/logisticPlanOverview')
+        },
+        {
+          path: 'placeLogisticPlan',
+          name: 'placeLogisticPlan',
+          hidden: true,
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+            name: $i.router.logisticPlaceLogisticPlan
+          },
+          component: () => import('../views/logistic/logisticPlanDetail')
+        },
+        {
+          path: 'planDetail',
+          name: 'logisticPlanDetail',
+          hidden: true,
+          meta: {
+            draft: '/logistic/draft',
+            recycleBin: true,
+
+            name: $i.router.logisticPlaceDetail
+
+          },
+          component: () => import('../views/logistic/logisticPlanDetail')
+        }
+      ]
+    },
+    {
       path: '/settings',
       component: Layout,
       redirect: '/settings/department',

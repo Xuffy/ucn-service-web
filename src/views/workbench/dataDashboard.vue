@@ -33,10 +33,8 @@
 
 <script>
   const AUTH_LIST = {
-    'CUST_PO_PLACED': 'WORKBENCH:DATA_DASHBOARD:ORDERS_PLACED',
-    'CUST_PO_IN_PROCESSING': 'WORKBENCH:DATA_DASHBOARD:ORDERS_PROCESS',
-    'CUST_PO_CANCELED': 'WORKBENCH:DATA_DASHBOARD:ORDERS_CANCELED',
-    'CUST_LO_IN_PROCESSING': 'WORKBENCH:DATA_DASHBOARD:LOGISTICS_ORDERS_PROCESS',
+    'SERVICE_QC_IN_PROCESSING': 'WORKBENCH:DATA_DASHBOARD:ORDERS_PROCESS',
+    'SERVICE_QC_DONE': 'WORKBENCH:DATA_DASHBOARD:QC_ORDERS_PERFORMED'
   };
 
   export default {
@@ -55,10 +53,14 @@
     },
     methods: {
       getData() {
+        let params = [];
         this.loading = true;
-        this.$ajax.post(this.$apis.UDA_FINDDATAANALYSISLIST, {
-          statPoints: ['SERVICE_QC_IN_PROCESSING', 'SERVICE_QC_DONE']
-        })
+
+        _.mapObject(AUTH_LIST, (val, key) => {
+          this.$auth(val) && params.push(key)
+        });
+
+        this.$ajax.post(this.$apis.UDA_FINDDATAANALYSISLIST, {statPoints: params})
           .then(res => {
             this.dataList = [];
             this.getCode().then(data => {
