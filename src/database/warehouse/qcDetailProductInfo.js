@@ -12,7 +12,7 @@ export default{
         key: 'skuQcResultDictCode',
         type: 'String',
         showType:'select',
-        isQcResult:true
+        isQcResult:true,
     },
     innerCartonLength:{
         key: 'innerCartonLength',
@@ -21,7 +21,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     innerCartonWidth:{
         key: 'innerCartonWidth',
@@ -30,7 +31,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     innerCartonHeight:{
         key: 'innerCartonHeight',
@@ -39,7 +41,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     innerCartonNetWeight:{
         key: 'innerCartonNetWeight',
@@ -48,7 +51,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     innerCartonGrossWeight:{
         key: 'innerCartonGrossWeight',
@@ -57,7 +61,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     innerCartonVolume:{
         key: 'innerCartonVolume',
@@ -66,7 +71,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 6
     },
     outerCartonLength:{
         key: 'outerCartonLength',
@@ -75,7 +81,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     outerCartonWidth:{
         key: 'outerCartonWidth',
@@ -84,7 +91,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     outerCartonHeight:{
         key: 'outerCartonHeight',
@@ -93,7 +101,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     outerCartonNetWeight:{
         key: 'outerCartonNetWeight',
@@ -102,7 +111,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     outerCartonGrossWeight:{
         key: 'outerCartonGrossWeight',
@@ -111,7 +121,8 @@ export default{
         _rules:{
             required:true,
             type:'Number'
-        }
+        },
+        accuracy: 2
     },
     qualifiedSkuCartonTotalQty:{
         key: 'qualifiedSkuCartonTotalQty',
@@ -121,7 +132,8 @@ export default{
             required:true,
             type:'Number'
         },
-        _calculate:true
+        _calculate:true,
+        accuracy: 2
     },
     checkOuterCartonQty:{
         key: 'checkOuterCartonQty',
@@ -131,28 +143,33 @@ export default{
             required:true,
             type:'Number'
         },
-        _calculate:true
+        _calculate:true,
+        accuracy: 2
     },
     actOuterCartonSkuQty:{
         key: 'actOuterCartonSkuQty',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        accuracy: 2
     },
     actOuterCartonInnerBoxQty:{
         key: 'actOuterCartonInnerBoxQty',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        accuracy: 2
     },
     actInnerCartonSkuQty:{
         key: 'actInnerCartonSkuQty',
         type: 'Number',
-        showType:'number'
+        showType:'number',
+        accuracy: 2
     },
     unqualifiedSkuCartonTotalQty:{
         key: 'unqualifiedSkuCartonTotalQty',
         type: 'Number',
         showType:'number',
-        _calculate:true
+        _calculate:true,
+        accuracy: 2
     },
     unqualifiedType:{
         key: 'unqualifiedType',
