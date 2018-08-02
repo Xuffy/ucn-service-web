@@ -27,7 +27,10 @@ export default {
   serviceProviderShortName:{
         key: 'abbreviation',
         type: 'input',
-        belong:'summary'
+        belong:'summary',
+        _rules:{
+          required:true,
+        }
     },
   serviceProviderType:{
         key: 'type',

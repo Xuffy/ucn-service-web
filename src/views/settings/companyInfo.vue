@@ -424,7 +424,7 @@
       },
       //获取字典
       getCodePart(){
-        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","SP_TYPE","EL_IS","SEX"]).then(res=>{
+        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","SP_TYPE","EL_IS","SEX"],{cache:true}).then(res=>{
           this.options.payment = _.findWhere(res, {'code': 'PMT'}).codes;
           this.options.incoterm = _.findWhere(res, {'code': 'ITM'}).codes;
           this.options.type = _.findWhere(res, {'code': 'SP_TYPE'}).codes;
@@ -452,7 +452,7 @@
       },
       //获取整个页面数据
       getWholeData(){
-        this.$ajax.get(this.$apis.post_servicer_getServicer).then(res=>{
+        this.$ajax.get(this.$apis.post_servicer_getServicer,{},{cache:false}).then(res=>{
           this.attachments =res.attachments
           // this.addressData contactData
           this.accountsData = this.$getDB(this.$db.setting.servicerAccount, res.accounts);
