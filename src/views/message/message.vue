@@ -23,6 +23,7 @@
           :data="tabData"
           @change-checked="changeChecked"
           :height="500"
+          disabled-sort
           hide-filter-value
         />
         <page
