@@ -51,8 +51,23 @@
         this.$localStore.set('token', token);
         this.$ajax.get(this.$apis.USER_PRIVILEGE).then(data => {
           this.$localStore.set('user', data);
-          this.$router.push('/');
+          data.userType === 0
+            ? this.checkCompanyInfo(data).then(res => {
+              res ? this.$router.push('/') : this.$router.push(this.$localStore.get('router_intercept'));
+            })
+            : this.$router.push('/');
         });
+      },
+      checkCompanyInfo() {
+        return this.$ajax.get(this.$apis.post_servicer_getServicer)
+          .then((res = {}) => {
+            if (!res.abbreviation) {
+              this.$localStore.set('router_intercept', {path: '/settings/companyInfo'});
+              return false;
+            }
+
+            return true;
+          });
       }
     }
   }
