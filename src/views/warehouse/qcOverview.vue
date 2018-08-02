@@ -1,7 +1,7 @@
 <template>
     <div class="inbound-overview">
         <div class="title">
-            <span>{{$i.warehouse.qcOverview}}</span>
+            <span>{{$i.warehouse.qcOverview }}</span>
         </div>
         <div class="body">
             <div class="head">

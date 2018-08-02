@@ -125,6 +125,7 @@
                 <v-filter-column
                     ref="filterColumn"
                     code="uwarehouse_qc_order_detail"
+                    :table-ref="() => $refs.tableBox"
                     @change="changeColumn">
                 </v-filter-column>
             </div>
@@ -133,6 +134,7 @@
                     v-loading="loadingProductInfoTable"
                     :data="productInfoData"
                     border
+                    ref="tableBox"
                     show-summary
                     :summary-method="getSummaries"
                     style="width: 100%">
@@ -148,6 +150,7 @@
                         :prop="v.key"
                         align="center"
                         :key="v.key"
+                        :label-class-name="'location-' + v.key"
                         :label="$i.warehouse[v.key]"
                         :class-name="tableRequired[v.key]? 'ucn-table-required' : ''"
                         width="180">
@@ -230,9 +233,11 @@
                                     trigger="click">
                                 <v-upload :limit="20"
                                           :onlyImage="true"
-                                          :ref="'picUpload'+scope.$index"></v-upload>
+                                          :ref="'picUpload'+scope.$index"
+                                          @change="uploadChange('picUpload'+scope.$index, scope.row[v.key])"
+                                          ></v-upload>
                                 <el-button slot="reference" type="text">
-                                    {{$i.upload.uploadPhotos}}
+                                    {{scope.row[v.key].pleaseText + $i.upload.uploadPhotos + '(' + scope.row[v.key].imgNum + '/20' + ')'}}
                                 </el-button>
                             </el-popover>
                         </div>
@@ -399,6 +404,7 @@
         },
         data() {
             return {
+                uploadLngth: 0,
                 options: [],
                 qcDetail: {},
                 loadingData: false,
@@ -870,6 +876,11 @@
                 }).catch(err => {
 
                 });
+            },
+            uploadChange (ref, e) { // 图片导入成功后显示
+                let length = this.$refs[ref][0].getFiles().length
+                e.imgNum = length
+                e.pleaseText = length > 0 ? '继续' : ''
             }
         },
         created() {
