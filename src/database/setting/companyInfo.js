@@ -26,10 +26,11 @@ export default {
     },
   serviceProviderShortName:{
         key: 'abbreviation',
-        type: 'input',
+        type: 'customValidation',
         belong:'summary',
         _rules:{
           required:true,
+          length:6
         }
     },
   serviceProviderType:{
@@ -38,7 +39,6 @@ export default {
         belong:'summary',
         _rules:{
             required:true,
-            length:6,
           }
     },
   country:{

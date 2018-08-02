@@ -61,5 +61,6 @@ export default {
   post_servicer_purchase_batchUpload: ['/supplier/purchase/oss/company/batchUpload','BASE_CS','USERVICE_URL'],
   post_servicer_purchase_upload: ['/supplier/purchase/oss/company/upload','BASE_CS','USERVICE_URL'],
   post_purchase_customer_updateIsSetting:['/servicer/updateIsSetting/{id}','BASE_CS', 'USERVICE_URL'],
+  post_servicer_sname_exist: ['/servicer/sname/exist/{id}?shortName={shortName}', 'BASE_CS', 'USERVICE_URL']
 
 }
