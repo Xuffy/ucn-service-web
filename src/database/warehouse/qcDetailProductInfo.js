@@ -213,7 +213,9 @@ export default{
         _rules:{
             // required:true
         },
-        _image:true
+        _image:true,
+        imgNum: 0,
+        pleaseText: ''
     },
     remark:{
         key: 'remark',
