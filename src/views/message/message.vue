@@ -1,7 +1,7 @@
 <template>
   <div class="message">
     <div class="head">
-      <el-button @click="manageMessage">{{$i.common.messageManagement}}</el-button>
+      <el-button @click="manageMessage" v-authorize="'MESSAGE:MANAGEMENT'">{{$i.common.messageManagement}}</el-button>
       <el-button type="primary" @click="postRead" :disabled="isResd">{{$i.common.markAsRead}}</el-button>
       <!-- <h1 style="color:red">这个页面表格要加一列title</h1> -->
     </div>
@@ -23,6 +23,7 @@
           :data="tabData"
           @change-checked="changeChecked"
           :height="500"
+          disabled-sort
           hide-filter-value
         />
         <page
@@ -68,6 +69,7 @@
 
 <script>
   import { selectSearch, VTable,VPagination } from '@/components/index';
+  import { mapActions } from 'vuex';
 
   export default {
     name: "message",
@@ -114,6 +116,7 @@
       }
     },
     methods:{
+      ...mapActions(['setMenuLink']),
       handleClick(tab, event) {
         // this.getMessageQuery()
       },
@@ -195,7 +198,7 @@
         this.$ajax.post(url, this.params)
           .then(res => {
               this.tabData = this.$getDB(this.$db.message.table, res.datas, e => {
-                _.mapObject(item, val => {
+                _.mapObject(e, val => {
                   val.type === 'textDate' && val.value && (val.value = this.$dateFormat(val.value, 'yyyy-mm-dd HH:MM:ss'))
                   return val
                 })
@@ -295,6 +298,14 @@
       this.message = '1';
       this.getDataInfo();
       this.getMessageQuery();
+    },
+    mounted(){
+      this.setMenuLink({
+        path: '/logs',
+        query: {code: 'MESSAGE',bizCode: 'BIZ_COMPANY_MESSAGE'},
+        type: 100,
+        label: this.$i.common.log,
+      });
     },
   }
 </script>

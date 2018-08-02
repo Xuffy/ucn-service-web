@@ -125,6 +125,7 @@
                 <v-filter-column
                     ref="filterColumn"
                     code="uwarehouse_qc_order_detail"
+                    :table-ref="() => $refs.tableBox"
                     @change="changeColumn">
                 </v-filter-column>
             </div>
@@ -133,6 +134,7 @@
                     v-loading="loadingProductInfoTable"
                     :data="productInfoData"
                     border
+                    ref="tableBox"
                     show-summary
                     :summary-method="getSummaries"
                     style="width: 100%">
@@ -148,6 +150,7 @@
                         :prop="v.key"
                         align="center"
                         :key="v.key"
+                        :label-class-name="'location-' + v.key"
                         :label="$i.warehouse[v.key]"
                         :class-name="tableRequired[v.key]? 'ucn-table-required' : ''"
                         width="180">
@@ -188,11 +191,20 @@
                                         :controls="false"
                                         @blur="handleInputNumberBlur(scope.row)"
                                         v-model="scope.row[v.key].value"
-                                        :precision="0"></v-input-number>
+                                        :mark="v.label"
+                                        :accuracy="v.accuracy ? v.accuracy : null"></v-input-number>
+                                    <!-- <el-input style="width:130px"
+                                        :min="0"
+                                        @change="val => changeInput(val, scope.row[v.key], scope.row)"
+                                        type="number"
+                                        v-model="scope.row[v.key].value"
+                                        placeholder=""></el-input> -->
                                 </div>
                                 <div v-else>
                                     <v-input-number
                                         :controls="false"
+                                        :mark="v.label"
+                                        :accuracy="v.accuracy ? v.accuracy : null"
                                         @blur="handleInputNumberBlur(scope.row)"
                                         v-model="scope.row[v.key].value"></v-input-number>
                                 </div>
@@ -200,6 +212,8 @@
                             <div v-else>
                                 <v-input-number
                                         :controls="false"
+                                        :mark="v.label"
+                                        :accuracy="v.accuracy ? v.accuracy : null"
                                         v-model="scope.row[v.key].value"></v-input-number>
                             </div>
                         </div>
@@ -212,7 +226,20 @@
                             </el-input>
                         </div>
                         <div v-else-if="v.showType==='pic'">
-                            <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload>
+                            <!-- <v-upload :limit="20" :onlyImage="true" :ref="'picUpload'+scope.$index"></v-upload> -->
+                            <el-popover
+                                    placement="bottom"
+                                    width="300"
+                                    trigger="click">
+                                <v-upload :limit="20"
+                                          :onlyImage="true"
+                                          :ref="'picUpload'+scope.$index"
+                                          @change="uploadChange('picUpload'+scope.$index, scope.row[v.key])"
+                                          ></v-upload>
+                                <el-button slot="reference" type="text">
+                                    {{scope.row[v.key].pleaseText + $i.upload.uploadPhotos + '(' + scope.row[v.key].imgNum + '/20' + ')'}}
+                                </el-button>
+                            </el-popover>
                         </div>
                         <div v-else>
                             {{scope.row[v.key].value}}
@@ -377,6 +404,7 @@
         },
         data() {
             return {
+                uploadLngth: 0,
                 options: [],
                 qcDetail: {},
                 loadingData: false,
@@ -539,16 +567,6 @@
                         type: "warning"
                     });
                 }
-                // for (let i = 0; i < this.productInfoData.length; i++) {
-                //     let obj = {}
-                //     _.mapObject(this.productInfoData[i], e => {
-                //         obj[e.key] = e.value
-                //     })
-                //     if (this.$validateForm(obj, this.$db.warehouse.qcDetailProductInfo)) {
-                //         console.log(obj)
-                //         return;
-                //     }
-                // }
                 this.qcOrderConfig.qcDate = this.qcDetail.qcDate;
                 this.qcOrderConfig.qcMethodDictCode = this.qcDetail.qcMethodDictCode;
                 this.qcOrderConfig.qcOrderId = this.$route.query.id;
@@ -612,18 +630,7 @@
                 let flag = true
                 _.map(this.qcOrderConfig.qcResultDetailParams, (v, k) => {
                     v.qcPics = this.$refs["picUpload" + k][0].getFiles();
-                    // console.log(v.qcPics)
-                    // if (v.qcPics.length < 1) {
-                    //     flag = false
-                    //     return this.$message({
-                    //         message: this.$i.warehouse.qcPics,
-                    //         type: "warning"
-                    //     });
-                    // }
                 });
-                // if (!flag) {
-                //     return;
-                // }
                 for (let i = 0; i < this.qcOrderConfig.qcResultDetailParams.length; i++) {
                     if (this.$validateForm(this.qcOrderConfig.qcResultDetailParams[i], this.$db.warehouse.qcDetailProductInfo)) {
                         return;
@@ -656,6 +663,20 @@
                 } catch (f) {}
                 return Number(d.replace(".", "")) * Number(e.replace(".", "")) / Math.pow(10, c);
             },
+            jia(a, b) {
+                var c, d, e;
+                try {
+                    c = a.toString().split(".")[1].length;
+                } catch (f) {
+                    c = 0;
+                }
+                try {
+                    d = b.toString().split(".")[1].length;
+                } catch (f) {
+                    d = 0;
+                }
+                return e = Math.pow(10, Math.max(c, d)), (this.mul(a, e) + this.mul(b, e)) / e;
+            },
             /**
              * product info事件
              * */
@@ -669,7 +690,9 @@
                 //计算实际产品总箱数
                 let qualifiedSkuCartonTotalQty = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
                 let unqualifiedSkuCartonTotalQty = (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
-                e.actSkuCartonTotalQty.value = qualifiedSkuCartonTotalQty + unqualifiedSkuCartonTotalQty;
+                // e.actSkuCartonTotalQty.value = qualifiedSkuCartonTotalQty + unqualifiedSkuCartonTotalQty;
+                e.actSkuCartonTotalQty.value = this.jia(qualifiedSkuCartonTotalQty,unqualifiedSkuCartonTotalQty);
+                
 
                 //计算合格产品数量
                 let actOuterCartonSkuQty = (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
@@ -681,7 +704,7 @@
                 // (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0) * (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
 
                 //计算实际产品数量
-                e.actSkuQty.value = (e.unqualifiedSkuQty.value ? e.unqualifiedSkuQty.value : 0) + (e.qualifiedSkuQty.value ? e.qualifiedSkuQty.value : 0);
+                e.actSkuQty.value = this.jia((e.unqualifiedSkuQty.value ? e.unqualifiedSkuQty.value : 0), (e.qualifiedSkuQty.value ? e.qualifiedSkuQty.value : 0));
 
                 //计算合格产品总净重
                 let outerCartonNetWeight = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0);
@@ -709,6 +732,10 @@
                 //计算不合格总产品毛重
                 e.unqualifiedSkuGrossWeight.value = this.mul(outerCartonGrossWeight,unqualifiedSkuCartonTotalQty);
                 // (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0) * (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
+            },
+            changeInput (val, e, row) {
+                e.value = this.$toFixed(Math.abs(val), 2, e.label)
+                this.handleInputNumberBlur(row)
             },
             getSummaries(param) {
                 const { columns, data } = param;
@@ -849,6 +876,11 @@
                 }).catch(err => {
 
                 });
+            },
+            uploadChange (ref, e) { // 图片导入成功后显示
+                let length = this.$refs[ref][0].getFiles().length
+                e.imgNum = length
+                e.pleaseText = length > 0 ? '继续' : ''
             }
         },
         created() {
@@ -859,7 +891,7 @@
         mounted() {
             this.setMenuLink({
                 path: "/logs/index",
-                query: { code: "WAREHOUSE" },
+                query: { code: "QC" },
                 type: 10,
                 auth: "QC:LOG",
                 label: this.$i.common.log

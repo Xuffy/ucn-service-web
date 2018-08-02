@@ -27,7 +27,10 @@ export default {
   serviceProviderShortName:{
         key: 'abbreviation',
         type: 'input',
-        belong:'summary'
+        belong:'summary',
+        _rules:{
+          required:true,
+        }
     },
   serviceProviderType:{
         key: 'type',
@@ -35,6 +38,7 @@ export default {
         belong:'summary',
         _rules:{
             required:true,
+            length:6,
           }
     },
   country:{

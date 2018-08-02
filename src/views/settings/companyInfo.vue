@@ -1,7 +1,15 @@
 <template>
   <div class="company-info">
-    <div class="title">
+    <div class="title" :style="{'height': !showNameBox ? '32px':'0'}">
       <span><span style="color:red;font-weight: bold"></span>{{$i.setting.companyInfo}}</span>
+    </div>
+    <div class="alert" v-show="showNameBox">
+      <el-alert
+        :title="$i.setting.requiredPage"
+        type="warning"
+        :closable="false"
+        show-icon>
+      </el-alert>
     </div>
     <div class="summary">
       <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
@@ -83,6 +91,7 @@
               :height="500"
               :buttons="[{label: $i.button.modify, type: 1},{label: $i.button.delete, type: 2}]"
               @action="btnAddressClick"
+              disabled-sort
             />
           </div>
         </el-tab-pane>
@@ -97,6 +106,7 @@
                 :height="500"
                 :buttons="[{label: $i.button.modify, type: 1},{label: $i.button.delete, type: 2}]"
                 @action="btnClick"
+                disabled-sort
               />
             </div>
           </div>
@@ -113,6 +123,7 @@
                 :height="500"
                 :buttons="[{label: $i.button.modify, type: 1},{label: $i.button.delete, type: 2}]"
                 @action="btnContactClick"
+                disabled-sort
               />
             </div>
           </div>
@@ -163,6 +174,13 @@
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
             <el-form-item  :label="$i.setting.contactPhoneNo2 +'：'">
               <el-input size="mini" v-model="addressData.contactPhone2"  :placeholder="$i.common.inputkeyWordToSearch"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
+            <el-form-item>
+              <el-checkbox-group v-model="addressData.def">
+                <el-checkbox :label="$i.setting.setDefaultAddress" @change="setAddress" ></el-checkbox>
+              </el-checkbox-group>
             </el-form-item>
           </el-col>
         </el-row>
@@ -302,7 +320,8 @@
 </template>
 
 <script>
-  import { VTable,VUpload} from '@/components/index'
+  import { VTable,VUpload} from '@/components/index';
+  import { mapActions } from 'vuex';
   export default {
     name: "companyInfo",
     components:{
@@ -353,6 +372,7 @@
           status: "",
           servicerId: "",
           version: "",
+          def: false
         },
         contactData:{
           cellphone: "",
@@ -397,6 +417,7 @@
         isModifyAddress:false,
         isModifyAccount:false,
         isModifyContact:false,
+        showNameBox:false,
         options:{},
         sex:[],
         department:[],
@@ -404,6 +425,7 @@
       }
     },
     methods:{
+      ...mapActions(['setMenuLink']),
        //获取币种
       getCurrency(){
         this.$ajax.get(this.$apis.get_currency_all).then(res=>{
@@ -414,7 +436,7 @@
       },
       //获取字典
       getCodePart(){
-        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","SP_TYPE","EL_IS","SEX"]).then(res=>{
+        this.$ajax.post(this.$apis.POST_CODE_PART,["ITM","PMT","SP_TYPE","EL_IS","SEX"],{cache:true}).then(res=>{
           this.options.payment = _.findWhere(res, {'code': 'PMT'}).codes;
           this.options.incoterm = _.findWhere(res, {'code': 'ITM'}).codes;
           this.options.type = _.findWhere(res, {'code': 'SP_TYPE'}).codes;
@@ -455,9 +477,18 @@
             return e;
           });
 
-          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address);
+          this.addressDatas = this.$getDB(this.$db.setting.servicerAddress, res.address, e=>{
+            e.def.value ? e.def._value = '是' : e.def._value = '';
+            return e
+          });
           res.exportLicense ? res.exportLicense = 'YES' : res.exportLicense = 'NO'
           this.companyInfo=res;
+          //判断shortName是否存在
+          if (this.companyInfo.shortName){
+            this.$localStore.remove('router_intercept')
+          }else{
+            this.showNameBox = true;
+          }
         }).catch(err=>{
           console.log(err)
         });
@@ -608,6 +639,50 @@
         }).catch(() => {
 
         });
+      },
+      //更改默认地址
+      setAddress(){
+        let def;
+        this.addressDatas.forEach(v=>{
+          def = _.findWhere(v,{key:'def'}).value;
+        })
+        if (def){
+          this.$confirm(this.$i.setting.isReplace, this.$i.common.prompt, {
+            confirmButtonText: this.$i.common.confirm,
+            cancelButtonText: this.$i.common.cancel,
+            type: 'warning'
+          }).then(() => {
+            console.log(this.addressData.def)
+            if (this.addressData.def){
+              this.addressData.def = true;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.replaceSuccess
+              });
+            }else{
+              this.addressData.def = false;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.cancelReplace
+              });
+            }
+          }).catch(() => {
+            console.log(this.addressData.def)
+            if (this.addressData.def){
+              this.addressData.def = false;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.cancelReplace
+              });
+            }else{
+              this.addressData.def = true;
+              this.$message({
+                type: 'success',
+                message: this.$i.setting.replaceSuccess
+              });
+            }
+          });
+        }
       },
 
       /**
@@ -835,6 +910,14 @@
       this.getDepartment();
       this.getWholeData();
     },
+    mounted(){
+      this.setMenuLink({
+        path: '/logs',
+        query: {code: 'SERVICER_SETTING',bizCode: 'BIZ_SERVICER_SETTING'},
+        type: 100,
+        label: this.$i.common.log,
+      });
+    },
     watch:{
       addressDialogVisible(n){
         if(!n){
@@ -868,7 +951,6 @@
   .title{
     font-weight: bold;
     font-size: 18px;
-    height: 32px;
     line-height: 32px;
     color:#666666;
   }
@@ -908,6 +990,11 @@
   /*弹出框样式*/
   .dialog-footer{
     text-align: center;
+  }
+  .alert{
+    width: 40%;
+    margin: 0 auto;
+    padding: 15px;
   }
 
 </style>

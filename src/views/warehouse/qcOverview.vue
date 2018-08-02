@@ -1,7 +1,7 @@
 <template>
     <div class="inbound-overview">
         <div class="title">
-            <span>{{$i.warehouse.qcOverview}}</span>
+            <span>{{$i.warehouse.qcOverview }}</span>
         </div>
         <div class="body">
             <div class="head">
@@ -22,7 +22,7 @@
                         :height="500"
                         :loading="loadingTable"
                         :data="tableDataList"
-                        :buttons="[{label: $i.warehouse.detail, type: 1}]"
+                        :buttons="[{label: $i.warehouse.detail, type: 1, auth:'QC:ORDER_DETAIL'}]"
                         @change-checked="changeChecked"
                         @change-sort="val=>{getQcData(val)}"
                         @action="btnClick">
@@ -75,7 +75,7 @@
                     ps: 50,
                     qcOrderNo: '',
                     qcStatusDictCode: '',
-                    sorts:[{orderBy:"entryDt",orderType:"desc"}]
+                    sorts:[{orderBy:"updateDt",orderType:"desc"}]
                 },
                 searchId:1,
                 searchOptions:[
@@ -183,7 +183,7 @@
         mounted(){
             this.setMenuLink({
                 path: '/logs/index',
-                query: {code: 'WAREHOUSE'},
+                query: {code: 'QC'},
                 type: 10,
                 auth:'QC:LOG',
                 label: this.$i.common.log
