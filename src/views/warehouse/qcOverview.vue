@@ -75,7 +75,7 @@
                     ps: 50,
                     qcOrderNo: '',
                     qcStatusDictCode: '',
-                    sorts:[{orderBy:"entryDt",orderType:"desc"}]
+                    sorts:[{orderBy:"updateDt",orderType:"desc"}]
                 },
                 searchId:1,
                 searchOptions:[
