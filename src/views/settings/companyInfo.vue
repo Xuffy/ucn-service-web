@@ -939,7 +939,7 @@
             shortName: this.companyInfo.abbreviation
           }).then(res=>{
             if (res){
-              this.showNameBox = true;
+              this.showNameBox = false;
               this.$message({
                 message: this.$i.setting.abbreviationOnly,
                 type: 'warning'
