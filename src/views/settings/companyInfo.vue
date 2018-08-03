@@ -12,7 +12,7 @@
       </el-alert>
     </div>
     <div class="summary">
-      <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="190px">
+      <el-form ref="summary" :model="companyInfo" :rules="companyInfoRules" label-width="265px">
         <el-row class="speZone">
           <el-col :class="{speCol:v.key!=='description'}" v-if="v.belong==='summary'" v-for="v in $db.setting.companyInfo" :key="v.key" :xs="24" :sm="v.fullLine?24:12" :md="v.fullLine?24:12" :lg="v.fullLine?24:8" :xl="v.fullLine?24:8">
             <el-form-item class="speWidth"   :label="v.label +'：'"  :required="v._rules?v._rules.required:false">
@@ -493,7 +493,7 @@
           res.exportLicense ? res.exportLicense = 'YES' : res.exportLicense = 'NO'
           this.companyInfo=res;
           //判断shortName是否存在
-          if (this.companyInfo.shortName){
+          if (this.companyInfo.abbreviation){
             this.$localStore.remove('router_intercept')
           }else{
             this.showNameBox = true;

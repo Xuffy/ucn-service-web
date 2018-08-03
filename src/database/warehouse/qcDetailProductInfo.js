@@ -22,7 +22,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS: true
     },
     innerCartonWidth:{
         key: 'innerCartonWidth',
@@ -32,7 +33,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     innerCartonHeight:{
         key: 'innerCartonHeight',
@@ -42,7 +44,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     innerCartonNetWeight:{
         key: 'innerCartonNetWeight',
@@ -52,7 +55,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     innerCartonGrossWeight:{
         key: 'innerCartonGrossWeight',
@@ -62,7 +66,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     innerCartonVolume:{
         key: 'innerCartonVolume',
@@ -72,7 +77,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 6
+        accuracy: 6,
+        isFWS:true
     },
     outerCartonLength:{
         key: 'outerCartonLength',
@@ -92,7 +98,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     outerCartonHeight:{
         key: 'outerCartonHeight',
@@ -102,7 +109,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     outerCartonNetWeight:{
         key: 'outerCartonNetWeight',
@@ -112,7 +120,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     outerCartonGrossWeight:{
         key: 'outerCartonGrossWeight',
@@ -122,7 +131,8 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     qualifiedSkuCartonTotalQty:{
         key: 'qualifiedSkuCartonTotalQty',
@@ -133,7 +143,8 @@ export default{
             type:'Number'
         },
         _calculate:true,
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     checkOuterCartonQty:{
         key: 'checkOuterCartonQty',
@@ -144,37 +155,43 @@ export default{
             type:'Number'
         },
         _calculate:true,
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     actOuterCartonSkuQty:{
         key: 'actOuterCartonSkuQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2
+        accuracy: 2,
+        isFWS: true
     },
     actOuterCartonInnerBoxQty:{
         key: 'actOuterCartonInnerBoxQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2
+        accuracy: 2,
+        isFWS: true
     },
     actInnerCartonSkuQty:{
         key: 'actInnerCartonSkuQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2
+        accuracy: 2,
+        isFWS: true
     },
     unqualifiedSkuCartonTotalQty:{
         key: 'unqualifiedSkuCartonTotalQty',
         type: 'Number',
         showType:'number',
         _calculate:true,
-        accuracy: 2
+        accuracy: 2,
+        isFWS:true
     },
     unqualifiedType:{
         key: 'unqualifiedType',
         type: 'String',
-        showType:'input'
+        showType:'input',
+        isFWS:true
     },
     skuBarCodeResultDictCode:{
         key: 'skuBarCodeResultDictCode',
@@ -220,7 +237,8 @@ export default{
     remark:{
         key: 'remark',
         type: 'String',
-        showType:'input'
+        showType:'input',
+        isFWS:true
     },
     skuInventoryStatusDictCode:{
         key: 'skuInventoryStatusDictCode',
