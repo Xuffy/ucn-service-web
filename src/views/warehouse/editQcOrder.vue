@@ -763,7 +763,6 @@
                         || column.property === 'checkOuterCartonQty'
                         || column.property === 'actOuterCartonSkuQty'
                     ) {
-                        console.log('dd')
                          const values = data.map(item => {
                              if (item[column.property] !== null) {
                                  return Number(item[column.property].value)
