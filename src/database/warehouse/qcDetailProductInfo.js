@@ -77,7 +77,7 @@ export default{
             required:true,
             type:'Number'
         },
-        accuracy: 6,
+        accuracy: 3,
         isFWS:true
     },
     outerCartonLength:{
