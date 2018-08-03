@@ -221,6 +221,7 @@
 
         <div class="product-info">
             <v-table
+                code="uwarehouse_qc_order_detail"
                     :loading="loadingProductInfoTable"
                     :data="productInfoData"
                     @action="btnClick"
@@ -449,6 +450,7 @@
                     .then(res=>{
                         this.qcDetail=res;
                         this.getPaymentInfo();
+                        this.getProductInfo();
                     }).finally(err=>{
                         this.loadingData=false;
                     }
@@ -480,8 +482,16 @@
                     });
 
                     let diffData=[];
+                    let qcStatus = this.qcDetail.qcStatusDictCode
                     _.map(this.productInfoData,v=>{
                         diffData.push(v.skuId.value+v.orderNo.value);
+                        if (qcStatus === 'COMPLETED_QC') {
+                            _.mapObject(v, (item, k) => {
+                                if (item.isFWS) {
+                                    item._mustChecked = true
+                                }
+                            })
+                        }
                     });
                     this.summaryData.skuQuantity=_.uniq(diffData).length;
                     this.loadingProductInfoTable=false;
@@ -643,7 +653,6 @@
                         }
                     });
                     this.getQcOrderDetail();
-                    this.getProductInfo();
                 })
                 .catch(err=>{
                     this.loadingData=false;
