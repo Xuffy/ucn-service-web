@@ -226,6 +226,7 @@
                     :data="productInfoData"
                     @action="btnClick"
                     :totalRow="totalRow"
+                    @change-sort="val=>{getProductInfo(val)}"
                     @change-checked="changeChecked">
                 <template slot="header">
                     <div class="second-title">
@@ -456,8 +457,9 @@
                     }
                 );
             },
-            getProductInfo(){
+            getProductInfo(e){
                 this.loadingProductInfoTable=true;
+                Object.assign(this.productInfoConfig,e);
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct,this.productInfoConfig).then(res=>{
                     this.productInfoData = this.$getDB(this.$db.warehouse.qcDetailProductInfo, res.datas,e=>{
                         e.deliveryDate.value=this.$dateFormat(e.deliveryDate.value,'yyyy-mm-dd');
