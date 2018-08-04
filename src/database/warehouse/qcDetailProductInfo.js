@@ -13,6 +13,7 @@ export default{
         type: 'String',
         showType:'select',
         isQcResult:true,
+        isFWS: true
     },
     innerCartonLength:{
         key: 'innerCartonLength',
@@ -232,7 +233,8 @@ export default{
         },
         _image:true,
         imgNum: 0,
-        pleaseText: ''
+        pleaseText: '',
+        isFWS: true
     },
     remark:{
         key: 'remark',
@@ -324,7 +326,8 @@ export default{
     },
     skuLength: {
         key: 'skuLength',
-        type: 'Number'
+        type: 'Number',
+        isFWS:true
     },
     skuWidth: {
         key: 'skuWidth',
@@ -429,7 +432,8 @@ export default{
     
     outerCartonBarCode:{
         key: 'outerCartonBarCode',
-        type: 'String'
+        type: 'String',
+        isFWS:true
     },
     
     shippingMark:{
