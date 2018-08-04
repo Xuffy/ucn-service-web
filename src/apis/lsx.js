@@ -142,7 +142,7 @@ export default {
      * payment
      * */
     PAYMENT_LIST:['/payment/list/{orderNo}/{orderType}?moduleCode={moduleCode}','USERVICE_URL'],
-    PAYMENT_ACCEPT:['/payment/accept/{id}?version={version}','USERVICE_URL'],
+    PAYMENT_ACCEPT:['/payment/accept/{id}?version={version}&moduleCode={moduleCode}','USERVICE_URL'],
     PAYMENT_DUNNING:['/payment/batchDunning','USERVICE_URL']
 
 
