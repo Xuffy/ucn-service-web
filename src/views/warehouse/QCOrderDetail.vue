@@ -552,7 +552,8 @@
                 _.map(this.paymentData,v=>{
                     if(v.status===40 && v.planPayAmount>v.actualPayAmount){
                         params.push({
-                            id:v.id
+                            id:v.id,
+                            version: v.version
                         })
                     }
                 });
