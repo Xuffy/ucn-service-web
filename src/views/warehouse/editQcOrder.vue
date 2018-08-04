@@ -519,10 +519,10 @@
 
                     this.productInfoData.forEach(v => {
                         v.skuQcResultDictCode = "";
-                        v.skuUnitDictCode=(_.findWhere(this.skuUnitOption,{code:v.skuUnitDictCode}) || {}).name;
-                        v.volumeUnitDictCode=(_.findWhere(this.volumeOption,{code:v.volumeUnitDictCode}) || {}).name;
-                        v.weightUnitDictCode=(_.findWhere(this.weightOption,{code:v.weightUnitDictCode}) || {}).name;
-                        v.lengthUnitDictCode=(_.findWhere(this.lengthOption,{code:v.lengthUnitDictCode}) || {}).name;
+                        v.skuUnitDictCode= v.skuUnitDictCode ? (_.findWhere(this.skuUnitOption,{code:v.skuUnitDictCode}) || {}).name : '';
+                        v.volumeUnitDictCode=v.volumeUnitDictCode?(_.findWhere(this.volumeOption,{code:v.volumeUnitDictCode}) || {}).name:'';
+                        v.weightUnitDictCode=v.weightUnitDictCode?(_.findWhere(this.weightOption,{code:v.weightUnitDictCode}) || {}).name:'';
+                        v.lengthUnitDictCode=v.lengthUnitDictCode?(_.findWhere(this.lengthOption,{code:v.lengthUnitDictCode}) || {}).name:'';
 
                     });
                     let diffData = [];
