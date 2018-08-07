@@ -42,5 +42,11 @@ export default {
    TaxpayerQualification:{
      key:'TaxpayerQualification',
      fullLine:false,
+    },
+    provideIncoterm: {
+       key: ''
+    },
+    shipAgent: {
+       key: ''
     }
 }

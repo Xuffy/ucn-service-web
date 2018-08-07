@@ -36,8 +36,4 @@ export default {
     key: 'skype',
     belong: "concats"
   },
-  qq: {
-    key: 'qq',
-    belong: "concats"
-  },
 }
