@@ -316,10 +316,10 @@ export default{
         key: 'samplingRate',
         type: 'String'
     },
-    unqualifiedProcessingMode: {
-        key: 'unqualifiedProcessingMode',
-        type: 'String'
-    },
+    // unqualifiedProcessingMode: {
+    //     key: 'unqualifiedProcessingMode',
+    //     type: 'String'
+    // },
     outerCartonTotalQty: {
         key: 'outerCartonTotalQty',
         type: 'Number'

@@ -37,11 +37,11 @@ export default {
     serviceFee:{
         type:'number'
     },
-    serviceName:{
-        type:'select',
-        disabled:true,
-        isServiceName:true
-    },
+    // serviceName:{
+    //     type:'select',
+    //     disabled:true,
+    //     isServiceName:true
+    // },
     exchangeCurrencyDictCode:{
         type:'select',
         disabled:true,
