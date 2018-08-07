@@ -1,15 +1,9 @@
 export default {
   factoryName: {
     key: 'name',
-    _rules:{
-      required:true,
-    }
   },
   factoryAddress:{
     key: 'address',
-    _rules:{
-      required:true,
-    }
   },
   exportPort: {
     key: 'exportPort',
