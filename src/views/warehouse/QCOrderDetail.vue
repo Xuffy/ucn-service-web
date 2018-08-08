@@ -82,7 +82,7 @@
                     <el-col class="speCol" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
                         <el-form-item prop="11" :label="$i.warehouse.surveyor">
                             <el-input
-                                    :placeholder="$i.warehouse.serviceChoose"
+                                    :placeholder="$i.warehouse.serviceFill"
                                     v-model="qcDetail.surveyor"
                                     :disabled="true">
                             </el-input>
