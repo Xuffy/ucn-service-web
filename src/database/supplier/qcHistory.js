@@ -9,7 +9,7 @@ export default{
   },
   skuQty: {
       key:''
-  }
+  },
   quantityOfSKU: {
     key: '',
   },
