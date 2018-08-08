@@ -254,10 +254,10 @@ export default{
         key: 'customerSkuCode',
         type: 'String'
     },
-    factorySkuCode: {
-        key: 'factorySkuCode',
-        type: 'String'
-    },
+    // factorySkuCode: {
+    //     key: 'factorySkuCode',
+    //     type: 'String'
+    // },
     skuNameCn: {
         key: 'skuNameCn',
         type: 'String'
