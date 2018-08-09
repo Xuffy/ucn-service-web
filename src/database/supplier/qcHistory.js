@@ -8,12 +8,12 @@ export default{
     belong: "order"
   },
   skuQty: {
-      key:''
+      key:'skuQty'
   },
   quantityOfSKU: {
-    key: '',
+    key: 'totalQty '
   },
   totalCartonOfSku: {
-    key: '',
+    key: 'totalOuterCartonQty'
   },
 }

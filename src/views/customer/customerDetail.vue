@@ -44,6 +44,10 @@
                     <v-table  :data="address" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
 
+                <el-tab-pane :label="$i.supplier.accountInfo"  name="accounts">
+                  <v-table  :data="accounts"  :selection="false"  style='marginTop:10px'/>
+                </el-tab-pane>
+
                 <el-tab-pane :label="$i.supplier.contactInfo"  name="concats">
                     <v-table  :data="concats" :selection="false"  style='marginTop:10px'/>
                 </el-tab-pane>
@@ -177,7 +181,7 @@
             },
              handleClick(tab, event) {
               switch(Number(tab.index)){
-                case 2:
+                case 3:
                   this.getQcHistory();
                   break;
               }
@@ -327,6 +331,8 @@
                 this.basicDate.country = country.name || '';
                 this.basicDate.payment = payment.name || '';
                 this.basicDate.currency = currency.name || '';
+
+                this.accounts = this.$getDB(this.$db.supplier.accounts, res.accounts);
 
                 this.address = this.$getDB(this.$db.supplier.detailTable, res.address, e=>{
                   let country,receiveCountry;

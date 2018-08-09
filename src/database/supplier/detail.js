@@ -44,9 +44,9 @@ export default {
      fullLine:false,
     },
     provideIncoterm: {
-       key: ''
+       key: 'incoterm'
     },
     shipAgent: {
-       key: ''
+       key: 'shipAgent'
     }
 }

@@ -6,7 +6,8 @@ import remark from './remark';
 import compareView from './compareView';
 import compareDetail from './compareDetail';
 import qcHistory from './qcHistory';
-import contact from './contact'
+import contact from './contact';
+import accounts from  './accounts';
 export default {
     overview,
     overviewtable,
@@ -16,5 +17,6 @@ export default {
     compareView,
     compareDetail,
     qcHistory,
-    contact
+    contact,
+    accounts
 }

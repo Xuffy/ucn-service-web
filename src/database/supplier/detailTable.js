@@ -56,27 +56,14 @@ export default {
       key: '',
       _important:true,
     },
-
-    //.............concats
-
-    //       order
-
-    // documentRequired:{
-    //     key:"document"
-    // },
-    // factoryInspectionReport:{
-    //     key:"factoryInspectionReport"
-    // },
-    // invoice:{
-    //     key:'invoice'
-    // },
-    // examiningReport:{
-    //     key:'examiningReport'
-    // },
-    // packingList:{
-    //     key:"packingList"
-    // },
-    // examiningReport:{
-    //     key:"examiningReport"
-    // }
+    notify: {
+      key: "notify",
+      belong: "address"
+    },
+    consignee:{
+      key:'consignee'
+    },
+    destinationPort: {
+      key:'destPort'
+    }
 }
