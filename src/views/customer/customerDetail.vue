@@ -322,15 +322,17 @@
                     .then(res => {
                 this.code = res.code
                 this.basicDate = res;
-                let country,type,payment,currency;
-                country = _.findWhere(this.country, {code: this.basicDate.country}) || {};
+                let country,type,payment,currency,incoterm;
+                // country = _.findWhere(this.country, {code: this.basicDate.country}) || {};
                 type = _.findWhere(this.type, {code: (this.basicDate.type)+''}) || {};
                 payment = _.findWhere(this.payment, {code: (this.basicDate.payment)+''}) || {};
                 currency = _.findWhere(this.currency, {code: this.basicDate.currency}) || {};
+                incoterm = _.findWhere(this.incoterm, {code: this.basicDate.incoterm}+'') || {};
                 this.basicDate.type = type.name || '';
-                this.basicDate.country = country.name || '';
+                // this.basicDate.country = country.name || '';
                 this.basicDate.payment = payment.name || '';
                 this.basicDate.currency = currency.name || '';
+                this.basicDate.incoterm = incoterm.name || '';
 
                 this.accounts = this.$getDB(this.$db.supplier.accounts, res.accounts);
 
