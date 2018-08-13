@@ -1,0 +1,9 @@
+{
+    "outboundCTNQTY": "Outbound CTN QTY",
+    "outboundGW": "Outbound G.W.",
+    "outboundCBM": "Outbound CBM",
+    "outboundNW": "Outbound N.W.",
+    "skuStyleQTY": "SKU QTY",
+    "skuInnerCartonMethodEn": "Packing method of inner carton(EN)",
+    "skuMethodPkgEn": "Packing method(EN)"
+}
