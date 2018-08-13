@@ -550,6 +550,7 @@
             dunningPay(){
                 let params=[];
                 _.map(this.paymentData,v=>{
+                    console.log(v)
                     if(v.status===40 && v.planPayAmount>v.actualPayAmount){
                         params.push({
                             id:v.id,
