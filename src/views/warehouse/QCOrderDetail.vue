@@ -143,7 +143,10 @@
             {{$i.warehouse.payment}}
         </div>
         <div class="payment-table">
-            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" :loading="disableDunning" type="primary">{{$i.warehouse.pressMoney}}</el-button>
+            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" :loading="disableDunning" type="primary">
+                {{$i.warehouse.pressMoney}}
+                <span v-show="timeOut">{{ '(' + timeOut + ')' }}</span>
+            </el-button>
             <el-table
                     :data="paymentData"
                     border
@@ -419,6 +422,7 @@
                 lengthOption:[],
                 volumeOption:[],
                 weightOption:[],
+                timeOut: 0
             }
         },
         computed:{
@@ -550,8 +554,7 @@
             dunningPay(){
                 let params=[];
                 _.map(this.paymentData,v=>{
-                    console.log(v)
-                    if(v.status===40 && v.planPayAmount>v.actualPayAmount){
+                    if(v.status===40 && v.planPayAmount >= 0){
                         params.push({
                             id:v.id,
                             version: v.version
@@ -572,7 +575,18 @@
                         message: this.$i.warehouse.dunningSuccess,
                         type: 'success'
                     });
-                }).finally(()=>{
+                    this.timeOut = 60
+                    let self = this
+                    let init = setInterval(function () {
+                        if (self.timeOut > 1) {
+                            self.timeOut -= 1
+                        } else {
+                            clearInterval(init)
+                            self.disableDunning = false
+                            self.timeOut = 0
+                        }
+                    }, 1000)
+                }).catch((e)=>{
                     this.disableDunning=false;
                 })
             },
