@@ -8,6 +8,40 @@ export default{
     orderNo:{
         _hide:true
     },
+    skuCode: {
+        key: 'skuCode',
+        type: 'String'
+    },
+    customerSkuCode: {
+        key: 'customerSkuCode',
+        type: 'String'
+    },
+    orderSkuQty: {
+        key: 'orderSkuQty',
+        type: 'Number',
+        _calculate:true
+    },
+    expectQcQty: {
+        key: 'expectQcQty',
+        type: 'Number',
+        _calculate:true
+    },
+    samplingRate: {
+        key: 'samplingRate',
+        type: 'String'
+    },
+    checkOuterCartonQty:{
+        key: 'checkOuterCartonQty',
+        type: 'Number',
+        showType:'number',
+        _rules:{
+            required:true,
+            type:'Number'
+        },
+        _calculate:true,
+        accuracy: 2,
+        isFWS:true
+    },
     skuQcResultDictCode: {
         key: 'skuQcResultDictCode',
         type: 'String',
@@ -147,18 +181,7 @@ export default{
         accuracy: 2,
         isFWS:true
     },
-    checkOuterCartonQty:{
-        key: 'checkOuterCartonQty',
-        type: 'Number',
-        showType:'number',
-        _rules:{
-            required:true,
-            type:'Number'
-        },
-        _calculate:true,
-        accuracy: 2,
-        isFWS:true
-    },
+    
     actOuterCartonSkuQty:{
         key: 'actOuterCartonSkuQty',
         type: 'Number',
@@ -246,14 +269,8 @@ export default{
         key: 'skuInventoryStatusDictCode',
         type: 'String'
     },
-    skuCode: {
-        key: 'skuCode',
-        type: 'String'
-    },
-    customerSkuCode: {
-        key: 'customerSkuCode',
-        type: 'String'
-    },
+   
+    
     // factorySkuCode: {
     //     key: 'factorySkuCode',
     //     type: 'String'
@@ -286,36 +303,14 @@ export default{
         key: 'skuUnitDictCode',
         type: 'String'
     },
-    lengthUnitDictCode: {
-        key: 'lengthUnitDictCode',
-        type: 'String'
-    },
-    volumeUnitDictCode: {
-        key: 'volumeUnitDictCode',
-        type: 'String'
-    },
-    weightUnitDictCode: {
-        key: 'weightUnitDictCode',
-        type: 'String'
-    },
+    
     inboundNo: {
         key: 'inboundNo',
         type: 'String'
     },
-    orderSkuQty: {
-        key: 'orderSkuQty',
-        type: 'Number',
-        _calculate:true
-    },
-    expectQcQty: {
-        key: 'expectQcQty',
-        type: 'Number',
-        _calculate:true
-    },
-    samplingRate: {
-        key: 'samplingRate',
-        type: 'String'
-    },
+    
+    
+    
     // unqualifiedProcessingMode: {
     //     key: 'unqualifiedProcessingMode',
     //     type: 'String'
@@ -440,6 +435,17 @@ export default{
         key: 'shippingMark',
         type: 'String'
     },
-    
+    lengthUnitDictCode: {
+        key: 'lengthUnitDictCode',
+        type: 'String'
+    },
+    volumeUnitDictCode: {
+        key: 'volumeUnitDictCode',
+        type: 'String'
+    },
+    weightUnitDictCode: {
+        key: 'weightUnitDictCode',
+        type: 'String'
+    },
     
 }
