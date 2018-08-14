@@ -151,12 +151,12 @@
       <el-form label-width="200px" :model="addressData">
         <el-row>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.factoryName +'：'" required>
+            <el-form-item  :label="$i.setting.factoryName +'：'" >
               <el-input size="mini" v-model="addressData.name"  :placeholder="$i.common.inputkeyWordToSearch"></el-input>
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.factoryAddress +'：'" required>
+            <el-form-item  :label="$i.setting.factoryAddress +'：'" >
               <el-input size="mini" v-model="addressData.address"  :placeholder="$i.common.inputkeyWordToSearch" ></el-input>
             </el-form-item>
           </el-col>
@@ -219,7 +219,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.beneficiaryBankName +'：'">
+            <el-form-item  :label="$i.setting.beneficiaryBankName +'：'" required>
               <el-input size="mini" v-model="accountData.beneficiaryBankName"  :placeholder="$i.common.inputkeyWordToSearch"></el-input>
             </el-form-item>
           </el-col>
@@ -289,7 +289,7 @@
             </el-form-item>
           </el-col>
           <el-col :xs="8" :sm="8" :md="8" :lg="8" :xl="8">
-            <el-form-item  :label="$i.setting.mobileNumber +'：'" required>
+            <el-form-item  :label="$i.setting.mobileNumber +'：'">
               <el-input size="mini" v-model="contactData.cellphone"  :placeholder="$i.common.inputkeyWordToSearch"></el-input>
             </el-form-item>
           </el-col>
