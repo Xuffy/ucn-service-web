@@ -16,12 +16,15 @@ export default {
   },
   beneficiaryBankName:{
     key: 'beneficiaryBankName',
-  },
-  beneficiaryBankSWIFT: {
-    key: 'beneficiaryBankSwift',
     _rules:{
       required:true,
     }
+  },
+  beneficiaryBankSWIFT: {
+    key: 'beneficiaryBankSwift',
+    // _rules:{
+    //   required:true,
+    // }
   },
   accountType:{
     key: 'accountType',
