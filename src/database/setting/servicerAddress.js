@@ -3,7 +3,23 @@ export default {
     key: 'name',
   },
   factoryAddress:{
-    key: 'address',
+    _important:true
+  },
+  country: {
+    key:'country',
+    _hide:true
+  },
+  province: {
+    key:'province',
+    _hide:true
+  },
+  city: {
+    key:'city',
+    _hide:true
+  },
+  address: {
+    key:'address',
+    _hide:true
   },
   exportPort: {
     key: 'exportPort',
