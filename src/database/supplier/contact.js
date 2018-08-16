@@ -20,7 +20,7 @@ export default {
     key: 'cellphone',
     belong: "concats"
   },
-  tel: {
+  telNumber: {
     key: 'telphone',
     belong: "concats"
   },
