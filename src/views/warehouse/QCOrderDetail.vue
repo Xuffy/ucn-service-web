@@ -143,7 +143,7 @@
             {{$i.warehouse.payment}}
         </div>
         <div class="payment-table">
-            <el-button class="payment-btn" @click="dunningPay" :disabled="loadingPaymentTable" :loading="disableDunning" type="primary">
+            <el-button class="payment-btn" v-authorize="'QC:ORDER_DETAIL:PAYMENT:URGING_QC_PAYMENT'" @click="dunningPay" :disabled="loadingPaymentTable" :loading="disableDunning" type="primary">
                 {{$i.warehouse.pressMoney}}
                 <span v-show="timeOut">{{ '(' + timeOut + ')' }}</span>
             </el-button>
@@ -216,7 +216,7 @@
                         align="center"
                         width="100">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.row.status!==40 && scope.row.status!==-1" @click="confirmPay(scope.row)" type="text" size="small">{{$i.warehouse.confirm}}</el-button>
+                        <el-button v-if="scope.row.status!==40 && scope.row.status!==-1" v-authorize="'QC:ORDER_DETAIL:PAYMENT:CONFIRM_QC_PAYMENT'" @click="confirmPay(scope.row)" type="text" size="small">{{$i.warehouse.confirm}}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -363,7 +363,7 @@
             <el-button @click="edit" v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" type="primary">{{$i.warehouse.edit}}</el-button>
             <el-button type="danger" @click="cancel"  v-if="qcDetail.qcStatusDictCode==='WAITING_QC'" >{{$i.warehouse.exit}}</el-button>
             <el-button type="danger" @click="cancel"  v-if="qcDetail.qcStatusDictCode!=='WAITING_QC'" >{{$i.warehouse.exit}}</el-button>
-            <el-button @click="download" type="primary">{{$i.warehouse.download}}</el-button>
+            <el-button @click="download"  v-authorize="'QC:ORDER_DETAIL:DOWNLOAD'" type="primary">{{$i.warehouse.download}}</el-button>
         </div>
         <v-message-board module="warehouse" code="qcDetail" :id="$route.query.id"></v-message-board>
     </div>
