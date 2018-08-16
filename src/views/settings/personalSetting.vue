@@ -286,7 +286,7 @@
       },
       putUserPassword(){
         //校验新旧密码
-        if(this.modifyPass.password == this.modifyPass.comfirmNewPassword){
+        if(this.modifyPass.oldPassword == this.modifyPass.newPassword){
           this.$message({
             type: 'warning',
             message: this.$i.common.cannotPassword

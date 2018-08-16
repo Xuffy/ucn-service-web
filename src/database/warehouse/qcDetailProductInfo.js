@@ -257,7 +257,8 @@ export default{
         _image:true,
         imgNum: 0,
         pleaseText: '',
-        isFWS: true
+        isFWS: true,
+        _sort:false,
     },
     remark:{
         key: 'remark',
@@ -267,7 +268,8 @@ export default{
     },
     skuInventoryStatusDictCode:{
         key: 'skuInventoryStatusDictCode',
-        type: 'String'
+        type: 'String',
+        _sort:false
     },
    
     

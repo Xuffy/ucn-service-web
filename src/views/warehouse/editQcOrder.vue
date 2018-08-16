@@ -379,7 +379,7 @@
         </div>
 
         <div class="footBtn">
-            <el-button :disabled="loadingData" :loading="disableClickSubmit" @click="submit" type="primary">
+            <el-button :disabled="loadingData" v-authorize="'QC:ORDER_DETAIL:SUBMIT'" :loading="disableClickSubmit" @click="submit" type="primary">
                 {{$i.warehouse.submit}}
             </el-button>
             <el-button :disabled="loadingData" @click="cancel">{{$i.warehouse.cancel}}</el-button>
