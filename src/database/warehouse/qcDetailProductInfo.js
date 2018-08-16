@@ -235,6 +235,11 @@ export default{
         showType:'select',
         isBarCodeResult:true
     },
+    innerCartonMarkResultDictCode:{
+        type: 'String',
+        showType:'select',
+        isBarCodeResult:true
+    },
     outerCartonBarCodeResultDictCode:{
         key: 'outerCartonBarCodeResultDictCode',
         type: 'String',
@@ -432,7 +437,9 @@ export default{
         type: 'String',
         isFWS:true
     },
-    
+    skuMethodPkgEn:{},
+    skuInnerCartonMethodEn:{},
+    innerCartonMark:{},
     shippingMark:{
         key: 'shippingMark',
         type: 'String'

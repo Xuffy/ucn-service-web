@@ -192,7 +192,7 @@
                                         @blur="handleInputNumberBlur(scope.row)"
                                         v-model="scope.row[v.key].value"
                                         :mark="v.label"
-                                        :accuracy="v.accuracy ? v.accuracy : null"></v-input-number>11
+                                        :accuracy="v.accuracy ? v.accuracy : null"></v-input-number>
                                     <!-- <el-input style="width:130px"
                                         :min="0"
                                         @change="val => changeInput(val, scope.row[v.key], scope.row)"
@@ -624,7 +624,8 @@
                         skuLabelResultDictCode: v.skuLabelResultDictCode.value,
                         skuQcResultDictCode: skuQcResultDictCode,
                         unqualifiedSkuCartonTotalQty: v.unqualifiedSkuCartonTotalQty.value ? v.unqualifiedSkuCartonTotalQty.value : 0,
-                        unqualifiedType: v.unqualifiedType.value
+                        unqualifiedType: v.unqualifiedType.value,
+                        innerCartonMarkResultDictCode: v.innerCartonMarkResultDictCode.value
                     });
                 });
                 let flag = true
