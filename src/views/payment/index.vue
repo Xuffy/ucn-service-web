@@ -337,7 +337,7 @@
         this.getList();
       },
       downloadPayment(){
-        let ids=_.pluck(_.pluck(this.selectedData,"id"),'value');
+        let ids=_.pluck(_.pluck(this.selectedData,"paymentId"),'value');
         if(ids.length>0){
           this.$fetch.export_task('EXPORT_LEDGER',{ids:ids});
         }else{

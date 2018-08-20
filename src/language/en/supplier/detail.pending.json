@@ -23,6 +23,7 @@
   "beneficiaryAddress": "Beneficiary Address",
   "beneficiaryBankName": "Beneficiary Bank Name",
   "beneficiaryBankSWIFT": "SWIFT",
+  "accountType": "Type",
   "name": "Name",
   "department": "Department",
   "gender": "Gender",

@@ -39,10 +39,10 @@ export default {
      key:'filingDate',
      fullLine:false,
     },
-   TaxpayerQualification:{
-     key:'TaxpayerQualification',
-     fullLine:false,
-    },
+   // TaxpayerQualification:{
+   //   key:'TaxpayerQualification',
+   //   fullLine:false,
+   //  },
     provideIncoterm: {
        key: 'incoterm'
     },
