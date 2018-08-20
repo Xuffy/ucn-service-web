@@ -47,6 +47,14 @@ export default {
         disabled:true,
         isCurrency:true
     },
+    customerNo: {
+        disabled:true,
+        type:'input'
+    },
+    customerName: {
+        disabled:true,
+        type:'input'
+    },
     remark:{
         type:'textarea',
         disabled:true,
