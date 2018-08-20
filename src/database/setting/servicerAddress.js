@@ -24,7 +24,7 @@ export default {
   exportPort: {
     key: 'exportPort',
   },
-  ContacctPerson1:{
+  contacctPerson1:{
     key: 'contactPerson1',
     _rules:{
       required:true,
@@ -38,7 +38,7 @@ export default {
     }
   },
   contacctPerson2:{
-    key: 'contacctPerson2',
+    key: 'contactPerson2',
   },
   contactPhoneNo2: {
     key: 'contactPhone2',

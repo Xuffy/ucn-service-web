@@ -224,7 +224,7 @@
     </el-dialog>
 
     <el-dialog width="50%" :title="$i.setting.accountInfo" :visible.sync="accountDialogVisible">
-      <el-form label-width="200px" :model="accountData">
+      <el-form label-width="230px" :model="accountData">
         <el-row>
           <el-col :span="12">
             <el-form-item  :label="$i.setting.beneficiaryName +'：'" required>
