@@ -152,7 +152,8 @@
       },
       //获取字典
       getCodePart(){
-        this.$ajax.post(this.$apis.POST_CODE_PART,["PMT","CUSTOMER_TYPE",]).then(res=>{
+        this.$ajax.post(this.$apis.POST_CODE_PART,["PMT","CUSTOMER_TYPE",],{cache:true}).then(res=>{
+          this.options.payment = _.findWhere(res, {'code': 'PMT'}).codes;
           this.options.incoterm = _.findWhere(res, {'code': 'PMT'}).codes;
           this.options.type = _.findWhere(res, {'code': 'CUSTOMER_TYPE'}).codes;
         }).catch(err=>{
@@ -161,7 +162,7 @@
       },
       //获取国家
       getCountryAll(){
-        this.$ajax.get(this.$apis.GET_COUNTRY_ALL).then(res=>{
+        this.$ajax.get(this.$apis.GET_COUNTRY_ALL,{},{cache:true}).then(res=>{
           this.options.country = res
         }).catch(err=>{
           console.log(err)
@@ -243,14 +244,16 @@
             this.pageData=res;
             this.loading = false
             this.tabData = this.$getDB(this.$db.supplier.overviewtable, res.datas, e=>{
-              let country,incoterm,type,currency;
+              let country,incoterm,type,payment;
               country = _.findWhere(this.options.country, {code: e.country.value}) || {};
               incoterm = _.findWhere(this.options.incoterm, {code: e.incoterm.value+''}) || {};
               type = _.findWhere(this.options.type, {code: e.type.value+''}) || {};
+              payment = _.findWhere(this.options.payment, {code:(e.payment.value)+''}) || {};
               // currency = _.findWhere(this.currency, {code: e.currency.value}) || {};
               e.country._value = country.name || '';
               e.incoterm._value = incoterm.name || '';
               e.type._value = type.name || '';
+              e.payment._value = payment.name || '';
               // e.currency._value = currency.name || '';
 
               return e;
