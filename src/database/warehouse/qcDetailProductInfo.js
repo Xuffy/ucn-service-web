@@ -444,6 +444,15 @@ export default{
         key: 'shippingMark',
         type: 'String'
     },
+    skuMaterialCn:{
+        key: 'skuMaterialCn'
+    },
+    skuMaterialEn: {
+        key: 'skuMaterialEn'
+    },
+    skuNameEn: {
+        key: 'skuNameEn'
+    },
     lengthUnitDictCode: {
         key: 'lengthUnitDictCode',
         type: 'String'
@@ -455,6 +464,5 @@ export default{
     weightUnitDictCode: {
         key: 'weightUnitDictCode',
         type: 'String'
-    },
-    
+    }
 }
