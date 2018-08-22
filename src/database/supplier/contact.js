@@ -5,7 +5,7 @@ export default {
     belong: "concats"
   },
   department: {
-    key: 'deptName',
+    key: 'deptId',
     belong: "concats"
   },
   gender: {

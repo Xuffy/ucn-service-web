@@ -352,12 +352,28 @@
                   e.receiverAddress.value = e.receiveCountry._value +' '+receiveProvince+' '+receiveCity+' '+receiveAddress
                   return e;
                 });
-                this.concats = this.$getDB(this.$db.supplier.contact, res.concats,e => {
-                    let gender;
-                    gender = _.findWhere(this.sex, {code: (e.gender.value)+''}) || {};
-                    e.gender._value = gender.name || '';
-                    return e;
-                });
+                let concats = res.concats
+                //获取部门列表匹配
+                      console.log(this.basicDate.customerCompanyId)
+                if (this.basicDate.tenantId && this.basicDate.customerCompanyId){
+                  this.$ajax.get(`${this.$apis.GET_DEPARTMENT}?tenantId=${this.basicDate.tenantId}&companyId=${this.basicDate.customerCompanyId}`).then(res=>{
+                    this.concats = this.$getDB(this.$db.supplier.contact, concats, e => {
+                      let gender,deptId;
+                      gender = _.findWhere(this.sex, {code: (e.gender.value)+''}) || {};
+                      e.gender._value = gender.name || '';
+                      deptId = _.findWhere(res, {deptId: (e.deptId.value)}) || {};
+                      e.deptId._value = deptId.deptName || '';
+                      return e;
+                    });
+
+                  })
+                }
+                // this.concats = this.$getDB(this.$db.supplier.contact, res.concats,e => {
+                //     let gender;
+                //     gender = _.findWhere(this.sex, {code: (e.gender.value)+''}) || {};
+                //     e.gender._value = gender.name || '';
+                //     return e;
+                // });
                 this.documents = this.$getDB(this.$db.supplier.detailTable, res.documents);
                 this.loading = false
                     })
