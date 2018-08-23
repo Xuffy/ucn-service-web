@@ -3,6 +3,7 @@
 import VImage from './common/image/index';
 import VTimeZone from './common/timeZone/index';
 import VImportTemplate from './common/importTemplate/index';
+import VExportTemplate from './common/exportTemplate/index';
 import VTable from './common/table/index';
 import VPagination from './common/table/pagination';
 import VHistoryModify from './common/historyModify';
@@ -26,6 +27,7 @@ import VInputNumber from './common/inputNumber/index';
 export {
   VImage,
   VImportTemplate,
+  VExportTemplate,
   VUpload,
   VTimeZone,
   VPagination,
