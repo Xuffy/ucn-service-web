@@ -39,7 +39,7 @@ export default{
             type:'Number'
         },
         _calculate:true,
-        accuracy: 2,
+        accuracy: 1,
         isFWS:true
     },
     skuQcResultDictCode: {
@@ -178,7 +178,7 @@ export default{
             type:'Number'
         },
         _calculate:true,
-        accuracy: 2,
+        accuracy: 1,
         isFWS:true
     },
     
@@ -186,21 +186,21 @@ export default{
         key: 'actOuterCartonSkuQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2,
+        accuracy: 1,
         isFWS: true
     },
     actOuterCartonInnerBoxQty:{
         key: 'actOuterCartonInnerBoxQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2,
+        accuracy: 1,
         isFWS: true
     },
     actInnerCartonSkuQty:{
         key: 'actInnerCartonSkuQty',
         type: 'Number',
         showType:'number',
-        accuracy: 2,
+        accuracy: 1,
         isFWS: true
     },
     unqualifiedSkuCartonTotalQty:{
@@ -208,7 +208,7 @@ export default{
         type: 'Number',
         showType:'number',
         _calculate:true,
-        accuracy: 2,
+        accuracy: 1,
         isFWS:true
     },
     unqualifiedType:{

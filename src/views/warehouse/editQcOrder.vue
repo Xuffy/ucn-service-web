@@ -193,12 +193,6 @@
                                         v-model="scope.row[v.key].value"
                                         :mark="v.label"
                                         :accuracy="v.accuracy ? v.accuracy : null"></v-input-number>
-                                    <!-- <el-input style="width:130px"
-                                        :min="0"
-                                        @change="val => changeInput(val, scope.row[v.key], scope.row)"
-                                        type="number"
-                                        v-model="scope.row[v.key].value"
-                                        placeholder=""></el-input> -->
                                 </div>
                                 <div v-else>
                                     <v-input-number
@@ -514,9 +508,6 @@
                 this.loadingProductInfoTable = true;
                 this.$ajax.post(this.$apis.get_serviceQcOrderProduct, this.productInfoConfig).then(res => {
                     this.productInfoData = res.datas;
-                    // console.log(this.productInfoData, "this.productInfoData");
-                    // console.log(this.lengthOption,'lengthOption')
-
                     this.productInfoData.forEach(v => {
                         v.skuQcResultDictCode = "";
                         v.skuUnitDictCode= v.skuUnitDictCode ? (_.findWhere(this.skuUnitOption,{code:v.skuUnitDictCode}) || {}).name : '';
@@ -534,7 +525,6 @@
                     let arr = this.$copyArr(this.productInfoData)
                     arr = this.$getDB(this.$db.warehouse.qcDetailProductInfo, arr);
                     this.$refs.filterColumn.update(false, arr).then(data => {
-                        // console.log(data)
                         this.productInfoData = this.$refs.filterColumn.getFilterData(arr, data);
                         this.columnConfig = this.productInfoData[0];
                     });
@@ -678,52 +668,66 @@
                 }
                 return e = Math.pow(10, Math.max(c, d)), (this.mul(a, e) + this.mul(b, e)) / e;
             },
+            filterNum (val) {
+                return val ? val : 0
+            },
+            Intercept (value, num) {
+                let n = '', b;
+                value = _.isString(value) ? Number(value) : value;
+                if (!_.isNumber(value) || _.isNaN(value)) {
+                    return '';
+                }
+                _.map(_.range(num), () => n += 0);
+                n = Number('1' + n);
+                return Math.floor(value * n) / n;
+            },
             /**
              * product info事件
              * */
             handleInputNumberBlur(e) {
+                let outerCartonLength = this.filterNum(e.outerCartonLength.value); // 外箱长
+                let outerCartonWidth = this.filterNum(e.outerCartonWidth.value); // 外箱宽
+                let outerCartonHeight = this.filterNum(e.outerCartonHeight.value); // 外箱高
+                let qualifiedSkuCartonTotalQty = this.filterNum(e.qualifiedSkuCartonTotalQty.value); // 合格产品总箱数
+                let unqualifiedSkuCartonTotalQty = this.filterNum(e.unqualifiedSkuCartonTotalQty.value); // 不合格产品总箱数
+                let actOuterCartonSkuQty = this.filterNum(e.actOuterCartonSkuQty.value); // 实际外箱产品数
+                let outerCartonNetWeight = this.filterNum(e.outerCartonNetWeight.value); // 外箱净重
+                let outerCartonGrossWeight = this.filterNum(e.outerCartonGrossWeight.value); // 外箱毛重
                 //计算外箱体积
-                let outerCartonLength = (e.outerCartonLength.value ? e.outerCartonLength.value : 0);
-                let outerCartonWidth = (e.outerCartonWidth.value ? e.outerCartonWidth.value : 0);
-                let outerCartonHeight = (e.outerCartonHeight.value ? e.outerCartonHeight.value : 0);
-                e.outerCartonVolume.value = this.mul(this.mul(outerCartonLength,outerCartonWidth),outerCartonHeight);
+                e.outerCartonVolume.value = this.Intercept(this.$calc.divide(this.$calc.multiply(this.$calc.multiply(outerCartonLength, outerCartonWidth), outerCartonHeight), 1000000), 3)
+                let outerCartonVolume = this.filterNum(e.outerCartonVolume.value); // 外箱体积
 
                 //计算实际产品总箱数
-                let qualifiedSkuCartonTotalQty = (e.qualifiedSkuCartonTotalQty.value ? e.qualifiedSkuCartonTotalQty.value : 0);
-                let unqualifiedSkuCartonTotalQty = (e.unqualifiedSkuCartonTotalQty.value ? e.unqualifiedSkuCartonTotalQty.value : 0);
-                e.actSkuCartonTotalQty.value = this.jia(qualifiedSkuCartonTotalQty,unqualifiedSkuCartonTotalQty);
+                e.actSkuCartonTotalQty.value = this.$calc.add(qualifiedSkuCartonTotalQty,unqualifiedSkuCartonTotalQty);
                 
-
                 //计算合格产品数量
-                let actOuterCartonSkuQty = (e.actOuterCartonSkuQty.value ? e.actOuterCartonSkuQty.value : 0);
-                e.qualifiedSkuQty.value = this.mul(qualifiedSkuCartonTotalQty,actOuterCartonSkuQty)
+                e.qualifiedSkuQty.value = this.Intercept(this.$calc.multiply(qualifiedSkuCartonTotalQty,actOuterCartonSkuQty), 1)
+                let qualifiedSkuQty = this.filterNum(e.qualifiedSkuQty.value);
 
                 //计算不合格产品数量
-                e.unqualifiedSkuQty.value = this.mul(unqualifiedSkuCartonTotalQty,actOuterCartonSkuQty)
+                e.unqualifiedSkuQty.value = this.Intercept(this.$calc.multiply(unqualifiedSkuCartonTotalQty,actOuterCartonSkuQty), 1)
+                let unqualifiedSkuQty = this.filterNum(e.unqualifiedSkuQty.value);
 
                 //计算实际产品数量
-                e.actSkuQty.value = this.jia((e.unqualifiedSkuQty.value ? e.unqualifiedSkuQty.value : 0), (e.qualifiedSkuQty.value ? e.qualifiedSkuQty.value : 0));
+                e.actSkuQty.value = this.$calc.add(unqualifiedSkuQty, qualifiedSkuQty)
 
                 //计算合格产品总净重
-                let outerCartonNetWeight = (e.outerCartonNetWeight.value ? e.outerCartonNetWeight.value : 0);
-                e.qualifiedSkuNetWeight.value = this.mul(qualifiedSkuCartonTotalQty,outerCartonNetWeight);
+                e.qualifiedSkuNetWeight.value = this.Intercept(this.$calc.multiply(qualifiedSkuCartonTotalQty,outerCartonNetWeight), 2)
 
                 //计算不合格总产品净重
-                e.unqualifiedSkuNetWeight.value = this.mul(outerCartonNetWeight,unqualifiedSkuCartonTotalQty);
+                e.unqualifiedSkuNetWeight.value = this.Intercept(this.$calc.multiply(unqualifiedSkuCartonTotalQty,outerCartonNetWeight), 2)
 
                 //计算合格产品总体积
-                let outerCartonVolume = (e.outerCartonVolume.value ? e.outerCartonVolume.value : 0)
-                e.qualifiedSkuVolume.value = this.mul(outerCartonVolume,qualifiedSkuCartonTotalQty);
+                e.qualifiedSkuVolume.value = this.Intercept(this.$calc.multiply(qualifiedSkuCartonTotalQty,outerCartonVolume), 3)
 
                 //计算不合格产总品体积
-                e.unqualifiedSkuVolume.value = this.mul(outerCartonVolume,unqualifiedSkuCartonTotalQty);
+                e.unqualifiedSkuVolume.value = this.Intercept(this.$calc.multiply(unqualifiedSkuCartonTotalQty,outerCartonVolume), 3)
 
                 //计算合格产品总毛重
-                let outerCartonGrossWeight = (e.outerCartonGrossWeight.value ? e.outerCartonGrossWeight.value : 0);
-                e.qualifiedSkuGrossWeight.value = this.mul(outerCartonGrossWeight,qualifiedSkuCartonTotalQty);
+                e.qualifiedSkuGrossWeight.value = this.Intercept(this.$calc.multiply(qualifiedSkuCartonTotalQty,outerCartonGrossWeight), 2)
 
-                //计算不合格总产品毛重
-                e.unqualifiedSkuGrossWeight.value = this.mul(outerCartonGrossWeight,unqualifiedSkuCartonTotalQty);
+                //计算不合格产品总毛重
+                e.unqualifiedSkuGrossWeight.value = this.Intercept(this.$calc.multiply(unqualifiedSkuCartonTotalQty,outerCartonGrossWeight), 2)
             },
             changeInput (val, e, row) {
                 e.value = this.$toFixed(Math.abs(val), 2, e.label)
