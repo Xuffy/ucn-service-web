@@ -129,6 +129,7 @@
   "amount": "Total QTY",
   "expressAddress": "Express address",
   "consignee": "Consignee",
-  "destinationPort": "Destination port"
+  "exportLicenseYes": "YES",
+  "exportLicenseNo": "NO"
 
 }
