@@ -27,7 +27,7 @@
                      </el-col>
                    </el-row>
                   </el-form>
-                <div class="btns">
+                <div class="btns" v-authorize="'CUSTOMER:DETAIL:READ_ONLY'">
                   <el-button @click="deleteCustomer" type="danger" v-show="$route.query.type==='read'"
                              v-authorize="'SUPPLIER:DETAIL:ARCHIVE'">
                     {{$i.common.archive}}
