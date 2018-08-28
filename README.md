@@ -1,6 +1,6 @@
-# UCN 采购商系统
+# UCN 服务商系统
 
-> 一套基于`vue.js` `iview`的网站管理系统1
+> 一套基于`vue.js` `element ui`的网站管理系统1
 
 ### 启动说明
 
@@ -33,7 +33,7 @@ npm run pro
 
 > [webpack](http://webpack.github.io/docs/)
 
-> [iview](https://www.iviewui.com/)
+> [element ui](http://element-cn.eleme.io/#/zh-CN)
 
 > [store.js](https://github.com/marcuswestin/store.js)
 
